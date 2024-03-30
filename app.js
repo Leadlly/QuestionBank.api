@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import connectedToDb from './db/db.js'
 import { createQuestion } from './controller/quesController.js'
 import { createChapter, createSubject, createTopic } from './controller/subjectController.js'
+import { register } from './controller/userController.js'
 
 config({
     path: './config.env'
@@ -17,6 +18,7 @@ connectedToDb()
 app.use(express.json())
 app.use(cookieParser())
 
+app.post('/api/user/register', register)
 app.post('/api/question/create', createQuestion)
 app.post('/api/subject/create', createSubject)
 app.post('/api/chapter/create', createChapter)

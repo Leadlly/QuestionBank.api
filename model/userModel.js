@@ -14,11 +14,26 @@ const userSchema = mongoose.Schema({
         select: false,
         required: true
     },
+    status: {
+        type: String,
+        enum: ["Verified", "Not Verified"],
+        default: "Not Verified"
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    },
     questions: [
        { 
         type: mongoose.Schema.Types.ObjectId,
         ref: "QuestionBank"
        }
+    ],
+    notificaitons: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+        }
     ],
     createdAt: {
         type: Date,
