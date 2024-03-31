@@ -3,15 +3,17 @@ import { Subject } from "../model/subjectModel.js";
 export const createSubject = async(req, res) =>{
     
   try {
-    const {subject} = req.body
+    const {subjectName, standard, chapters} = req.body
 
-    const existingSubject = await Subject.findOne({ "subject.name": subject.name });
+    const existingSubject = await Subject.findOne({ name: subjectName, standard });
     if (existingSubject) {
       return res.status(400).json({ success: false, message: "Subject already exists" });
     }
 
    const sub = await Subject.create({
-        subject
+        name: subjectName,
+        standard,
+        chapters,
     })
 
     res.status(201).json({
@@ -27,12 +29,12 @@ export const createSubject = async(req, res) =>{
 
 export const createChapter = async (req, res) => {
     try {
-      const { subject } = req.body;
-      const existingSubject = await Subject.findOne({ "subject.name": subject.name });
+      const { subjectName, standard, chapters } = req.body;
+      const existingSubject = await Subject.findOne({ name : subjectName, standard });
       if (!existingSubject) {
         return res.status(404).json({ success: false, message: "Subject not found" });
       }
-      existingSubject.subject.chapters.push(...subject.chapters);
+      existingSubject.chapters.push(...chapters);
       await existingSubject.save();
       res.status(201).json({ success: true, message: "Chapter and topics added to subject" });
     } catch (error) {
@@ -44,12 +46,12 @@ export const createChapter = async (req, res) => {
   export const createTopic = async (req, res) => {
     try {
       const { subjectName, chapterName, topics } = req.body;
-      const existingSubject = await Subject.findOne({ "subject.name": subjectName });
+      const existingSubject = await Subject.findOne({ name: subjectName });
       if (!existingSubject) {
         return res.status(404).json({ success: false, message: "Subject not found" });
       }
   
-      const existingChapter = existingSubject.subject.chapters.find(chapter => chapter.name === chapterName);
+      const existingChapter = existingSubject.chapters.find(chapter => chapter.name === chapterName);
       if (!existingChapter) {
         return res.status(404).json({ success: false, message: "Chapter not found" });
       }
@@ -67,7 +69,7 @@ export const createChapter = async (req, res) => {
 
 export const getAllSubject = async(req, res) => {
     try {
-        const subjects = await Subject.find()
+        const subjects = await Subject.find({standard: req.query.standard})
         res.status(200).json({
             success: true,
             subjects
@@ -79,9 +81,9 @@ export const getAllSubject = async(req, res) => {
 }
 export const getChapter = async(req, res) => {
     try {
-        const subject = await Subject.findOne({"subject.name": req.query.subjectName})
+        const subject = await Subject.findOne({name: req.query.subjectName, standard: req.query.standard})
 
-        const chapters = subject.subject.chapters?.map(chapter => chapter?.name)
+        const chapters = subject.chapters?.map(chapter => chapter?.name)
 
         res.status(200).json({
             success: true,
@@ -95,9 +97,9 @@ export const getChapter = async(req, res) => {
 
 export const getTopic = async(req, res) => {
     try {
-        const subjects = await Subject.findOne({"subject.name": req.query.subjectName})
+        const subject = await Subject.findOne({name: req.query.subjectName, standard: req.query.standard})
 
-        const chapter = subjects.subject.chapters.find(chapter => chapter.name === req.query.chapterName);
+        const chapter = subject.chapters.find(chapter => chapter.name === req.query.chapterName);
         if (!chapter) {
           return res.status(404).json({ success: false, message: "Chapter not found" });
         }
