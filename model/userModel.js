@@ -30,9 +30,10 @@ const userSchema = mongoose.Schema({
         ref: "QuestionBank"
        }
     ],
-    notificaitons: [
+    requests: [
         {
             type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
         }
     ],
     createdAt: {

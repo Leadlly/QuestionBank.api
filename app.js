@@ -1,5 +1,6 @@
 import express from 'express'
 import { config } from 'dotenv'
+import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import connectedToDb from './db/db.js'
 import UserRouter from './routes/userRoutes.js'
@@ -9,13 +10,14 @@ config({
     path: './config.env'
 })
 
-const app = express()
+const app = express();
 const port = process.env.PORT || 4000
 
-connectedToDb()
+connectedToDb();
 
-app.use(express.json())
-app.use(cookieParser())
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
 
 app.use('/api/user', UserRouter)
 app.use('/api/create', QuestionRouter)
