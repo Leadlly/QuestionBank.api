@@ -2,10 +2,10 @@ import { Ques } from "../model/quesModel.js";
 import { body, validationResult } from 'express-validator';
 
 const validateAndSanitizeData = [
-  body('ques').notEmpty().trim().escape(),
+  body('question').notEmpty().trim().escape(),
   body('options.all.*').notEmpty().trim().escape(),
   body('options.correct.*').notEmpty().trim().escape(),
-  body('class').notEmpty().trim().escape(),
+  body('standard').notEmpty().trim().escape(),
   body('subject').notEmpty().trim().escape(),
   body('chapter').notEmpty().trim().escape(),
   body('topic').notEmpty().trim().escape(),
@@ -25,9 +25,8 @@ export const createQuestion = async (req, res) => {
     const data = req.body;
     const question = await Ques.create(data);
 
-    return res.status(201).json({ success: true, question });
+    return res.status(201).json({ success: true, message: "Question Added", question });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: error.message || 'Internal Server Error',

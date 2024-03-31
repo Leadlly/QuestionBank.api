@@ -31,11 +31,10 @@ export const register = async (req, res) => {
  
     res.status(201).json({
         success: true,
-        message: "Verification Request send to admin. Please wait till approval",
+        message: "Verification Request send to admin, you can login after approval. Please wait till approval",
         user
     })
   } catch (error) {
-    console.log(error)
     return res
       .status(500)
       .json({
@@ -81,7 +80,6 @@ export const login = async (req, res) => {
 export const verification = async(req, res) => {
     try {
         
-        console.log(req.user)
         if(req.user.role === "admin") {
             const user = await User.findById(req.params.id)
             if(!user) return res.status(404).json({success: false, message: "User not found"})
@@ -100,7 +98,6 @@ export const verification = async(req, res) => {
           })
         }
     } catch (error) {
-        console.log(error)
         return res
         .status(500)
         .json({
@@ -108,4 +105,34 @@ export const verification = async(req, res) => {
           message: error.message || "Internal Server Error",
         });
     }
+}
+
+export const getMyProfile = async(req, res) =>{
+  try {
+
+    const user = await User.findById(req.user._id)
+    if(!user) return res.status(404).json({success: false, message: "User not found"})
+    
+    res.status(200).json({success: true, user})
+    
+  } catch (error) {
+    console.log(error)
+        return res
+        .status(500)
+        .json({
+          success: false,
+          message: error.message || "Internal Server Error",
+        });
+  }
+}
+
+export const logout = (req, res) =>{
+  res.status(200).cookie("token", null, ({
+    expires: new Date(Date.now()),
+    sameSite: "none",
+    secure: true
+  })).json({
+    success: true,
+    message: "Logged Out"
+  })
 }

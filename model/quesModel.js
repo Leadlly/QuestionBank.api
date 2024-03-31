@@ -1,7 +1,7 @@
 import mongoose, { Schema, mongo } from "mongoose";
 
 const quesSchema = new Schema({
-  ques: {
+  question: {
     type: String,
     required: true,
   },
@@ -9,8 +9,8 @@ const quesSchema = new Schema({
     all: Array,
     correct: Array,
   },
-  class: {
-    type: String,
+  standard: {
+    type: Number,
     required: true,
   },
   subject: {
