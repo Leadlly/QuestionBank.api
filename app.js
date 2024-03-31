@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use('/api/user', UserRouter)
-app.use('/api/create', QuestionRouter)
+app.use('/api', QuestionRouter)
 app.get('/', (req, res) => {
     res.send("Server is working fine")
 })

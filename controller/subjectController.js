@@ -64,3 +64,53 @@ export const createChapter = async (req, res) => {
     }
   };
   
+
+export const getAllSubject = async(req, res) => {
+    try {
+        const subjects = await Subject.find()
+        res.status(200).json({
+            success: true,
+            subjects
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+      }
+}
+export const getChapter = async(req, res) => {
+    try {
+        const subject = await Subject.findOne({"subject.name": req.query.subjectName})
+
+        const chapters = subject.subject.chapters?.map(chapter => chapter?.name)
+
+        res.status(200).json({
+            success: true,
+            chapters
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+      }
+}
+
+export const getTopic = async(req, res) => {
+    try {
+        const subjects = await Subject.findOne({"subject.name": req.query.subjectName})
+
+        const chapter = subjects.subject.chapters.find(chapter => chapter.name === req.query.chapterName);
+        if (!chapter) {
+          return res.status(404).json({ success: false, message: "Chapter not found" });
+        }
+
+        const topics = chapter.topics?.map(topic => topic)
+
+        res.status(200).json({
+            success: true,
+            topics
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+      }
+}
