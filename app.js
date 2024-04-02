@@ -17,12 +17,10 @@ connectedToDb();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
+app.use(cors({
     origin: [process.env.FRONTEND_URL],
-    credentials: true,
-  }),
-);
+    credentials: true
+}));
 
 app.use("/api/user", UserRouter);
 app.use("/api", QuestionRouter);
