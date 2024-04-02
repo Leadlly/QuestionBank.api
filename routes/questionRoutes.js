@@ -18,23 +18,28 @@ const router = express.Router();
 
 router.post(
   "/create/question",
-  convertToLowercase,
+  //   convertToLowercase,
   isAuthenticated,
-  createQuestion,
+  createQuestion
 );
 router.post(
   "/create/subject",
-  convertToLowercase,
+  //   convertToLowercase,
   isAuthenticated,
-  createSubject,
+  createSubject
 );
 router.post(
   "/create/chapter",
-  convertToLowercase,
+  //   convertToLowercase,
   isAuthenticated,
-  createChapter,
+  createChapter
 );
-router.post("/create/topic", convertToLowercase, isAuthenticated, createTopic);
+router.post(
+    "/create/topic", 
+    // convertToLowercase, 
+    isAuthenticated, 
+    createTopic
+);
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);
 router.get("/get/subject", isAuthenticated, getAllSubject);
 router.get("/get/chapter", isAuthenticated, getChapter);
