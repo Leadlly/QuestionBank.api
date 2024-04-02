@@ -24,23 +24,22 @@ export const register = async (req, res) => {
     const admins = await User.find({ role: "admin" });
     if (admins.length > 0) {
       admins.forEach(async (admin) => {
-        admin.requests.push(user._id);
+        admin.requests.unshift(user._id);
         await admin.save();
       });
     }
- 
+
     res.status(201).json({
-        success: true,
-        message: "Verification Request send to admin, you can login after approval. Please wait till approval",
-        user
-    })
+      success: true,
+      message:
+        "Verification Request send to admin, you can login after approval. Please wait till approval",
+      user,
+    });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
   }
 };
 
@@ -55,84 +54,98 @@ export const login = async (req, res) => {
         .json({ success: false, message: "User not exists" });
 
     if (user.status !== "Verified")
-    return res
+      return res
         .status(400)
-        .json({ success: false, message: "You are not verified! Please Contact Admin" });
+        .json({
+          success: false,
+          message: "You are not verified! Please Contact Admin",
+        });
 
-    const isMatched = await bcrypt.compare(password, user.password)
-    if(!isMatched) return res
-    .status(400)
-    .json({ success: false, message: "Wrong credentials" });
+    const isMatched = await bcrypt.compare(password, user.password);
+    if (!isMatched)
+      return res
+        .status(400)
+        .json({ success: false, message: "Wrong credentials" });
 
-    
     setCookie(res, user, "Login Success", 201);
-
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
   }
 };
 
-export const verification = async(req, res) => {
-    try {
-        
-        if(req.user.role === "admin") {
-            const user = await User.findById(req.params.id)
-            if(!user) return res.status(404).json({success: false, message: "User not found"})
-
-            user.status = "Verified"
-
-            await user.save()
-            res.status(200).json({
-                success: false,
-                message: `Status of user changed to ${user.status}`
-            })
-        } else {
-          res.status(400).json({
-            success: false,
-            message: "Access Denied! You are not admin"
-          })
-        }
-    } catch (error) {
-        return res
-        .status(500)
-        .json({
-          success: false,
-          message: error.message || "Internal Server Error",
-        });
-    }
-}
-
-export const getMyProfile = async(req, res) =>{
+export const verification = async (req, res) => {
   try {
-
-    const user = await User.findById(req.user._id)
-    if(!user) return res.status(404).json({success: false, message: "User not found"})
-    
-    res.status(200).json({success: true, user})
-    
-  } catch (error) {
-    console.log(error)
+    if (req.user.role === "admin") {
+      const user = await User.findById(req.params.id);
+      if (!user)
         return res
-        .status(500)
-        .json({
-          success: false,
-          message: error.message || "Internal Server Error",
-        });
-  }
-}
+          .status(404)
+          .json({ success: false, message: "User not found" });
 
-export const logout = (req, res) =>{
-  res.status(200).cookie("token", null, ({
-    expires: new Date(Date.now()),
-    sameSite: "none",
-    secure: true
-  })).json({
-    success: true,
-    message: "Logged Out"
-  })
-}
+      if (user.status === "Not Verified") {
+        user.status = "Verified";
+
+        await user.save();
+        res.status(200).json({
+          success: false,
+          message: `Status of user changed to ${user.status}`,
+        });
+      } else {
+        user.status = "Not Verified";
+
+        await user.save();
+        res.status(200).json({
+          success: false,
+          message: `Status of user changed to ${user.status}`,
+        });
+      }
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Access Denied! You are not admin",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
+export const getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate(
+      "requests questions",
+    );
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
+export const logout = (req, res) => {
+  res
+    .status(200)
+    .cookie("token", null, {
+      expires: new Date(Date.now()),
+      sameSite: "none",
+      secure: true,
+    })
+    .json({
+      success: true,
+      message: "Logged Out",
+    });
+};
