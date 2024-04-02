@@ -1,173 +1,115 @@
 import { Subject } from "../model/subjectModel.js";
 
-export const createSubject = async (req, res) => {
+export const createSubject = async(req, res) =>{
+    
   try {
-    const { subjectName, standard, chapters } = req.body;
+    const {subjectName, standard, chapters} = req.body
 
-    const existingSubject = await Subject.findOne({
-      name: subjectName,
-      standard,
-    });
+    const existingSubject = await Subject.findOne({ name: subjectName, standard });
     if (existingSubject) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Subject already exists" });
+      return res.status(400).json({ success: false, message: "Subject already exists" });
     }
 
-    const sub = await Subject.create({
-      name: subjectName,
-      standard,
-      chapters,
-    });
+   const sub = await Subject.create({
+        name: subjectName,
+        standard,
+        chapters,
+    })
 
     res.status(201).json({
-      success: true,
-      message: "Subject Created",
-      sub,
-    });
+        success: true,
+        message: "Subject Created",
+        sub
+    })
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
+    return res.status(500).json({success: false, message: error.message || "Internal Server Error"})
   }
-};
+}
 
 export const createChapter = async (req, res) => {
-  try {
-    const { subjectName, standard, chapters } = req.body;
-    const existingSubject = await Subject.findOne({
-      name: subjectName,
-      standard,
-    });
-    if (!existingSubject) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Subject not found" });
+    try {
+      const { subjectName, standard, chapters } = req.body;
+      const existingSubject = await Subject.findOne({ name : subjectName, standard });
+      if (!existingSubject) {
+        return res.status(404).json({ success: false, message: "Subject not found" });
+      }
+      existingSubject.chapters.push(...chapters);
+      await existingSubject.save();
+      res.status(201).json({ success: true, message: "Chapter and topics added to subject" });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
     }
-    existingSubject.chapters.push(...chapters);
-    await existingSubject.save();
-    res
-      .status(201)
-      .json({ success: true, message: "Chapter and topics added to subject" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
-  }
-};
+  };
+  
+  export const createTopic = async (req, res) => {
+    try {
+      const { subjectName, chapterName, topics, standard } = req.body;
 
-export const createTopic = async (req, res) => {
-  try {
-    const { subjectName, chapterName, topics, standard } = req.body;
-
-    const existingSubject = await Subject.findOne({
-      name: subjectName,
-      standard,
-    });
-    if (!existingSubject) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Subject not found" });
+      const existingSubject = await Subject.findOne({ name: subjectName, standard });
+      if (!existingSubject) {
+        return res.status(404).json({ success: false, message: "Subject not found" });
+      }
+  
+      const existingChapter = existingSubject?.chapters.find(chapter => chapter.name === chapterName);
+      if (!existingChapter) {
+        return res.status(404).json({ success: false, message: "Chapter not found" });
+      }
+  
+      existingChapter.topics.push(...topics);
+      await existingSubject.save();
+  
+      res.status(201).json({ success: true, message: "Topic added to chapter" });
+    } catch (error) {
+      return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
     }
+  };
+  
 
-    const existingChapter = existingSubject?.chapters.find(
-      (chapter) => chapter.name === chapterName,
-    );
-    if (!existingChapter) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Chapter not found" });
-    }
+export const getAllSubject = async(req, res) => {
+    try {
+        const subjects = await Subject.find({standard: req.query.standard})
 
-    existingChapter.topics.push(...topics);
-    await existingSubject.save();
+        const subjectList = subjects.map(subject => subject.name)
+        res.status(200).json({
+            success: true,
+            subjectList
+        })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+      }
+}
+export const getChapter = async(req, res) => {
+    try {
+        const subject = await Subject.findOne({name: req.query.subjectName, standard: req.query.standard})
 
-    res.status(201).json({ success: true, message: "Topic added to chapter" });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
-  }
-};
+        const chapters = subject.chapters?.map(chapter => chapter?.name)
 
-export const getAllSubject = async (req, res) => {
-  try {
-    const subjects = await Subject.find({ standard: req.query.standard });
+        res.status(200).json({
+            success: true,
+            chapters
+        })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+      }
+}
 
-    const subjectList = subjects.map((subject) => subject.name);
-    res.status(200).json({
-      success: true,
-      subjectList,
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
-  }
-};
-export const getChapter = async (req, res) => {
-  try {
-    const subject = await Subject.findOne({
-      name: req.query.subjectName,
-      standard: req.query.standard,
-    });
+export const getTopic = async(req, res) => {
+    try {
+        const subject = await Subject.findOne({name: req.query.subjectName, standard: req.query.standard})
 
-    const chapters = subject.chapters?.map((chapter) => chapter?.name);
+        const chapter = subject.chapters.find(chapter => chapter.name === req.query.chapterName);
+        if (!chapter) {
+          return res.status(404).json({ success: false, message: "Chapter not found" });
+        }
 
-    res.status(200).json({
-      success: true,
-      chapters,
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
-  }
-};
+        const topics = chapter.topics?.map(topic => topic)
 
-export const getTopic = async (req, res) => {
-  try {
-    const subject = await Subject.findOne({
-      name: req.query.subjectName,
-      standard: req.query.standard,
-    });
+        res.status(200).json({
+            success: true,
+            topics
+        })
 
-    const chapter = subject.chapters.find(
-      (chapter) => chapter.name === req.query.chapterName,
-    );
-    if (!chapter) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Chapter not found" });
-    }
-
-    const topics = chapter.topics?.map((topic) => topic);
-
-    res.status(200).json({
-      success: true,
-      topics,
-    });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: error.message || "Internal Server Error",
-      });
-  }
-};
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+      }
+}
