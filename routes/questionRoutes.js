@@ -12,7 +12,7 @@ import {
   getTopic,
 } from "../controller/subjectController.js";
 import isAuthenticated from "../middlewares/auth.js";
-import convertToLowercase from "../middlewares/convertToLowerCase.js";
+// import convertToLowercase from "../middlewares/convertToLowerCase.js";
 
 const router = express.Router();
 
