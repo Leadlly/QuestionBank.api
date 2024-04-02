@@ -78,7 +78,6 @@ export const login = async (req, res) => {
 
 export const verification = async (req, res) => {
   try {
-    if (req.user.role === "admin") {
       const user = await User.findById(req.params.id);
       if (!user)
         return res
@@ -102,12 +101,6 @@ export const verification = async (req, res) => {
           message: `Status of user changed to ${user.status}`,
         });
       }
-    } else {
-      res.status(400).json({
-        success: false,
-        message: "Access Denied! You are not admin",
-      });
-    }
   } catch (error) {
     return res.status(500).json({
       success: false,

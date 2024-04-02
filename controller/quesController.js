@@ -62,3 +62,32 @@ export const deleteQuestion = async (req, res) => {
     });
   }
 };
+
+export const getAllQuestion = async(req, res) => {
+  try {
+
+    const queryObject = {};
+
+    if(req.query.standard) queryObject.standard = req.query.standard
+    if(req.query.subject) queryObject.subject = req.query.subject
+    if(req.query.chapter) queryObject.chapter = req.query.chapter
+    if(req.query.topic) queryObject.topic = req.query.topic
+
+    const questions = await Ques.find(queryObject)
+    if (!questions)
+    return res
+      .status(404)
+      .json({ success: false, message: "Question not found" });
+
+
+      res
+      .status(404)
+      .json({ success: false, questions });
+    
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+}
