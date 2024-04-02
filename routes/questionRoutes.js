@@ -12,31 +12,31 @@ import {
   getTopic,
 } from "../controller/subjectController.js";
 import isAuthenticated from "../middlewares/auth.js";
-// import convertToLowercase from "../middlewares/convertToLowerCase.js";
+import convertToLowercase from "../middlewares/lowercase.js";
 
 const router = express.Router();
 
 router.post(
   "/create/question",
-  //   convertToLowercase,
+    convertToLowercase,
   isAuthenticated,
   createQuestion
 );
 router.post(
   "/create/subject",
-  //   convertToLowercase,
+    convertToLowercase,
   isAuthenticated,
   createSubject
 );
 router.post(
   "/create/chapter",
-  //   convertToLowercase,
+    convertToLowercase,
   isAuthenticated,
   createChapter
 );
 router.post(
     "/create/topic", 
-    // convertToLowercase, 
+    convertToLowercase, 
     isAuthenticated, 
     createTopic
 );
