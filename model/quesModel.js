@@ -6,8 +6,14 @@ const quesSchema = new Schema({
     required: true,
   },
   options: {
-    all: Array,
-    correct: Array,
+    all: {
+      type: Array,
+      required: true
+    },
+    correct: {
+      type: Array,
+      required: true
+    },
   },
   standard: {
     type: Number,
