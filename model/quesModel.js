@@ -31,6 +31,9 @@ const quesSchema = new Schema({
     type: String,
     required: true,
   },
+  subtopics: {
+    type: Schema.Types.Mixed,
+  },
   level: {
     type: String,
     required: true,
