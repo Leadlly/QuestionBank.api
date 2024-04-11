@@ -9,6 +9,7 @@ const validateAndSanitizeData = [
   body("subject").notEmpty().trim().escape(),
   body("chapter").notEmpty().trim().escape(),
   body("topic").notEmpty().trim().escape(),
+  // body("subtopics").notEmpty().trim().escape(),
   body("level").notEmpty().trim().escape(),
 ];
 
