@@ -1,12 +1,12 @@
 import express from "express";
-import { config } from "dotenv";
+import { configDotenv } from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectedToDb from "./db/db.js";
 import UserRouter from "./routes/userRoutes.js";
 import QuestionRouter from "./routes/questionRoutes.js";
 
-config({
+configDotenv({
   path: "./config.env",
 });
 
