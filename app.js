@@ -1,5 +1,5 @@
 import express from "express";
-import { config } from "dotenv";
+import {config} from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectedToDb from "./db/db.js";
@@ -7,7 +7,7 @@ import UserRouter from "./routes/userRoutes.js";
 import QuestionRouter from "./routes/questionRoutes.js";
 
 config({
-  path: "./config.env",
+  path: "./.env",
 });
 
 const app = express();

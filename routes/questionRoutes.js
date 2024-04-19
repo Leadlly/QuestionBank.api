@@ -61,4 +61,5 @@ router.get("/get/topic", isAuthenticated, getTopic);
 router.get("/get/subtopic", isAuthenticated, getSubTopic);
 router.get("/get/question", isAuthenticated, checkAdmin, getAllQuestion);
 
+
 export default router;
