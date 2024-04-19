@@ -129,6 +129,35 @@ export const getMyProfile = async (req, res) => {
   }
 };
 
+export const getUserQuestions = async (req, res) => {
+  try {
+    // Check if the logged-in user's ID is available in the request
+    if (!req.user || !req.user._id) {
+      // Return an unauthorized error if user ID is missing
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    // Fetch the user document with the questions array populated
+    const user = await User.findById(req.user._id)
+      .populate('questions') // Populate the questions array with QuestionBank documents
+      .exec();
+
+    // Check if user was found
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Return the user's questions with a success message
+    return res.status(200).json({ success: true, questions: user.questions });
+  } catch (error) {
+    // Handle any unexpected errors and respond with an internal server error
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
 export const logout = (req, res) => {
   res
     .status(200)

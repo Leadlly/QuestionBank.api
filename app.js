@@ -1,13 +1,13 @@
 import express from "express";
-import { configDotenv } from "dotenv";
+import {config} from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import connectedToDb from "./db/db.js";
 import UserRouter from "./routes/userRoutes.js";
 import QuestionRouter from "./routes/questionRoutes.js";
 
-configDotenv({
-  path: "./config.env",
+config({
+  path: "./.env",
 });
 
 const app = express();

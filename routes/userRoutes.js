@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getMyProfile,
+  getUserQuestions,
   login,
   logout,
   register,
@@ -16,5 +17,6 @@ router.post("/login", login);
 router.get("/verify/:id", isAuthenticated, checkAdmin, verification);
 router.get("/profile", isAuthenticated, getMyProfile);
 router.get("/logout", logout);
+router.get("/myquestion", isAuthenticated, checkAdmin, getUserQuestions)
 
 export default router;
