@@ -16,3 +16,4 @@ const subtopicSchema = new mongoose.Schema({
 });
 
 export const Subtopic = mongoose.model("Subtopic", subtopicSchema);
+
