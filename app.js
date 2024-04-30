@@ -5,6 +5,10 @@ import cookieParser from "cookie-parser";
 import connectedToDb from "./db/db.js";
 import UserRouter from "./routes/userRoutes.js";
 import QuestionRouter from "./routes/questionRoutes.js";
+import TopicRouter from "./routes/topicRoutes.js";
+import ChapterRouter from "./routes/chapterRoutes.js"
+import SubTopicRouter from "./routes/subtopicRoutes.js";
+import SubjectRouter from "./routes/subjectRoutes.js"
 
 config({
   path: "./.env",
@@ -19,25 +23,34 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-     origin: (origin, callback) => {
-      // Check if the origin matches the pattern *.vercel.app
-      if (
-        origin &&
-        (origin.match(/^https?:\/\/(.*\.)?vercel\.app$/) ||
-          origin === process.env.FRONTEND_URL)
-      ) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    credentials: true,
-  }),
+      origin: (origin, callback) => {
+          console.log('Request from origin:', origin);
+          if (origin === undefined || origin === null) {
+               callback(null, true);
+          } else if (
+              origin.match(/^https?:\/\/(.*\.)?vercel\.app$/) ||
+              origin === process.env.FRONTEND_URL
+          ) {
+              callback(null, true);
+          } else {
+              console.log('Not allowed by CORS:', origin);
+              callback(new Error('Not allowed by CORS'));
+          }
+      },
+      origin: true,
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+      credentials: true,
+  })
 );
 
-app.use("/api/user", UserRouter);
+
+
 app.use("/api", QuestionRouter);
+app.use("/api/user", UserRouter);
+app.use("/api/v", TopicRouter );
+app.use("/api/v1", ChapterRouter );
+app.use("/api/v2", SubTopicRouter );
+app.use("/api/v3", SubjectRouter );
 app.get("/", (req, res) => {
   res.send("Server is working fine");
 });
