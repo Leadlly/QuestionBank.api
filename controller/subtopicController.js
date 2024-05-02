@@ -4,23 +4,26 @@ import { Subtopic } from '../model/subtopicModel.js';
 
 export const createSubtopic = async (req, res) => {
     try {
-         const { subjectName, standard, chapterName, topicName, subtopics } = req.body;
+        const { subjectName, standard, chapterName, topicName, subtopics } = req.body;
 
-         if (!subjectName || !standard || !chapterName || !topicName || !subtopics || !subtopics[0].name) {
+        if (!subjectName || !standard || !chapterName || !topicName || !subtopics || !subtopics[0].name) {
             return res.status(400).json({ success: false, message: 'All input fields must be provided, including a valid subtopic name.' });
         }
 
-       const existingSubject = await Subject.findOne({ name: subjectName, standard })
+        const existingSubject = await Subject.findOne({ name: subjectName, standard })
             .populate({
                 path: 'chapters',
                 match: { name: chapterName },
                 populate: {
                     path: 'topics',
-                    match: { name: topicName }
+                    match: { name: topicName },
+                    populate: {
+                        path: 'subtopics',
+                    }
                 }
             });
 
-         if (!existingSubject) {
+        if (!existingSubject) {
             return res.status(404).json({ success: false, message: 'Subject not found' });
         }
 
@@ -34,35 +37,47 @@ export const createSubtopic = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Topic not found' });
         }
 
-        const addSubtopics = async (parentSubtopic, subtopicData) => {
-             const newSubtopic = new Subtopic({
+        const checkForDuplicateSubtopic = (subtopicsList, name) => {
+            return subtopicsList.some(subtopic => subtopic.name === name);
+        };
+
+         const addSubtopicsRecursively = async (parentSubtopic, subtopicData) => {
+       
+            if (checkForDuplicateSubtopic(parentSubtopic.subtopics, subtopicData.name)) {
+                throw new Error(`Subtopic "${subtopicData.name}" already exists in the topic`);
+            }
+
+            const newSubtopic = new Subtopic({
                 name: subtopicData.name,
-                subtopics: []
+                subtopics: [],
             });
 
-             await newSubtopic.save();
+            await newSubtopic.save();
 
             parentSubtopic.subtopics.push(newSubtopic._id);
-
-             await parentSubtopic.save();
+            await parentSubtopic.save();
 
             if (subtopicData.subtopics && subtopicData.subtopics.length > 0) {
                 for (const nestedSubtopicData of subtopicData.subtopics) {
-                    await addSubtopics(newSubtopic, nestedSubtopicData);
+                    await addSubtopicsRecursively(newSubtopic, nestedSubtopicData);
                 }
             }
         };
 
-         for (const subtopicData of subtopics) {
-            await addSubtopics(existingTopic, subtopicData);
+        for (const subtopicData of subtopics) {
+            await addSubtopicsRecursively(existingTopic, subtopicData);
         }
 
-        return res.status(201).json({ success: true, message: 'Subtopic(s) created and added to topic successfully' });
+        res.status(201).json({ success: true, message: 'Subtopic(s) created and added to topic successfully' });
     } catch (error) {
-        console.error('Error in createSubtopic:', error);
-        return res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+        if (error.message.includes("already exists")) {
+            res.status(409).json({ success: false, message: error.message });
+        } else {
+            res.status(500).json({ success: false, message: 'Internal Server Error' });
+        }
     }
 };
+
 
 
 

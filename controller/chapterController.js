@@ -12,7 +12,6 @@ export const createChapter = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Subject name, standard, and chapters (array) must be provided' });
         }
 
-        
         const existingSubject = await Subject.findOne({ name: subjectName, standard });
 
         if (!existingSubject) {
@@ -22,28 +21,42 @@ export const createChapter = async (req, res) => {
         const chapterIds = [];
 
         for (const chapterData of chapters) {
-            const newChapter = new Chapter({
+             const doesChapterExist = async (chapterData) => {
+                for (const chapterId of existingSubject.chapters) {
+                    const chapter = await Chapter.findById(chapterId);
+                    if (chapter.name === chapterData.name) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+        
+            const chapterExists = await doesChapterExist(chapterData);
+        
+            if (chapterExists) {
+                return res.status(400).json({ success: false, message: `Chapter "${chapterData.name}" already exists` });
+            }
+        
+             const newChapter = new Chapter({
                 name: chapterData.name,
                 topics: [],
             });
-
+        
             if (Array.isArray(chapterData.topics)) {
                 for (const topicData of chapterData.topics) {
                     const newTopic = new Topic(topicData);
-
                     await newTopic.save();
-
                     newChapter.topics.push(newTopic._id);
                 }
             }
-
+        
             await newChapter.save();
-
+        
             chapterIds.push(newChapter._id);
         }
+        
 
         existingSubject.chapters.push(...chapterIds);
-
         await existingSubject.save();
 
         res.status(201).json({ success: true, message: 'Chapters added to subject successfully' });
