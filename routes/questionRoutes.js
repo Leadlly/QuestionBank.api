@@ -21,5 +21,4 @@ router.delete("/delete/:id", isAuthenticated, deleteQuestion);
 
 router.get("/get/question", isAuthenticated, checkAdmin, getAllQuestion);
 
-
 export default router;

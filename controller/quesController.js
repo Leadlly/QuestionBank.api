@@ -9,36 +9,48 @@ const validateAndSanitizeData = [
   body("subject").notEmpty().trim().escape(),
   body("chapter").notEmpty().trim().escape(),
   body("topic").notEmpty().trim().escape(),
-  // body("subtopics").notEmpty().trim().escape(),
   body("level").notEmpty().trim().escape(),
 ];
 
 export const createQuestion = async (req, res) => {
   try {
-    // Validate and sanitize the request body
-    await Promise.all(validateAndSanitizeData.map((field) => field.run(req)));
+      await Promise.all(validateAndSanitizeData.map((field) => field.run(req)));
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ success: false, errors: errors.array() });
-    }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(400).json({ success: false, errors: errors.array() });
+      }
 
-    const data = req.body;
-    const question = await Ques.create(data);
+      const data = req.body;
 
-    req.user.questions.unshift(question._id);
-    await req.user.save();
+     const existingQuestion = await Ques.findOne({
+          question: data.question, 
+          subject: data.subject, 
+          standard: data.standard 
+      });
 
-    res
-      .status(201)
-      .json({ success: true, message: "Question Added", question });
+      if (existingQuestion) {
+          return res.status(409).json({
+              success: false,
+              message: 'Question already exists',
+          });
+      }
+
+      const question = await Ques.create(data);
+
+      req.user.questions.unshift(question._id);
+      await req.user.save();
+
+      res.status(201).json({ success: true, message: "Question added successfully", question });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Internal Server Error",
-    });
+      console.error('Error creating question:', error);
+      res.status(500).json({
+          success: false,
+          message: error.message || 'Internal Server Error',
+      });
   }
 };
+
 
 export const deleteQuestion = async (req, res) => {
   try {
