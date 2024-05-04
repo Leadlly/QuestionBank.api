@@ -5,6 +5,7 @@ const subjectSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+        unique: true,  
     },
     standard: {
         type: String,
@@ -15,6 +16,7 @@ const subjectSchema = new mongoose.Schema({
         ref: 'Chapter',
     }],
 });
+
 
 export const Subject = mongoose.model("Subject", subjectSchema);
 

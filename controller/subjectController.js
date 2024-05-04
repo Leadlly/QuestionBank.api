@@ -1,40 +1,68 @@
 import { Subject } from "../model/subjectModel.js";
+import { Topic } from "../model/topicModel.js";
+import { Chapter } from "../model/chapterModel.js";
+
+
 
 export const createSubject = async (req, res) => {
-    try {
-        const { subjectName, standard, chapters } = req.body;
+  try {
 
-        if (!subjectName || !standard) {
-            return res.status(400).json({ success: false, message: 'Subject name and standard are required.' });
-        }
+      const { subject } = req.body;
+      const { name: subjectName, standard, chapters } = subject || {};
 
-        const chaptersArray = Array.isArray(chapters) ? chapters : [];
+      if (!subjectName || !standard) {
+          return res.status(400).json({ success: false, message: 'Subject name and standard are required.' });
+      }
 
-        const existingSubject = await Subject.findOne({ name: subjectName, standard });
-        if (existingSubject) {
-            return res.status(400).json({ success: false, message: 'Subject already exists.' });
-        }
+      if (!Array.isArray(chapters)) {
+          return res.status(400).json({ success: false, message: 'Chapters must be an array.' });
+      }
 
-        const newSubject = await Subject.create({
-            name: subjectName,
-            standard,
-            chapters: chaptersArray,
-        });
+      const newSubject = new Subject({
+          name: subjectName,
+          standard,
+      });
 
-        res.status(201).json({
-            success: true,
-            message: 'Subject created successfully.',
-            subject: newSubject,
-        });
-    } catch (error) {
-        console.error('Error creating subject:', error);
-        res.status(500).json({
-            success: false,
-            message: error.message || 'Internal Server Error',
-        });
-    }
+      const chapterIds = [];
+
+      for (const chapterData of chapters) {
+          const { name: chapterName, topics } = chapterData;
+
+          const topicIds = [];
+
+          if (Array.isArray(topics)) {
+              for (const topicName of topics) {
+                  const newTopic = new Topic({ name: topicName });
+                  await newTopic.save();
+                  topicIds.push(newTopic._id);
+              }
+          }
+
+          const newChapter = new Chapter({
+              name: chapterName,
+              topics: topicIds,
+          });
+          await newChapter.save();
+
+          chapterIds.push(newChapter._id);
+      }
+
+      newSubject.chapters = chapterIds;
+      await newSubject.save();
+
+      // Return a success response
+      res.status(200).json({
+          success: true,
+          message: 'Subject created successfully.',
+          subject: newSubject,
+      });
+  } catch (error) {
+      res.status(500).json({
+          success: false,
+          message: error.message || 'Internal Server Error',
+      });
+  }
 };
-
 
 
 
