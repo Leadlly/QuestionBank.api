@@ -4,15 +4,15 @@ import {Subject} from "../model/subjectModel.js";
 
 export const createTopic = async (req, res) => {
     try {
-        console.log("req body:", req.body);
+      
 
-        const { subjectName, chapterName, topics } = req.body;
+        const { subjectName, standard, chapterName, topics } = req.body;
 
          if (!subjectName || !chapterName || !Array.isArray(topics) || topics.length === 0) {
             return res.status(400).json({ success: false, message: 'Subject name, chapter name, and topics (array) must be provided' });
         }
 
-         const existingSubject = await Subject.findOne({ name: subjectName })
+         const existingSubject = await Subject.findOne({ name: subjectName, standard })
             .populate({
                 path: 'chapters',
                 populate: { path: 'topics' }

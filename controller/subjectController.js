@@ -18,6 +18,16 @@ export const createSubject = async (req, res) => {
           return res.status(400).json({ success: false, message: 'Chapters must be an array.' });
       }
 
+      const existingSubject = await Subject.findOne({
+        name: subjectName,
+        standard,
+      });
+      if (existingSubject) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Subject already exists" });
+      }
+      
       const newSubject = new Subject({
           name: subjectName,
           standard,

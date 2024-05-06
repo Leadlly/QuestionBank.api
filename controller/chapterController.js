@@ -7,13 +7,13 @@ import {Topic} from "../model/topicModel.js"
 export const createChapter = async (req, res) => {
     try {
         const { subject } = req.body;
-        const { name, chapters } = subject || {};
+        const { name, standard, chapters } = subject || {};
 
         if (!name || !Array.isArray(chapters)) {
             return res.status(400).json({ success: false, message: 'Subject name and chapters (array) must be provided.' });
         }
 
-        const existingSubject = await Subject.findOne({ name }).populate('chapters'); // Ensure to populate the chapters
+        const existingSubject = await Subject.findOne({ name, standard }).populate('chapters'); // Ensure to populate the chapters
 
         if (existingSubject) {
             for (const chapterData of chapters) {
@@ -49,14 +49,7 @@ export const createChapter = async (req, res) => {
         }
     } catch (error) {
             console.error('Error creating chapter:', error);
-            console.log('Full error object:', error);
-            console.log('Error response data:', error.response?.data);
-            console.log('Error response:', error.response);
-            console.log('Error message:', error.message);
-        
-        
-    
-        res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
+            res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
     }
 };
 
