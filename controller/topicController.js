@@ -6,6 +6,7 @@ export const createTopic = async (req, res) => {
     try {
       
 
+        console.log(req.body)
         const { subjectName, standard, chapterName, topics } = req.body;
 
          if (!subjectName || !chapterName || !Array.isArray(topics) || topics.length === 0) {
@@ -18,6 +19,7 @@ export const createTopic = async (req, res) => {
                 populate: { path: 'topics' }
             });
 
+            console.log(existingSubject)
         
         if (!existingSubject) {
             return res.status(404).json({ success: false, message: 'Subject not found' });

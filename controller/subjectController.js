@@ -63,7 +63,7 @@ export const createSubject = async (req, res) => {
       await newSubject.save();
 
       // Return a success response
-      res.status(200).json({
+      res.status(201).json({
           success: true,
           message: 'Subject created successfully.',
           subject: newSubject,

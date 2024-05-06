@@ -43,7 +43,7 @@ export const createChapter = async (req, res) => {
 
             await existingSubject.save();
 
-            return res.status(200).json({ success: true, message: 'Chapters added successfully.', chapters });
+            return res.status(201).json({ success: true, message: 'Chapters added successfully.', chapters });
         } else {
             return res.status(404).json({ success: false, message: 'Subject not found.' });
         }
