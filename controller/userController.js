@@ -29,7 +29,7 @@ export const register = async (req, res) => {
       });
     }
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message:
         "Verification Request send to admin, you can login after approval. Please wait till approval",
@@ -67,7 +67,7 @@ export const login = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Wrong credentials" });
 
-    setCookie(res, user, "Login Success", 201);
+    setCookie(res, user, "Login Success", 200);
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -140,7 +140,7 @@ export const getUserQuestions = async (req, res) => {
       .exec();
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res.status(400).json({ success: false, message: "User not found" });
     }
 
     return res.status(200).json({ success: true, questions: user.questions });

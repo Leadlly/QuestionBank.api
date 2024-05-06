@@ -10,7 +10,7 @@ const topicSchema = new mongoose.Schema({
       ref: "Subtopic",
       default: [],
   }],
-});
+}, { timestamps: true });
 
  
 export const Topic = mongoose.model("Topic", topicSchema)  

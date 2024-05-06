@@ -45,12 +45,8 @@ app.use(
 
 
 
-app.use("/api", QuestionRouter);
+app.use("/api", QuestionRouter, TopicRouter, SubjectRouter, ChapterRouter, SubTopicRouter);
 app.use("/api/user", UserRouter);
-app.use("/api/v", TopicRouter );
-app.use("/api/v1", ChapterRouter );
-app.use("/api/v2", SubTopicRouter );
-app.use("/api/v3", SubjectRouter );
 app.get("/", (req, res) => {
   res.send("Server is working fine");
 });

@@ -6,66 +6,61 @@ import {Topic} from "../model/topicModel.js"
 
 export const createChapter = async (req, res) => {
     try {
-        const { subjectName, standard, chapters } = req.body;
+        const { subject } = req.body;
+        const { name, chapters } = subject || {};
 
-        if (!subjectName || !standard || !Array.isArray(chapters) || chapters.length === 0) {
-            return res.status(400).json({ success: false, message: 'Subject name, standard, and chapters (array) must be provided' });
+        if (!name || !Array.isArray(chapters)) {
+            return res.status(400).json({ success: false, message: 'Subject name and chapters (array) must be provided.' });
         }
 
-        const existingSubject = await Subject.findOne({ name: subjectName, standard });
+        const existingSubject = await Subject.findOne({ name }).populate('chapters'); // Ensure to populate the chapters
 
-        if (!existingSubject) {
-            return res.status(404).json({ success: false, message: 'Subject not found' });
-        }
+        if (existingSubject) {
+            for (const chapterData of chapters) {
+                const { name: chapterName, topics } = chapterData;
 
-        const chapterIds = [];
+                const existingChapter = existingSubject.chapters.find(
+                    chapter => chapter.name === chapterName
+                );
 
-        for (const chapterData of chapters) {
-             const doesChapterExist = async (chapterData) => {
-                for (const chapterId of existingSubject.chapters) {
-                    const chapter = await Chapter.findById(chapterId);
-                    if (chapter.name === chapterData.name) {
-                        return true;
+                if (existingChapter) {
+                    return res.status(400).json({ success: false, message: `Chapter "${chapterName}" already exists.` });
+                }
+
+                const newChapter = new Chapter({ name: chapterName });
+
+                if (Array.isArray(topics)) {
+                    for (const topicName of topics) {
+                        const newTopic = new Topic({ name: topicName });
+                        await newTopic.save();
+                        newChapter.topics.push(newTopic._id);
                     }
                 }
-                return false;
-            };
-        
-            const chapterExists = await doesChapterExist(chapterData);
-        
-            if (chapterExists) {
-                return res.status(400).json({ success: false, message: `Chapter "${chapterData.name}" already exists` });
+
+                await newChapter.save();
+                existingSubject.chapters.push(newChapter._id);
             }
-        
-             const newChapter = new Chapter({
-                name: chapterData.name,
-                topics: [],
-            });
-        
-            if (Array.isArray(chapterData.topics)) {
-                for (const topicData of chapterData.topics) {
-                    const newTopic = new Topic(topicData);
-                    await newTopic.save();
-                    newChapter.topics.push(newTopic._id);
-                }
-            }
-        
-            await newChapter.save();
-        
-            chapterIds.push(newChapter._id);
+
+            await existingSubject.save();
+
+            return res.status(200).json({ success: true, message: 'Chapters added successfully.', chapters });
+        } else {
+            return res.status(404).json({ success: false, message: 'Subject not found.' });
         }
-        
-
-        existingSubject.chapters.push(...chapterIds);
-        await existingSubject.save();
-
-        res.status(201).json({ success: true, message: 'Chapters added to subject successfully' });
-
     } catch (error) {
-        console.error('Error creating chapters:', error);
+            console.error('Error creating chapter:', error);
+            console.log('Full error object:', error);
+            console.log('Error response data:', error.response?.data);
+            console.log('Error response:', error.response);
+            console.log('Error message:', error.message);
+        
+        
+    
         res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
     }
 };
+
+
 
 
 

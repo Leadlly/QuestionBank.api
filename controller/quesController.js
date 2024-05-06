@@ -23,14 +23,14 @@ export const createQuestion = async (req, res) => {
 
       const data = req.body;
 
-     const existingQuestion = await Ques.findOne({
-          question: data.question, 
-          subject: data.subject, 
-          standard: data.standard 
+      const existingQuestion = await Ques.findOne({
+          question: data.question,
+          subject: data.subject,
+          standard: data.standard
       });
 
       if (existingQuestion) {
-          return res.status(409).json({
+          return res.status(400).json({
               success: false,
               message: 'Question already exists',
           });
@@ -41,7 +41,7 @@ export const createQuestion = async (req, res) => {
       req.user.questions.unshift(question._id);
       await req.user.save();
 
-      res.status(201).json({ success: true, message: "Question added successfully", question });
+      res.status(200).json({ success: true, message: "Question added successfully", question });
   } catch (error) {
       console.error('Error creating question:', error);
       res.status(500).json({
@@ -50,6 +50,7 @@ export const createQuestion = async (req, res) => {
       });
   }
 };
+
 
 
 export const deleteQuestion = async (req, res) => {

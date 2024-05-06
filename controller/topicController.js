@@ -4,65 +4,69 @@ import {Subject} from "../model/subjectModel.js";
 
 export const createTopic = async (req, res) => {
     try {
-        const { subjectName, standard, chapterName, topics } = req.body;
+        console.log("req body:", req.body);
 
-        // Validate input data
-        if (!subjectName || !standard || !chapterName || !Array.isArray(topics) || topics.length === 0) {
-            return res.status(400).json({ success: false, message: 'Subject name, standard, chapter name, and topics (array) must be provided' });
+        const { subjectName, chapterName, topics } = req.body;
+
+         if (!subjectName || !chapterName || !Array.isArray(topics) || topics.length === 0) {
+            return res.status(400).json({ success: false, message: 'Subject name, chapter name, and topics (array) must be provided' });
         }
 
-        // Find the existing subject and populate its chapters
-        const existingSubject = await Subject.findOne({ name: subjectName, standard }).populate({
-            path: 'chapters',
-            populate: { path: 'topics' }
-        });
+         const existingSubject = await Subject.findOne({ name: subjectName })
+            .populate({
+                path: 'chapters',
+                populate: { path: 'topics' }
+            });
+
         
         if (!existingSubject) {
             return res.status(404).json({ success: false, message: 'Subject not found' });
         }
 
-        // Find the specified chapter within the subject
         const existingChapter = existingSubject.chapters.find(chapter => chapter.name === chapterName);
         if (!existingChapter) {
             return res.status(404).json({ success: false, message: 'Chapter not found' });
         }
 
-        // Check for existing topics in the chapter
         const existingTopicNames = new Set(existingChapter.topics.map(topic => topic.name));
 
-        for (const topicData of topics) {
-            if (existingTopicNames.has(topicData.name)) {
-                return res.status(400).json({ success: false, message: `Topic "${topicData.name}" already exists in the chapter` });
+        
+        for (const topic of topics) {
+            
+            if (!topic.name || typeof topic.name !== 'string') {
+                return res.status(400).json({ success: false, message: 'Invalid topic name' });
             }
+
+            const topicName = topic.name.trim(); 
+
+            if (existingTopicNames.has(topicName)) {
+                return res.status(400).json({ success: false, message: `Topic "${topicName}" already exists in the chapter` });
+            }
+
+            existingTopicNames.add(topicName);
         }
 
-        // If all topics are new, create them and add them to the chapter
         const newTopics = [];
-        for (const topicData of topics) {
-            const newTopic = new Topic({
-                name: topicData.name,
-                subtopics: topicData.subtopics || [],
-            });
+        for (const topic of topics) {
+            const newTopic = new Topic({ name: topic.name });
 
             await newTopic.save();
+
+            existingChapter.topics.push(newTopic._id);
+
             newTopics.push(newTopic);
         }
 
-        // Add new topics to the existing chapter
-        existingChapter.topics.push(...newTopics);
-
-        // Save the updated chapter
         await existingChapter.save();
 
-        // Return a success response
-        res.status(201).json({ success: true, message: 'Topics created and added to chapter successfully' });
+        res.status(200).json({ success: true, message: 'Topics created and added to chapter successfully', newTopics });
 
     } catch (error) {
-        // Handle unexpected errors
         console.error('Error in createTopic:', error);
         res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
     }
 };
+
 
 
 
