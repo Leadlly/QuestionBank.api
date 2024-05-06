@@ -48,7 +48,7 @@ export const createTopic = async (req, res) => {
 
         const newTopics = [];
         for (const topic of topics) {
-            const newTopic = new Topic({ name: topic.name });
+            const newTopic = new Topic({ name: topic.name, chapterName, subjectName, standard });
 
             await newTopic.save();
 

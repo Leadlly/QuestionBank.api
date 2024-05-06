@@ -50,6 +50,10 @@ export const createSubtopic = async (req, res) => {
 
             const newSubtopic = new Subtopic({
                 name: subtopicData.name,
+                topicName, 
+                chapterName, 
+                subjectName,
+                standard,
                 subtopics: [],
             });
 

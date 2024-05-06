@@ -5,6 +5,14 @@ const chapterSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    subjectName: {
+      type: String,
+      required: true,
+  },
+  standard: {
+      type: String,
+      required: true,
+  },
     topics: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Topic"

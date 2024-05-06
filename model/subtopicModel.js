@@ -6,6 +6,22 @@ const subtopicSchema = new mongoose.Schema({
         required: true,
         trim: true, 
     },
+    topicName: {
+        type: String,
+        required: true,
+    },
+    chapterName: {
+      type: String,
+      required: true,
+    },
+    subjectName: {
+      type: String,
+      required: true,
+  },
+  standard: {
+      type: String,
+      required: true,
+  },
     subtopics: [
         {
             type: mongoose.Schema.Types.ObjectId,

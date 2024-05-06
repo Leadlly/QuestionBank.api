@@ -27,11 +27,11 @@ export const createChapter = async (req, res) => {
                     return res.status(400).json({ success: false, message: `Chapter "${chapterName}" already exists.` });
                 }
 
-                const newChapter = new Chapter({ name: chapterName });
+                const newChapter = new Chapter({ name: chapterName, subjectName: name, standard });
 
                 if (Array.isArray(topics)) {
                     for (const topicName of topics) {
-                        const newTopic = new Topic({ name: topicName });
+                        const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
                         await newTopic.save();
                         newChapter.topics.push(newTopic._id);
                     }
