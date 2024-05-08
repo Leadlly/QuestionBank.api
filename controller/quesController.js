@@ -41,7 +41,7 @@ export const createQuestion = async (req, res) => {
       req.user.questions.unshift(question._id);
       await req.user.save();
 
-      res.status(200).json({ success: true, message: "Question added successfully", question });
+      res.status(201).json({ success: true, message: "Question added successfully", question });
   } catch (error) {
       console.error('Error creating question:', error);
       res.status(500).json({
@@ -68,7 +68,7 @@ export const deleteQuestion = async (req, res) => {
     );
     await req.user.save();
 
-    res.status(201).json({ success: true, message: "Question Deleted" });
+    res.status(200).json({ success: true, message: "Question Deleted" });
   } catch (error) {
     return res.status(500).json({
       success: false,

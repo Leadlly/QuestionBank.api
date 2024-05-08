@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 
-
 const subjectSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true,  
     },
     standard: {
         type: String,
@@ -19,4 +17,3 @@ const subjectSchema = new mongoose.Schema({
 
 
 export const Subject = mongoose.model("Subject", subjectSchema);
-

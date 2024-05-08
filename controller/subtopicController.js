@@ -50,6 +50,10 @@ export const createSubtopic = async (req, res) => {
 
             const newSubtopic = new Subtopic({
                 name: subtopicData.name,
+                topicName, 
+                chapterName, 
+                subjectName,
+                standard,
                 subtopics: [],
             });
 
@@ -69,7 +73,7 @@ export const createSubtopic = async (req, res) => {
             await addSubtopicsRecursively(existingTopic, subtopicData);
         }
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             message: 'Subtopic(s) created and added to topic successfully',
             subtopics,

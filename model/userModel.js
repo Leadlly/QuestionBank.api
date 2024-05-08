@@ -42,4 +42,13 @@ const userSchema = mongoose.Schema({
   },
 });
 
+
+userSchema.methods.getQuestionsByStandard = async function (standard) {
+  const filteredQuestions = await mongoose.model('QuestionBank').find({
+      _id: { $in: this.questions },
+      standard: standard,
+  });
+  return filteredQuestions;
+};
+
 export const User = mongoose.model("User", userSchema);

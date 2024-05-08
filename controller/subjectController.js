@@ -18,6 +18,16 @@ export const createSubject = async (req, res) => {
           return res.status(400).json({ success: false, message: 'Chapters must be an array.' });
       }
 
+      const existingSubject = await Subject.findOne({
+        name: subjectName,
+        standard,
+      });
+      if (existingSubject) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Subject already exists" });
+      }
+
       const newSubject = new Subject({
           name: subjectName,
           standard,
@@ -32,7 +42,7 @@ export const createSubject = async (req, res) => {
 
           if (Array.isArray(topics)) {
               for (const topicName of topics) {
-                  const newTopic = new Topic({ name: topicName });
+                  const newTopic = new Topic({ name: topicName, chapterName, subjectName, standard });
                   await newTopic.save();
                   topicIds.push(newTopic._id);
               }
@@ -40,6 +50,8 @@ export const createSubject = async (req, res) => {
 
           const newChapter = new Chapter({
               name: chapterName,
+              standard, 
+              subjectName,
               topics: topicIds,
           });
           await newChapter.save();
@@ -51,7 +63,7 @@ export const createSubject = async (req, res) => {
       await newSubject.save();
 
       // Return a success response
-      res.status(200).json({
+      res.status(201).json({
           success: true,
           message: 'Subject created successfully.',
           subject: newSubject,

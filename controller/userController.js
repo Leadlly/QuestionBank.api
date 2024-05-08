@@ -1,6 +1,7 @@
 import { User } from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import setCookie from "../utils/setCookie.js";
+import {Ques} from "../model/quesModel.js" 
 
 export const register = async (req, res) => {
   try {
@@ -109,6 +110,39 @@ export const verification = async (req, res) => {
   }
 };
 
+export const getUserQuestions = async (req, res) => {
+  try {
+      if (!req.user || !req.user._id) {
+          return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
+
+      const { standard } = req.query;
+
+      const selectedStandard = parseInt(standard, 10);
+
+      if (isNaN(selectedStandard)) {
+          return res.status(400).json({ success: false, message: "Invalid standard" });
+      }
+
+      const user = await User.findById(req.user._id);
+
+      if (!user) {
+          return res.status(400).json({ success: false, message: "User not found" });
+      }
+
+      const filteredQuestions = await user.getQuestionsByStandard(selectedStandard);
+
+      if (filteredQuestions.length === 0) {
+          return res.status(404).json({ success: false, message: "No questions found for the selected standard" });
+      }
+
+      return res.status(200).json({ success: true, questions: filteredQuestions });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 export const getMyProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate(
@@ -129,28 +163,7 @@ export const getMyProfile = async (req, res) => {
   }
 };
 
-export const getUserQuestions = async (req, res) => {
-  try {
-    if (!req.user || !req.user._id) {
-      return res.status(401).json({ success: false, message: "Unauthorized" });
-    }
 
-    const user = await User.findById(req.user._id)
-      .populate('questions') 
-      .exec();
-
-    if (!user) {
-      return res.status(400).json({ success: false, message: "User not found" });
-    }
-
-    return res.status(200).json({ success: true, questions: user.questions });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Internal Server Error",
-    });
-  }
-};
 
 export const logout = (req, res) => {
   res
