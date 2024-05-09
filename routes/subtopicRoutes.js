@@ -1,5 +1,5 @@
 import express from "express";
-import { createSubtopic, getSubtopics } from "../controller/subtopicController.js";
+import { createSubtopic, getNestedSubtopicsByName, getSubtopics } from "../controller/subtopicController.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import isAuthenticated from "../middlewares/auth.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
@@ -13,5 +13,6 @@ router.post(
     createSubtopic
 );
 router.get("/get/subtopic", isAuthenticated, getSubtopics);
+router.get('/nestedsubtopic', getNestedSubtopicsByName);
 
 export default router;

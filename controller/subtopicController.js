@@ -144,3 +144,43 @@ export const getSubtopics = async (req, res) => {
     }
 };
 
+
+export const getNestedSubtopicsByName = async (req, res) => {
+    try {
+        const { subjectName, standard, chapterName, topicName, subtopicName } = req.query;
+
+        if (!subjectName || !standard || !chapterName || !topicName || !subtopicName) {
+            return res.status(400).json({
+                success: false,
+                message: 'All query parameters (subjectName, standard, chapterName, topicName, and subtopicName) must be provided.'
+            });
+        }
+
+        const subtopic = await Subtopic.findOne({
+            name: subtopicName,
+            subjectName,
+            standard,
+            chapterName,
+            topicName
+        }).populate({
+            path: 'subtopics',
+        });
+
+        if (!subtopic) {
+            return res.status(404).json({ success: false, message: 'Subtopic not found' });
+        }
+
+        res.status(200).json({
+            success: true,
+            subtopic, 
+            nestedSubtopics: subtopic.subtopics, 
+        });
+    } catch (error) {
+        console.error('Error retrieving nested subtopics by name:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
+
+
+
+
