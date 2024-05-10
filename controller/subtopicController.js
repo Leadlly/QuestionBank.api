@@ -1,4 +1,4 @@
-import { Subject } from '../model/subjectModel.js'; 
+import { Subject } from '../model/subjectModel.js';
 import { Subtopic } from '../model/subtopicModel.js';
 
 
@@ -43,15 +43,15 @@ export const createSubtopic = async (req, res) => {
         }
 
         const addSubtopicsRecursively = async (parentSubtopic, subtopicData) => {
-            
+
             if (parentSubtopic.subtopics.some(sub => sub.name === subtopicData.name)) {
                 throw new Error(`Subtopic "${subtopicData.name}" already exists`);
             }
 
             const newSubtopic = new Subtopic({
                 name: subtopicData.name,
-                topicName, 
-                chapterName, 
+                topicName,
+                chapterName,
                 subjectName,
                 standard,
                 subtopics: [],
@@ -93,8 +93,9 @@ export const createSubtopic = async (req, res) => {
 
 export const getSubtopics = async (req, res) => {
     try {
-         const { subjectName, standard, chapterName, topicName } = req.query;
+        const { subjectName, standard, chapterName, topicName } = req.query;
 
+        // Validate required query parameters
         if (!subjectName || !standard || !chapterName || !topicName) {
             return res.status(400).json({
                 success: false,
@@ -102,9 +103,10 @@ export const getSubtopics = async (req, res) => {
             });
         }
 
+        // Fetch subject data including chapters and topics
         const subject = await Subject.findOne({
             name: subjectName,
-            standard: standard,
+            standard,
         }).populate({
             path: 'chapters',
             match: { name: chapterName },
@@ -115,11 +117,11 @@ export const getSubtopics = async (req, res) => {
             }
         });
 
-         if (!subject) {
+        if (!subject) {
             return res.status(400).json({ success: false, message: "Subject not found" });
         }
 
-         const chapter = subject.chapters.find(ch => ch.name === chapterName);
+        const chapter = subject.chapters.find(ch => ch.name === chapterName);
         if (!chapter) {
             return res.status(400).json({ success: false, message: "Chapter not found" });
         }
@@ -129,7 +131,22 @@ export const getSubtopics = async (req, res) => {
             return res.status(400).json({ success: false, message: "Topic not found" });
         }
 
-        const subtopics = topic.subtopics;
+        // Get subtopics from the topic
+        let subtopics = topic.subtopics;
+
+        // Fetch full data for each nested subtopic
+        for (let i = 0; i < subtopics.length; i++) {
+            const subtopic = subtopics[i];
+
+            // If there are nested subtopics, fetch their data
+            if (subtopic.subtopics && subtopic.subtopics.length > 0) {
+                const nestedSubtopicIds = subtopic.subtopics;
+                // Fetch nested subtopic data
+                const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
+                // Replace the subtopic IDs with their full data
+                subtopics[i].subtopics = nestedSubtopics;
+            }
+        }
 
         res.status(200).json({
             success: true,
@@ -143,6 +160,7 @@ export const getSubtopics = async (req, res) => {
         });
     }
 };
+
 
 
 export const getNestedSubtopicsByName = async (req, res) => {
@@ -172,8 +190,8 @@ export const getNestedSubtopicsByName = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            subtopic, 
-            nestedSubtopics: subtopic.subtopics, 
+            subtopic,
+            nestedSubtopics: subtopic.subtopics,
         });
     } catch (error) {
         console.error('Error retrieving nested subtopics by name:', error);

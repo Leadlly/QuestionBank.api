@@ -42,6 +42,7 @@ export const createQuestion = async (req, res) => {
       await req.user.save();
 
       res.status(201).json({ success: true, message: "Question added successfully", question });
+      console.log(question)
   } catch (error) {
       console.error('Error creating question:', error);
       res.status(500).json({
