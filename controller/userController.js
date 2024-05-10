@@ -1,7 +1,6 @@
 import { User } from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import setCookie from "../utils/setCookie.js";
-import {Ques} from "../model/quesModel.js" 
 
 export const register = async (req, res) => {
   try {
