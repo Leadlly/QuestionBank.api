@@ -12,45 +12,62 @@ const validateAndSanitizeData = [
   body("level").notEmpty().trim().escape(),
 ];
 
+
 export const createQuestion = async (req, res) => {
   try {
-      await Promise.all(validateAndSanitizeData.map((field) => field.run(req)));
+     const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
 
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-          return res.status(400).json({ success: false, errors: errors.array() });
-      }
+    const data = req.body;
 
-      const data = req.body;
+     const existingQuestion = await Ques.findOne({
+      question: data.question,
+      subject: data.subject,
+      standard: data.standard,
+    });
 
-      const existingQuestion = await Ques.findOne({
-          question: data.question,
-          subject: data.subject,
-          standard: data.standard
+    if (existingQuestion) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question already exists',
       });
+    }
 
-      if (existingQuestion) {
-          return res.status(400).json({
-              success: false,
-              message: 'Question already exists',
-          });
-      }
+    const newQuestion = new Ques({
+      question: data.question,
+      options: data.options,
+      standard: data.standard,
+      subject: data.subject,
+      chapter: data.chapter,
+      topic: data.topic,
+      subtopics: data.subtopics,
+      nestedSubTopic: data.nestedSubTopic,
+      level: data.level,
+    });
 
-      const question = await Ques.create(data);
+    await newQuestion.save();
+    req.user.questions.push(newQuestion._id);
+    await req.user.save();
 
-      req.user.questions.unshift(question._id);
-      await req.user.save();
 
-      res.status(201).json({ success: true, message: "Question added successfully", question });
-      console.log(question)
+    res.status(201).json({
+      success: true,
+      message: 'Question added successfully',
+      question: newQuestion, 
+    });
   } catch (error) {
-      console.error('Error creating question:', error);
-      res.status(500).json({
-          success: false,
-          message: error.message || 'Internal Server Error',
-      });
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+    });
   }
 };
+
+
+
+
 
 
 
@@ -64,10 +81,11 @@ export const deleteQuestion = async (req, res) => {
 
     await question.deleteOne();
 
-    req.user.questions = req.user.questions.filter(
-      (ques) => ques._id.toString() !== question._id.toString(),
+    // Remove the question from the questions array of all users
+    await User.updateMany(
+      { questions: question._id },
+      { $pull: { questions: question._id } }
     );
-    await req.user.save();
 
     res.status(200).json({ success: true, message: "Question Deleted" });
   } catch (error) {
@@ -77,6 +95,7 @@ export const deleteQuestion = async (req, res) => {
     });
   }
 };
+
 
 export const getAllQuestion = async (req, res) => {
   try {
@@ -92,7 +111,12 @@ export const getAllQuestion = async (req, res) => {
       return res.status(404).json({ success: false, message: "Question not found" });
     }
 
-    return res.status(200).json({ success: true, questions });
+    const formattedQuestions = questions.map(question => ({
+      ...question.toObject(),
+      nestedSubTopic: question.nestedSubTopic || "" 
+    }));
+
+    return res.status(200).json({ success: true, questions: formattedQuestions });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -100,5 +124,7 @@ export const getAllQuestion = async (req, res) => {
     });
   }
 };
+
+
 
 

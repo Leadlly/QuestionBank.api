@@ -109,38 +109,40 @@ export const verification = async (req, res) => {
   }
 };
 
+
 export const getUserQuestions = async (req, res) => {
   try {
-      if (!req.user || !req.user._id) {
-          return res.status(401).json({ success: false, message: "Unauthorized" });
-      }
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
-      const { standard } = req.query;
+    const { standard } = req.query;
 
-      const selectedStandard = parseInt(standard, 10);
+    const selectedStandard = parseInt(standard, 10);
+    if (isNaN(selectedStandard)) {
+      return res.status(400).json({ success: false, message: "Invalid standard" });
+    }
 
-      if (isNaN(selectedStandard)) {
-          return res.status(400).json({ success: false, message: "Invalid standard" });
-      }
+    const user = await User.findById(req.user._id);
 
-      const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ success: false, message: "User not found" });
+    }
 
-      if (!user) {
-          return res.status(400).json({ success: false, message: "User not found" });
-      }
+    const filteredQuestions = await user.getQuestionsByStandard(selectedStandard);
+    
 
-      const filteredQuestions = await user.getQuestionsByStandard(selectedStandard);
+    if (filteredQuestions.length === 0) {
+      return res.status(404).json({ success: false, message: "No questions found for the selected standard" });
+    }
 
-      if (filteredQuestions.length === 0) {
-          return res.status(404).json({ success: false, message: "No questions found for the selected standard" });
-      }
-
-      return res.status(200).json({ success: true, questions: filteredQuestions });
+    return res.status(200).json({ success: true, questions: filteredQuestions });
   } catch (error) {
-      console.error(error);
-      return res.status(500).json({ success: false, message: error.message });
+
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const getMyProfile = async (req, res) => {
   try {
@@ -154,7 +156,6 @@ export const getMyProfile = async (req, res) => {
 
     res.status(200).json({ success: true, user });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
