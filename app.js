@@ -9,6 +9,8 @@ import TopicRouter from "./routes/topicRoutes.js";
 import ChapterRouter from "./routes/chapterRoutes.js"
 import SubTopicRouter from "./routes/subtopicRoutes.js";
 import SubjectRouter from "./routes/subjectRoutes.js"
+import serverless from "serverless-http";
+
 
 config({
   path: "./.env",
@@ -51,4 +53,5 @@ app.get("/", (req, res) => {
   res.send("Server is working fine");
 });
 
+export const handler = serverless(app);
 app.listen(port, () => console.log(`Server is listening at port ${port}`));

@@ -1,5 +1,6 @@
 import { Ques } from "../model/quesModel.js";
 import { body, validationResult } from "express-validator";
+import getSignedRequestUrl from "../utils/getSignedUrl.js";
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -15,14 +16,14 @@ const validateAndSanitizeData = [
 
 export const createQuestion = async (req, res) => {
   try {
-     const errors = validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
     const data = req.body;
 
-     const existingQuestion = await Ques.findOne({
+    const existingQuestion = await Ques.findOne({
       question: data.question,
       subject: data.subject,
       standard: data.standard,
@@ -35,6 +36,18 @@ export const createQuestion = async (req, res) => {
       });
     }
 
+    // Generate signed URLs for question and option images
+    const imageUrls = await Promise.all(data.images.map(async (image) => {
+      const info = {
+        Bucket: 'leadlly-questions',
+        Key: `questions/${new Date().getTime()}-${image.name}`, // Use unique keys for each image
+        ContentType: image.type,
+      };
+      return await getSignedRequestUrl(info);
+    }));
+
+    console.log(imageUrls)
+    // Save image URLs in the question data
     const newQuestion = new Ques({
       question: data.question,
       options: data.options,
@@ -55,7 +68,8 @@ export const createQuestion = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Question added successfully',
-      question: newQuestion, 
+      question: newQuestion,
+      signedUrls: imageUrls, // Include the signed URLs in the response for the client to upload images
     });
   } catch (error) {
     res.status(500).json({
