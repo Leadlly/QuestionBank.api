@@ -1,6 +1,6 @@
 import { Ques } from "../model/quesModel.js";
 import { body, validationResult } from "express-validator";
-import getSignedRequestUrl from "../utils/getSignedUrl.js";
+import {getObjectSignedUrl, getPutObjectSignedUrl} from "../utils/getSignedUrl.js";
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -36,17 +36,26 @@ export const createQuestion = async (req, res) => {
       });
     }
 
-    // Generate signed URLs for question and option images
     const imageUrls = await Promise.all(data.images.map(async (image) => {
-      const info = {
+      const bucketKey = `questions/${new Date().getTime()}-${image.name}`; // Use unique keys for each image
+      const putObjectInfo = {
         Bucket: 'leadlly-questions',
-        Key: `questions/${new Date().getTime()}-${image.name}`, // Use unique keys for each image
+        Key: bucketKey,
         ContentType: image.type,
       };
-      return await getSignedRequestUrl(info);
+      const putSignedUrl = await getPutObjectSignedUrl(putObjectInfo);
+
+      const getObjectInfo = {
+        Bucket: 'leadlly-questions',
+        Key: bucketKey,
+      };
+      const getSignedUrl = await getObjectSignedUrl(getObjectInfo);
+      
+      return { putUrl: putSignedUrl, getUrl: getSignedUrl, key: bucketKey };
     }));
 
-    console.log(imageUrls)
+    // console.log(imageUrls);
+
     // Save image URLs in the question data
     const newQuestion = new Ques({
       question: data.question,
@@ -58,6 +67,7 @@ export const createQuestion = async (req, res) => {
       subtopics: data.subtopics,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
+      images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })) // Save GET URLs and keys in the question
     });
 
     await newQuestion.save();
@@ -69,7 +79,7 @@ export const createQuestion = async (req, res) => {
       success: true,
       message: 'Question added successfully',
       question: newQuestion,
-      signedUrls: imageUrls, // Include the signed URLs in the response for the client to upload images
+      signedUrls: imageUrls.map((image) => image.putUrl), // Include the signed URLs in the response for the client to upload images
     });
   } catch (error) {
     res.status(500).json({

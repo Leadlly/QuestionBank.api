@@ -42,6 +42,10 @@ const quesSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    images: [{
+        url: String,
+        key: String
+    }],
     createdAt: {
         type: Date,
         default: Date.now,
