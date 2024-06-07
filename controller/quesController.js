@@ -36,30 +36,48 @@ export const createQuestion = async (req, res) => {
       });
     }
 
-    const imageUrls = await Promise.all(data.images.map(async (image) => {
-      const bucketKey = `questions/${new Date().getTime()}-${image.name}`; // Use unique keys for each image
-      const putObjectInfo = {
-        Bucket: 'leadlly-questions',
-        Key: bucketKey,
-        ContentType: image.type,
-      };
-      const putSignedUrl = await getPutObjectSignedUrl(putObjectInfo);
+    let imageUrls;
 
-      const getObjectInfo = {
-        Bucket: 'leadlly-questions',
-        Key: bucketKey,
-      };
-      const getSignedUrl = await getObjectSignedUrl(getObjectInfo);
-      
-      return { putUrl: putSignedUrl, getUrl: getSignedUrl, key: bucketKey };
+   
+    if (!data.images || !Array.isArray(data.images)) {
+     
+      imageUrls = [];
+    } else {
+      imageUrls = await Promise.all(data.images.map(async (image) => {
+        const bucketKey = `questions/${new Date().getTime()}-${image.name}`;
+        const putObjectInfo = {
+          Bucket: 'leadlly-questions',
+          Key: bucketKey,
+          ContentType: image.type,
+        };
+        const putSignedUrl = await getPutObjectSignedUrl(putObjectInfo);
+
+        const getObjectInfo = {
+          Bucket: 'leadlly-questions',
+          Key: bucketKey,
+        };
+        const getSignedUrl = await getObjectSignedUrl(getObjectInfo);
+        
+        return { putUrl: putSignedUrl, getUrl: getSignedUrl, key: bucketKey };
+      }));
+    }
+
+    const options = data.options.map((option, index) => ({
+      type: option.type,
+      tag: option.tag || 'Incorrect',
+      images: option.images || [],
     }));
+    
 
-    // console.log(imageUrls);
-
-    // Save image URLs in the question data
     const newQuestion = new Ques({
-      question: data.question,
-      options: data.options,
+      question: {
+        question: data.question, 
+        images: data.images.map(image => ({
+          url: image.url,
+          key: image.key
+        }))
+      },
+      options: options,
       standard: data.standard,
       subject: data.subject,
       chapter: data.chapter,
@@ -67,19 +85,18 @@ export const createQuestion = async (req, res) => {
       subtopics: data.subtopics,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
-      images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })) // Save GET URLs and keys in the question
+      images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
     });
 
     await newQuestion.save();
     req.user.questions.push(newQuestion._id);
     await req.user.save();
 
-
     res.status(201).json({
       success: true,
       message: 'Question added successfully',
       question: newQuestion,
-      signedUrls: imageUrls.map((image) => image.putUrl), // Include the signed URLs in the response for the client to upload images
+      signedUrls: imageUrls.map((image) => image.putUrl),
     });
   } catch (error) {
     res.status(500).json({
@@ -88,11 +105,6 @@ export const createQuestion = async (req, res) => {
     });
   }
 };
-
-
-
-
-
 
 
 export const deleteQuestion = async (req, res) => {
