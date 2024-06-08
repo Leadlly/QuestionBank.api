@@ -53,5 +53,5 @@ app.get("/", (req, res) => {
   res.send("Server is working fine");
 });
 
-export const handler = serverless(app);
+// export const handler = serverless(app);
 app.listen(port, () => console.log(`Server is listening at port ${port}`));
