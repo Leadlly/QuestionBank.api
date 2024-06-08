@@ -1,0 +1,29 @@
+org: leadlly
+app: leadlly-student-api
+service: leadlly-student-api
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  timeout: 15
+  region: ap-south-1
+  environment:
+    PORT: 4002
+    FRONTEND_URL: https://www.question.leadlly.in
+    JWT_SECRET: flskdjflksdajffds
+
+functions:
+  app:
+    handler: src/app.handler
+    events:
+      - httpApi: "*"
+
+package:
+  exclude:
+    - node_modules/**
+    - .vscode/**
+    - .env
+    - coverage/**    
+

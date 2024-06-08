@@ -1,5 +1,6 @@
 import { Ques } from "../model/quesModel.js";
 import { body, validationResult } from "express-validator";
+import processImages from "../helper/processImages.js";
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -15,14 +16,15 @@ const validateAndSanitizeData = [
 
 export const createQuestion = async (req, res) => {
   try {
-     const errors = validationResult(req);
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
     const data = req.body;
 
-     const existingQuestion = await Ques.findOne({
+    // Check for existing question
+    const existingQuestion = await Ques.findOne({
       question: data.question,
       subject: data.subject,
       standard: data.standard,
@@ -35,9 +37,30 @@ export const createQuestion = async (req, res) => {
       });
     }
 
+    // Process question images
+    const imageUrls = await processImages(data.images);
+
+   
+    // Process option images
+    const options = await Promise.all(data.options.map(async (option) => {
+   
+      let optionImageUrls = [];
+      if (option.image && Array.isArray(option.image) && option.image.length > 0) {
+        optionImageUrls = await processImages(option.image);
+      }
+
+      return {
+      image: optionImageUrls,
+       optionDb: { name: option.name,
+        tag: option.isCorrect === true ? "Correct" : "Incorrect", 
+        images: optionImageUrls.length > 0 ? optionImageUrls.map(image => ({ url: image?.getUrl, key: image?.key })) : null,}
+      };
+    }));
+    const optionsSignedUrls = options.flatMap(option => (option.image ? option.image.map(image => image.putUrl) : []));
+
     const newQuestion = new Ques({
       question: data.question,
-      options: data.options,
+      options: options.map((option) => option.optionDb),
       standard: data.standard,
       subject: data.subject,
       chapter: data.chapter,
@@ -45,17 +68,19 @@ export const createQuestion = async (req, res) => {
       subtopics: data.subtopics,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
+      images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
     });
 
     await newQuestion.save();
     req.user.questions.push(newQuestion._id);
     await req.user.save();
 
-
     res.status(201).json({
       success: true,
       message: 'Question added successfully',
-      question: newQuestion, 
+      question: newQuestion,
+      signedUrls: imageUrls.map((image) => image.putUrl),
+      optionsSignedUrls: optionsSignedUrls,
     });
   } catch (error) {
     res.status(500).json({
@@ -65,9 +90,7 @@ export const createQuestion = async (req, res) => {
   }
 };
 
-
-
-
+// Helper function to process images
 
 
 

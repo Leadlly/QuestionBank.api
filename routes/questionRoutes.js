@@ -3,6 +3,7 @@ import {
   createQuestion,
   deleteQuestion,
   getAllQuestion,
+  // toggleOptionTag,
 } from "../controller/quesController.js";
 import isAuthenticated from "../middlewares/auth.js";
 import convertToLowercase from "../middlewares/lowercase.js";
@@ -16,7 +17,7 @@ router.post(
   isAuthenticated,
   createQuestion
 );
-
+// router.post("/questions/toggleoption", toggleOptionTag)
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);
 
 router.get("/get/question", isAuthenticated, checkAdmin, getAllQuestion);
