@@ -1,6 +1,6 @@
 import { Ques } from "../model/quesModel.js";
 import { body, validationResult } from "express-validator";
-import {getObjectSignedUrl, getPutObjectSignedUrl} from "../utils/getSignedUrl.js";
+import processImages from "../helper/processImages.js";
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -23,6 +23,7 @@ export const createQuestion = async (req, res) => {
 
     const data = req.body;
 
+    // Check for existing question
     const existingQuestion = await Ques.findOne({
       question: data.question,
       subject: data.subject,
@@ -36,48 +37,30 @@ export const createQuestion = async (req, res) => {
       });
     }
 
-    let imageUrls;
+    // Process question images
+    const imageUrls = await processImages(data.images);
 
    
-    if (!data.images || !Array.isArray(data.images)) {
-     
-      imageUrls = [];
-    } else {
-      imageUrls = await Promise.all(data.images.map(async (image) => {
-        const bucketKey = `questions/${new Date().getTime()}-${image.name}`;
-        const putObjectInfo = {
-          Bucket: 'leadlly-questions',
-          Key: bucketKey,
-          ContentType: image.type,
-        };
-        const putSignedUrl = await getPutObjectSignedUrl(putObjectInfo);
+    // Process option images
+    const options = await Promise.all(data.options.map(async (option) => {
+   
+      let optionImageUrls = [];
+      if (option.image && Array.isArray(option.image) && option.image.length > 0) {
+        optionImageUrls = await processImages(option.image);
+      }
 
-        const getObjectInfo = {
-          Bucket: 'leadlly-questions',
-          Key: bucketKey,
-        };
-        const getSignedUrl = await getObjectSignedUrl(getObjectInfo);
-        
-        return { putUrl: putSignedUrl, getUrl: getSignedUrl, key: bucketKey };
-      }));
-    }
-
-    const options = data.options.map((option, index) => ({
-      type: option.type,
-      tag: option.tag || 'Incorrect',
-      images: option.images || [],
+      return {
+      image: optionImageUrls,
+       optionDb: { name: option.name,
+        tag: option.isCorrect === true ? "Correct" : "Incorrect", 
+        images: optionImageUrls.length > 0 ? optionImageUrls.map(image => ({ url: image?.getUrl, key: image?.key })) : null,}
+      };
     }));
-    
+    const optionsSignedUrls = options.flatMap(option => (option.image ? option.image.map(image => image.putUrl) : []));
 
     const newQuestion = new Ques({
-      question: {
-        question: data.question, 
-        images: data.images.map(image => ({
-          url: image.url,
-          key: image.key
-        }))
-      },
-      options: options,
+      question: data.question,
+      options: options.map((option) => option.optionDb),
       standard: data.standard,
       subject: data.subject,
       chapter: data.chapter,
@@ -97,6 +80,7 @@ export const createQuestion = async (req, res) => {
       message: 'Question added successfully',
       question: newQuestion,
       signedUrls: imageUrls.map((image) => image.putUrl),
+      optionsSignedUrls: optionsSignedUrls,
     });
   } catch (error) {
     res.status(500).json({
@@ -105,6 +89,9 @@ export const createQuestion = async (req, res) => {
     });
   }
 };
+
+// Helper function to process images
+
 
 
 export const deleteQuestion = async (req, res) => {

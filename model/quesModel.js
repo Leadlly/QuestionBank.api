@@ -8,11 +8,7 @@ const quesSchema = new mongoose.Schema({
 
   options: [
     {
-      type: {
-        type: String,
-        required: true
-      },
-
+      name: String,
       tag: {
         type: String,
         default: "Incorrect"
