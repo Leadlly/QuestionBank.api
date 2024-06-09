@@ -2,7 +2,7 @@ const convertToLowercase = (req, res, next) => {
   const convertToLowerCase = (obj) => {
     for (let key in obj) {
       if (typeof obj[key] === "string") {
-        obj[key] = obj[key].toLowerCase();
+        obj[key] = obj[key].trim().toLowerCase();
       } else if (typeof obj[key] === "object") {
         convertToLowerCase(obj[key]);
       }
