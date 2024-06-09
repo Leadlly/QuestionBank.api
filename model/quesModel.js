@@ -30,17 +30,23 @@ const quesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  chapter: {
-    type: String,
-    required: true,
-  },
-  topic: {
-    type: String,
-  },
-  subtopics: {
-    type: String,
-    required: false,
-  },
+  chapters: [
+    {
+      name: String,
+      topics: [String]
+    }
+  ],
+  topics: [
+    {
+      name: String,
+      subtopics: [String]
+    }
+  ],
+  subtopics: [
+    {
+      name: String
+    }
+  ],
   nestedSubTopic: {
     type: String,
     required: false,

@@ -93,18 +93,18 @@ export const createSubtopic = async (req, res) => {
 
 export const getSubtopics = async (req, res) => {
     try {
-        const { subjectName, standard, chapterName, topicName } = req.query;
+        const { subjectName, standard, chapterName, topicNames } = req.query;
 
-        // Validate required query parameters
-        if (!subjectName || !standard || !chapterName || !topicName) {
+        if (!subjectName || !standard || !chapterName || !topicNames) {
             return res.status(400).json({
                 success: false,
-                message: "Missing required query parameters (subjectName, standard, chapterName, topicName)."
+                message: "Missing required query parameters (subjectName, standard, chapterName, topicNames)."
             });
         }
 
-        // Fetch subject data including chapters and topics
-        const subject = await Subject.findOne({
+        const topicsArray = topicNames.split(',');
+
+       const subject = await Subject.findOne({
             name: subjectName,
             standard,
         }).populate({
@@ -112,7 +112,7 @@ export const getSubtopics = async (req, res) => {
             match: { name: chapterName },
             populate: {
                 path: 'topics',
-                match: { name: topicName },
+                match: { name: { $in: topicsArray } }, 
                 populate: 'subtopics'
             }
         });
@@ -126,31 +126,31 @@ export const getSubtopics = async (req, res) => {
             return res.status(400).json({ success: false, message: "Chapter not found" });
         }
 
-        const topic = chapter.topics.find(t => t.name === topicName);
-        if (!topic) {
-            return res.status(400).json({ success: false, message: "Topic not found" });
+        const filteredTopics = chapter.topics.filter(t => topicsArray.includes(t.name));
+
+        let allSubtopics = [];
+
+        for (let i = 0; i < filteredTopics.length; i++) {
+            const topic = filteredTopics[i];
+            if (topic.subtopics && topic.subtopics.length > 0) {
+                allSubtopics = [...allSubtopics, ...topic.subtopics];
+            }
         }
 
-        // Get subtopics from the topic
-        let subtopics = topic.subtopics;
+        for (let i = 0; i < allSubtopics.length; i++) {
+            const subtopic = allSubtopics[i];
 
-        // Fetch full data for each nested subtopic
-        for (let i = 0; i < subtopics.length; i++) {
-            const subtopic = subtopics[i];
-
-            // If there are nested subtopics, fetch their data
             if (subtopic.subtopics && subtopic.subtopics.length > 0) {
                 const nestedSubtopicIds = subtopic.subtopics;
-                // Fetch nested subtopic data
                 const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
-                // Replace the subtopic IDs with their full data
-                subtopics[i].subtopics = nestedSubtopics;
+               
+                allSubtopics[i].subtopics = nestedSubtopics;
             }
         }
 
         res.status(200).json({
             success: true,
-            subtopics,
+            subtopics: allSubtopics,
         });
     } catch (error) {
         console.error('Error in getSubTopic:', error);
@@ -160,6 +160,7 @@ export const getSubtopics = async (req, res) => {
         });
     }
 };
+
 
 
 
