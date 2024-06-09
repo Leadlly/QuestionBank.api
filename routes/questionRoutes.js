@@ -2,7 +2,9 @@ import express from "express";
 import {
   createQuestion,
   deleteQuestion,
+  editQuestion,
   getAllQuestion,
+  updateOption,
   // toggleOptionTag,
 } from "../controller/quesController.js";
 import isAuthenticated from "../middlewares/auth.js";
@@ -17,7 +19,8 @@ router.post(
   isAuthenticated,
   createQuestion
 );
-// router.post("/questions/toggleoption", toggleOptionTag)
+router.put("/edit/question/:id", isAuthenticated, editQuestion)
+router.put("/edit/question/:id/option/:optionId", isAuthenticated, updateOption)
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);
 
 router.get("/get/question", isAuthenticated, checkAdmin, getAllQuestion);

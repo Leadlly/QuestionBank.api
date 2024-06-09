@@ -49,6 +49,10 @@ const quesSchema = new mongoose.Schema({
     url: String,
     key: String
   }],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
   createdAt: {
     type: Date,
     default: Date.now,
