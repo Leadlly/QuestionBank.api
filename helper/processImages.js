@@ -1,4 +1,4 @@
-import { getObjectSignedUrl, getPutObjectSignedUrl } from "../utils/getSignedUrl.js";
+import { getPutObjectSignedUrl } from "../utils/getSignedUrl.js";
 
 const processImages = async (images) => {
     if (!images || !Array.isArray(images)) {
@@ -15,13 +15,8 @@ const processImages = async (images) => {
       };
       const putSignedUrl = await getPutObjectSignedUrl(putObjectInfo);
   
-      const getObjectInfo = {
-        Bucket: 'leadlly-questions-options',
-        Key: bucketKey,
-      };
-      const getSignedUrl = await getObjectSignedUrl(getObjectInfo);
   
-      return { putUrl: putSignedUrl, getUrl: getSignedUrl, key: bucketKey };
+      return { putUrl: putSignedUrl, getUrl: `https://leadlly-questions-options.s3.ap-south-1.amazonaws.com/${bucketKey}`, key: bucketKey };
     }));
   };
   
