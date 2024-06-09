@@ -43,10 +43,11 @@ const quesSchema = new mongoose.Schema({
     }
   ],
   subtopics: [
-    {
-      name: String
-    }
+     {
+      name: String,
+    },
   ],
+  
   nestedSubTopic: {
     type: String,
     required: false,
