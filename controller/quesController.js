@@ -63,7 +63,7 @@ export const createQuestion = async (req, res) => {
       standard: data.standard,
       subject: data.subject,
       chapter: data.chapter,
-      topic: data.topic,
+      topics: data.topics,
       subtopics: data.subtopics,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,

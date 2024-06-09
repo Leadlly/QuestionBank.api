@@ -102,15 +102,18 @@ export const getSubtopics = async (req, res) => {
             });
         }
 
+        const chapterNameArray = chapterName.split(',').map(name => name.trim());
+        const topicNameArray = topicName.split(',').map(name => name.trim());
+
         const subject = await Subject.findOne({
             name: subjectName,
             standard,
         }).populate({
             path: 'chapters',
-            match: { name: chapterName },
+            match: { name: { $in: chapterNameArray } },
             populate: {
                 path: 'topics',
-                match: { name: topicName },
+                match: { name: { $in: topicNameArray } },
                 populate: 'subtopics'
             }
         });
@@ -119,24 +122,19 @@ export const getSubtopics = async (req, res) => {
             return res.status(400).json({ success: false, message: "Subject not found" });
         }
 
-        const chapter = subject.chapters.find(ch => ch.name === chapterName);
-        if (!chapter) {
-            return res.status(400).json({ success: false, message: "Chapter not found" });
-        }
+        let subtopics = [];
 
-        const topic = chapter.topics.find(t => t.name === topicName);
-        if (!topic) {
-            return res.status(400).json({ success: false, message: "Topic not found" });
-        }
-
-        let subtopics = topic.subtopics;
+        subject.chapters.forEach(chapter => {
+            chapter.topics.forEach(topic => {
+                subtopics.push(...topic.subtopics);
+            });
+        });
 
         for (let i = 0; i < subtopics.length; i++) {
             const subtopic = subtopics[i];
-
             if (subtopic.subtopics && subtopic.subtopics.length > 0) {
                 const nestedSubtopicIds = subtopic.subtopics;
-               const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
+                const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
                 subtopics[i].subtopics = nestedSubtopics;
             }
         }
@@ -153,6 +151,7 @@ export const getSubtopics = async (req, res) => {
         });
     }
 };
+
 
 
 
