@@ -68,6 +68,7 @@ export const createQuestion = async (req, res) => {
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
       images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
+      createdBy: req.user._id
     });
 
     await newQuestion.save();
@@ -88,10 +89,6 @@ export const createQuestion = async (req, res) => {
     });
   }
 };
-
-// Helper function to process images
-
-
 
 export const deleteQuestion = async (req, res) => {
   try {
@@ -147,6 +144,70 @@ export const getAllQuestion = async (req, res) => {
   }
 };
 
+export const editQuestion = async (req, res) => {
+  try {
+    const data = req.body;
+    // Check for existing question
+    const ques = await Ques.findById(req.params.id);
+    if (!ques) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question not exists',
+      });
+    }
 
+    // Update question
+    ques.question = data.question;
 
+    // Save the updated question
+    await ques.save();
 
+    return res.status(200).json({
+      success: true,
+      message: 'Question updated successfully',
+      question: ques,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+    });
+  }
+};
+
+export const updateOption = async (req, res) => {
+  try {
+    const data = req.body;
+    // Check for existing question
+    const ques = await Ques.findById(req.params.id);
+    if (!ques) {
+      return res.status(400).json({
+        success: false,
+        message: 'Question not exists',
+      });
+    }
+    // Find the option to update
+    const optionToUpdate = ques.options.find((option) => option._id.toString() === req.params.optionId);
+    if (!optionToUpdate) {
+      return res.status(400).json({
+        success: false,
+        message: 'Option not found',
+      });
+    }
+    // Update the option
+    optionToUpdate.name = data.name;
+    optionToUpdate.tag = data.tag;
+    // Save the updated question
+    await ques.save();
+    return res.status(200).json({
+      success: true,
+      message: 'Option updated successfully',
+      question: ques,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+    });
+  }
+};
