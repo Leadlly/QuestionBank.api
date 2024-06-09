@@ -75,13 +75,13 @@ export const createTopic = async (req, res) => {
 
 export const getTopic = async (req, res) => {
   try {
-    const { subjectName, standard, chapterNames } = req.query;
+    const { subjectName, standard, chapterName } = req.query;
 
-    if (!subjectName || !standard || !chapterNames) {
+    if (!subjectName || !standard || !chapterName) {
       return res.status(400).json({ success: false, message: 'Subject name, standard, and chapter names must be provided' });
     }
 
-    const chapterNameArray = chapterNames.split(',').map(name => name.trim());
+    const chapterNameArray = chapterName.split(',').map(name => name.trim());
 
     const existingSubject = await Subject.findOne({ name: subjectName, standard })
       .populate({

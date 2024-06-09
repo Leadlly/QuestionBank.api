@@ -93,26 +93,27 @@ export const createSubtopic = async (req, res) => {
 
 export const getSubtopics = async (req, res) => {
     try {
-        const { subjectName, standard, chapterName, topicNames } = req.query;
+        const { subjectName, standard, chapterName, topicName } = req.query;
 
-        if (!subjectName || !standard || !chapterName || !topicNames) {
+        if (!subjectName || !standard || !chapterName || !topicName) {
             return res.status(400).json({
                 success: false,
-                message: "Missing required query parameters (subjectName, standard, chapterName, topicNames)."
+                message: "Missing required query parameters (subjectName, standard, chapterName, topicName)."
             });
         }
 
-        const topicsArray = topicNames.split(',');
+        const chapterNameArray = chapterName.split(',').map(name => name.trim());
+        const topicNameArray = topicName.split(',').map(name => name.trim());
 
-       const subject = await Subject.findOne({
+        const subject = await Subject.findOne({
             name: subjectName,
             standard,
         }).populate({
             path: 'chapters',
-            match: { name: chapterName },
+            match: { name: { $in: chapterNameArray } },
             populate: {
                 path: 'topics',
-                match: { name: { $in: topicsArray } }, 
+                match: { name: { $in: topicNameArray } },
                 populate: 'subtopics'
             }
         });
@@ -121,36 +122,26 @@ export const getSubtopics = async (req, res) => {
             return res.status(400).json({ success: false, message: "Subject not found" });
         }
 
-        const chapter = subject.chapters.find(ch => ch.name === chapterName);
-        if (!chapter) {
-            return res.status(400).json({ success: false, message: "Chapter not found" });
-        }
+        let subtopics = [];
 
-        const filteredTopics = chapter.topics.filter(t => topicsArray.includes(t.name));
+        subject.chapters.forEach(chapter => {
+            chapter.topics.forEach(topic => {
+                subtopics.push(...topic.subtopics);
+            });
+        });
 
-        let allSubtopics = [];
-
-        for (let i = 0; i < filteredTopics.length; i++) {
-            const topic = filteredTopics[i];
-            if (topic.subtopics && topic.subtopics.length > 0) {
-                allSubtopics = [...allSubtopics, ...topic.subtopics];
-            }
-        }
-
-        for (let i = 0; i < allSubtopics.length; i++) {
-            const subtopic = allSubtopics[i];
-
+        for (let i = 0; i < subtopics.length; i++) {
+            const subtopic = subtopics[i];
             if (subtopic.subtopics && subtopic.subtopics.length > 0) {
                 const nestedSubtopicIds = subtopic.subtopics;
                 const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
-               
-                allSubtopics[i].subtopics = nestedSubtopics;
+                subtopics[i].subtopics = nestedSubtopics;
             }
         }
 
         res.status(200).json({
             success: true,
-            subtopics: allSubtopics,
+            subtopics,
         });
     } catch (error) {
         console.error('Error in getSubTopic:', error);

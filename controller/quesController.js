@@ -57,14 +57,13 @@ export const createQuestion = async (req, res) => {
       };
     }));
     const optionsSignedUrls = options.flatMap(option => (option.image ? option.image.map(image => image.putUrl) : []));
-
-    const newQuestion = new Ques({
+   const newQuestion = new Ques({
       question: data.question,
       options: options.map((option) => option.optionDb),
       standard: data.standard,
       subject: data.subject,
       chapter: data.chapter,
-      topic: data.topic,
+      topics: data.topics,
       subtopics: data.subtopics,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
