@@ -16,7 +16,7 @@ const processImages = async (images) => {
       const putSignedUrl = await getPutObjectSignedUrl(putObjectInfo);
   
   
-      return { putUrl: putSignedUrl, getUrl: `https://leadlly-questions-options.s3.ap-south-1.amazonaws.com/${bucketKey}`, key: bucketKey };
+      return { putUrl: putSignedUrl, getUrl: `${process.env.LEADLLY_AWS_ACCOUNT_URL}/${bucketKey}`, key: bucketKey };
     }));
   };
   

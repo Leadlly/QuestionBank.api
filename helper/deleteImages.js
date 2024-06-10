@@ -14,7 +14,7 @@ const deleteImages = async (images) => {
             Key: image.key,
           };
           const data = await S3.send(new DeleteObjectCommand(params));
-          console.log("Success. Object deleted.", data);
+          console.log("Success. Object deleted.");
           return data;
         } catch (err) {
           console.log("Error", err);
