@@ -1,6 +1,8 @@
 import { Ques } from "../model/quesModel.js";
 import { body, validationResult } from "express-validator";
 import processImages from "../helper/processImages.js";
+import { User } from "../model/userModel.js";
+import deleteImages from "../helper/deleteImages.js";
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -109,13 +111,30 @@ export const deleteQuestion = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Question not found" });
 
+    // Find the user who created the question
+    const user = await User.findById(question.createdBy);
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    // Delete the question images from the S3 bucket
+    if(question.images && question.images.length > 0) await deleteImages(question.images);
+
+    console.log("dletee")
+    // Delete the option images from the S3 bucket
+    question.options.forEach(async (option) => {
+      if (option.images && option.images.length > 0) {
+        await deleteImages(option.images);
+      }
+    });
+
+    console.log("option delete")
     await question.deleteOne();
 
-    // Remove the question from the questions array of all users
-    await User.updateMany(
-      { questions: question._id },
-      { $pull: { questions: question._id } }
-    );
+    // Remove the question from the questions array of the user
+    user.questions.pull(question._id);
+    await user.save();
 
     res.status(200).json({ success: true, message: "Question Deleted" });
   } catch (error) {
