@@ -17,6 +17,6 @@ router.post("/login", login);
 router.get("/verify/:id", isAuthenticated, checkAdmin, verification);
 router.get("/profile", isAuthenticated, getMyProfile);
 router.get("/logout", logout);
-router.get("/myquestion", isAuthenticated, checkAdmin, getUserQuestions)
+router.get("/myquestion", isAuthenticated, getUserQuestions)
 
 export default router;
