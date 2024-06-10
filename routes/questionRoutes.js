@@ -15,7 +15,6 @@ const router = express.Router();
 
 router.post(
   "/create/question",
-  convertToLowercase,
   isAuthenticated,
   createQuestion
 );
