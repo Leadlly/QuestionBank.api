@@ -130,7 +130,6 @@ export const getUserQuestions = async (req, res) => {
     }
 
     const filteredQuestions = await user.getQuestionsByStandard(selectedStandard);
-    
 
     if (filteredQuestions.length === 0) {
       return res.status(404).json({ success: false, message: "No questions found for the selected standard" });
@@ -138,10 +137,10 @@ export const getUserQuestions = async (req, res) => {
 
     return res.status(200).json({ success: true, questions: filteredQuestions });
   } catch (error) {
-
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 
 export const getMyProfile = async (req, res) => {
