@@ -9,7 +9,7 @@ const processImages = async (images) => {
       if (image === null) return
       const bucketKey = `questions/${new Date().getTime()}-${image.name}`;
       const putObjectInfo = {
-        Bucket: 'leadlly-questions-options',
+        Bucket: process.env.LEADLLY_S3_BUCKET_NAME,
         Key: bucketKey,
         ContentType: image.type,
       };
