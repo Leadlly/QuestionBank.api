@@ -111,18 +111,15 @@ export const deleteQuestion = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Question not found" });
 
-    // Find the user who created the question
     const user = await User.findById(question.createdBy);
     if (!user)
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
 
-    // Delete the question images from the S3 bucket
     if(question.images && question.images.length > 0) await deleteImages(question.images);
 
     console.log("dletee")
-    // Delete the option images from the S3 bucket
     question.options.forEach(async (option) => {
       if (option.images && option.images.length > 0) {
         await deleteImages(option.images);
@@ -132,7 +129,6 @@ export const deleteQuestion = async (req, res) => {
     console.log("option delete")
     await question.deleteOne();
 
-    // Remove the question from the questions array of the user
     user.questions.pull(question._id);
     await user.save();
 
@@ -153,7 +149,7 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topic = req.query.topic;
+    if (req.query.topics) queryObject.topics = req.query.topics;
 
     const questions = await Ques.find(queryObject);
     if (!questions || questions.length === 0) {
@@ -173,11 +169,35 @@ export const getAllQuestion = async (req, res) => {
     });
   }
 };
+export const getMyQuestions = async (req, res) => {
+  try {
+    const { standard, subject, chapter, topic } = req.query;
+    const userId = req.user._id; 
+
+    const query = {
+      createdBy: userId,
+      ...(standard && { standard }),
+      ...(subject && { subject }),
+      ...(chapter && { chapter: { $in: [chapter] } }),
+      ...(topic && { topics: { $in: [topic] } })
+    };
+
+    const questions = await Ques.find(query);
+
+    if (questions.length > 0) {
+      res.status(200).json({ success: true, questions });
+    } else {
+      res.status(200).json({ success: false, message: "No questions found." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
 
 export const editQuestion = async (req, res) => {
   try {
     const data = req.body;
-    // Check for existing question
     const ques = await Ques.findById(req.params.id);
     if (!ques) {
       return res.status(400).json({
@@ -186,10 +206,8 @@ export const editQuestion = async (req, res) => {
       });
     }
 
-    // Update question
     ques.question = data.question;
 
-    // Save the updated question
     await ques.save();
 
     return res.status(200).json({
@@ -239,5 +257,21 @@ export const updateOption = async (req, res) => {
       success: false,
       message: error.message || 'Internal Server Error',
     });
+  }
+};
+
+
+export const allUser = async (req, res) => {
+  try {
+     const users = await User.find({})
+     if(!users) return res.status(404).json({ error: "Users not found" });
+
+     res.status(200).json({
+      success: true,
+      users
+     });
+  } catch (error) {
+    console.error('Error fetching questions:', error);
+    res.status(500).json({ error: error.message });
   }
 };
