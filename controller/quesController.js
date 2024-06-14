@@ -263,16 +263,15 @@ export const updateOption = async (req, res) => {
 
 export const allUser = async (req, res) => {
   try {
-    if (!req.user || req.user.role !== 'admin') {
-      return res.status(403).json({ success: false, message: "Access Denied" });
-    }
+     const users = await User.find({})
+     if(!users) return res.status(404).json({ error: "Users not found" });
 
-    const questions = await Ques.find({})
-      .populate('createdBy', 'username'); // Populate the createdBy field with the username of the creator
-
-    res.json(questions);
+     res.status(200).json({
+      success: true,
+      users
+     });
   } catch (error) {
     console.error('Error fetching questions:', error);
-    res.status(500).json({ error: 'Failed to fetch questions' });
+    res.status(500).json({ error: error.message });
   }
 };
