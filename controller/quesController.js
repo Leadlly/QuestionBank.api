@@ -149,10 +149,13 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topics) queryObject.topics = req.query.topics;
+    if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
+
+    console.log(queryObject)
 
     const questions = await Ques.find(queryObject);
-    if (!questions || questions.length === 0) {
+    if (!questions) {
       return res.status(404).json({ success: false, message: "Question not found" });
     }
 
@@ -171,24 +174,25 @@ export const getAllQuestion = async (req, res) => {
 };
 export const getMyQuestions = async (req, res) => {
   try {
-    const { standard, subject, chapter, topic } = req.query;
     const userId = req.user._id; 
 
-    const query = {
-      createdBy: userId,
-      ...(standard && { standard }),
-      ...(subject && { subject }),
-      ...(chapter && { chapter: { $in: [chapter] } }),
-      ...(topic && { topics: { $in: [topic] } })
-    };
 
-    const questions = await Ques.find(query);
+    const queryObject = {createdBy: userId};
+    
+    if (req.query.standard) queryObject.standard = req.query.standard;
+    if (req.query.subject) queryObject.subject = req.query.subject;
+    if (req.query.chapter) queryObject.chapter = req.query.chapter;
+    if (req.query.topic) queryObject.topics = req.query.topic;
 
-    if (questions.length > 0) {
-      res.status(200).json({ success: true, questions });
-    } else {
-      res.status(200).json({ success: false, message: "No questions found." });
-    }
+    const questions = await Ques.find(queryObject);
+
+    if (!questions) {
+       res.status(400).json({ success: false, message: "No questions found." });
+    } 
+
+
+      res.status(200).json({ success: false, questions: questions });
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error" });
