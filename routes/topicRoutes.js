@@ -12,6 +12,6 @@ router.post(
     checkAdmin,
     createTopic
 );
-router.get("/get/topic", isAuthenticated, getTopic);
+router.get("/get/topic", getTopic);
 
 export default router;

@@ -13,6 +13,6 @@ router.post(
     checkAdmin,
     createChapter
   );
-router.get("/get/chapter", isAuthenticated, getChapter);
+router.get("/get/chapter", getChapter);
 
 export default router;
