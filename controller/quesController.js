@@ -152,10 +152,10 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
-    console.log(queryObject)
+    console.log(queryObject);
 
     const questions = await Ques.find(queryObject);
-    if (!questions) {
+    if (!questions || questions.length === 0) {
       return res.status(404).json({ success: false, message: "Question not found" });
     }
 
@@ -164,7 +164,47 @@ export const getAllQuestion = async (req, res) => {
       nestedSubTopic: question.nestedSubTopic || "" 
     }));
 
-    return res.status(200).json({ success: true, questions: formattedQuestions });
+    let todaysQuestionsCount = 0;
+    let userRank = null;
+
+    if (req.query.createdBy) {
+      const startOfToday = new Date();
+      startOfToday.setHours(0, 0, 0, 0);
+
+      const endOfToday = new Date();
+      endOfToday.setHours(23, 59, 59, 999);
+
+      // Get today's questions for the specific user
+      const todaysQuestions = await Ques.find({
+        createdBy: req.query.createdBy,
+        createdAt: { $gte: startOfToday, $lt: endOfToday },
+      });
+
+      todaysQuestionsCount = todaysQuestions.length;
+
+      // Get all users' today's questions count
+      const users = await User.find();
+      const userCounts = await Promise.all(users.map(async user => {
+        const userQuestions = await Ques.find({
+          createdBy: user._id,
+          createdAt: { $gte: startOfToday, $lt: endOfToday },
+        });
+        return { userId: user._id, count: userQuestions.length };
+      }));
+
+      // Sort users by their today's questions count in descending order
+      userCounts.sort((a, b) => b.count - a.count);
+
+      // Determine the rank of the current user
+      userRank = userCounts.findIndex(user => user.userId.toString() === req.query.createdBy) + 1;
+    }
+
+    return res.status(200).json({ 
+      success: true, 
+      questions: formattedQuestions, 
+      todaysQuestionsCount: todaysQuestionsCount,
+      userRank: userRank
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -176,8 +216,7 @@ export const getMyQuestions = async (req, res) => {
   try {
     const userId = req.user._id; 
 
-
-    const queryObject = {createdBy: userId};
+    const queryObject = { createdBy: userId };
     
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
@@ -187,11 +226,44 @@ export const getMyQuestions = async (req, res) => {
     const questions = await Ques.find(queryObject);
 
     if (!questions) {
-       res.status(400).json({ success: false, message: "No questions found." });
-    } 
+      return res.status(400).json({ success: false, message: "No questions found." });
+    }
 
+    // Get the start and end of today's date
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
 
-      res.status(200).json({ success: false, questions: questions });
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    // Query to get today's questions for the current user
+    const todaysQuestions = await Ques.find({
+      createdBy: userId,
+      createdAt: { $gte: startOfToday, $lt: endOfToday },
+    });
+
+    // Get all users' today's questions count
+    const users = await User.find();
+    const userCounts = await Promise.all(users.map(async user => {
+      const userQuestions = await Ques.find({
+        createdBy: user._id,
+        createdAt: { $gte: startOfToday, $lt: endOfToday },
+      });
+      return { userId: user._id, count: userQuestions.length };
+    }));
+
+    // Sort users by their today's questions count in descending order
+    userCounts.sort((a, b) => b.count - a.count);
+
+    // Determine the rank of the current user
+    const userRank = userCounts.findIndex(user => user.userId.toString() === userId.toString()) + 1;
+
+    res.status(200).json({ 
+      success: true, 
+      questions: questions,
+      todaysQuestionsCount: todaysQuestions.length,
+      userRank: userRank
+    });
     
   } catch (error) {
     console.error(error);
