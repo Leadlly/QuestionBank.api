@@ -24,7 +24,7 @@ router.put("/edit/question/:id", isAuthenticated, editQuestion)
 router.put("/edit/question/:id/option/:optionId", isAuthenticated, updateOption)
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);
 
-router.get("/get/question", isAuthenticated, checkAdmin, getAllQuestion);
+router.get("/get/question", isAuthenticated, getAllQuestion);
 router.get("/get/myquestion", isAuthenticated, getMyQuestions )
 router.get("/get/users", isAuthenticated, allUser);
 
