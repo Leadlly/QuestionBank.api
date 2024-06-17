@@ -209,7 +209,7 @@ export const getAllQuestion = async (req, res) => {
       // Determine the topper user
       if (userCounts.length > 0) {
         const topperUserId = userCounts[0].userId;
-        topperUser = await User.findById(topperUserId).select('_id username');
+        topperUser = await User.findById(topperUserId).select('name');
         topperUserQuestionsCount = userCounts[0].count;
       }
     } else {
