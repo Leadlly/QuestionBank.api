@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
 import deleteImages from "../helper/deleteImages.js";
-import ApiFeatures from "../utils/apifeatures.js";
+
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
   body("options.all.*").notEmpty().trim().escape(),
@@ -154,18 +154,9 @@ export const getAllQuestion = async (req, res) => {
 
     console.log(queryObject);
 
-    let formattedQuestions = [];
-    let filteredQuestionCount = 0;
-    const resultPerPage = Number(req.query.limit) || 50;
-
-    if (req.user.role === "admin") {
-      let query = Ques.find(queryObject);
-
-      const apiFeatures = new ApiFeatures(query, req.query)
-        .pagination(resultPerPage);
-
-      const questions = await apiFeatures.query;
-
+    let formattedQuestions = []
+    if(req.user.role === "admin"){
+      const questions = await Ques.find(queryObject);
       if (!questions || questions.length === 0) {
         return res.status(404).json({ success: false, message: "Question not found" });
       }
@@ -174,21 +165,24 @@ export const getAllQuestion = async (req, res) => {
         ...question.toObject(),
         nestedSubTopic: question.nestedSubTopic || "" 
       }));
-
-      filteredQuestionCount = await Ques.countDocuments(queryObject);
     }
+   
+
+    
+
     let todaysQuestionsCount = 0;
     let userRank = null;
     let topperUser = null;
     let topperUserQuestionsCount = 0;
 
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
     if (req.query.createdBy) {
-      const startOfToday = new Date();
-      startOfToday.setHours(0, 0, 0, 0);
-
-      const endOfToday = new Date();
-      endOfToday.setHours(23, 59, 59, 999);
-
+      // Get today's questions for the specific user
       const todaysQuestions = await Ques.find({
         createdBy: req.query.createdBy,
         createdAt: { $gte: startOfToday, $lt: endOfToday },
@@ -196,6 +190,7 @@ export const getAllQuestion = async (req, res) => {
 
       todaysQuestionsCount = todaysQuestions.length;
 
+      // Get all users' today's questions count
       const users = await User.find();
       const userCounts = await Promise.all(users.map(async user => {
         const userQuestions = await Ques.find({
@@ -205,22 +200,20 @@ export const getAllQuestion = async (req, res) => {
         return { userId: user._id, count: userQuestions.length };
       }));
 
+      // Sort users by their today's questions count in descending order
       userCounts.sort((a, b) => b.count - a.count);
 
+      // Determine the rank of the current user
       userRank = userCounts.findIndex(user => user.userId.toString() === req.query.createdBy) + 1;
 
+      // Determine the topper user
       if (userCounts.length > 0) {
         const topperUserId = userCounts[0].userId;
         topperUser = await User.findById(topperUserId).select('name');
         topperUserQuestionsCount = userCounts[0].count;
       }
     } else {
-      const startOfToday = new Date();
-      startOfToday.setHours(0, 0, 0, 0);
-
-      const endOfToday = new Date();
-      endOfToday.setHours(23, 59, 59, 999);
-
+      // Get all users' today's questions count if createdBy is not provided
       const users = await User.find();
       const userCounts = await Promise.all(users.map(async user => {
         const userQuestions = await Ques.find({
@@ -230,8 +223,10 @@ export const getAllQuestion = async (req, res) => {
         return { userId: user._id, count: userQuestions.length };
       }));
 
+      // Sort users by their today's questions count in descending order
       userCounts.sort((a, b) => b.count - a.count);
 
+      // Determine the topper user
       if (userCounts.length > 0) {
         const topperUserId = userCounts[0].userId;
         topperUser = await User.findById(topperUserId).select('name');
@@ -246,10 +241,9 @@ export const getAllQuestion = async (req, res) => {
       userRank: userRank,
       topperUser: {
         name: topperUser,
-        questionsCount: topperUserQuestionsCount,
+        QuestionsCount: topperUserQuestionsCount
       },
-      resultPerPage: resultPerPage,
-      filteredQuestionCount: filteredQuestionCount,
+     
     });
   } catch (error) {
     return res.status(500).json({
@@ -261,41 +255,35 @@ export const getAllQuestion = async (req, res) => {
 
 export const getMyQuestions = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const resultPerPage = parseInt(req.query.limit) || 50; 
-    let filteredMyQuestionCount = 0;
-    const queryObject = { createdBy: userId };
+    const userId = req.user._id; 
 
+    const queryObject = { createdBy: userId };
+    
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
 
-    const apiFeatures = new ApiFeatures(Ques.find(queryObject), req.query);
-
-    apiFeatures.pagination(resultPerPage);
-
-    if (req.query.keyword) {
-      apiFeatures.search();
-    }
-    filteredMyQuestionCount = await Ques.countDocuments(queryObject);
-    const questions = await apiFeatures.query;
+    const questions = await Ques.find(queryObject);
 
     if (!questions) {
       return res.status(400).json({ success: false, message: "No questions found." });
     }
 
+    // Get the start and end of today's date
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
 
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 999);
 
+    // Query to get today's questions for the current user
     const todaysQuestions = await Ques.find({
       createdBy: userId,
       createdAt: { $gte: startOfToday, $lt: endOfToday },
     });
 
+    // Get all users' today's questions count
     const users = await User.find();
     const userCounts = await Promise.all(users.map(async user => {
       const userQuestions = await Ques.find({
@@ -305,18 +293,17 @@ export const getMyQuestions = async (req, res) => {
       return { userId: user._id, count: userQuestions.length };
     }));
 
+    // Sort users by their today's questions count in descending order
     userCounts.sort((a, b) => b.count - a.count);
 
+    // Determine the rank of the current user
     const userRank = userCounts.findIndex(user => user.userId.toString() === userId.toString()) + 1;
 
     res.status(200).json({ 
       success: true, 
       questions: questions,
       todaysQuestionsCount: todaysQuestions.length,
-      userRank: userRank,
-      totalPages: Math.ceil(questions.length / resultPerPage),
-      currentPage: Number(req.query.page) || 1, 
-      filteredMyQuestionCount
+      userRank: userRank
     });
     
   } catch (error) {
@@ -324,6 +311,7 @@ export const getMyQuestions = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
 export const editQuestion = async (req, res) => {
   try {
     const data = req.body;
