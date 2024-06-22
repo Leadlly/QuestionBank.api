@@ -156,7 +156,19 @@ export const getAllQuestion = async (req, res) => {
 
     let formattedQuestions = []
     if(req.user.role === "admin"){
-      const questions = await Ques.find(queryObject);
+      let questionsData = Ques.find(queryObject);
+
+      let page = req.query.page || 1;
+      let limit = req.query.limit || 50;
+  
+      let skip = (page - 1) * limit;
+
+      questionsData = questionsData.skip(skip).limit(limit);
+
+      const questions = await questionsData
+
+      console.log(questions.length)
+
       if (!questions || questions.length === 0) {
         return res.status(404).json({ success: false, message: "Question not found" });
       }
@@ -167,7 +179,7 @@ export const getAllQuestion = async (req, res) => {
       }));
     }
    
-
+    
     
 
     let todaysQuestionsCount = 0;
@@ -234,9 +246,12 @@ export const getAllQuestion = async (req, res) => {
       }
     }
 
+    let totalQuestions = (await Ques.find()).length;
+
     return res.status(200).json({ 
       success: true, 
       questions: formattedQuestions, 
+      totalQuestions: totalQuestions,
       todaysQuestionsCount: todaysQuestionsCount,
       userRank: userRank,
       topperUser: {
