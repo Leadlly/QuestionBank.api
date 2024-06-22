@@ -246,12 +246,10 @@ export const getAllQuestion = async (req, res) => {
       }
     }
 
-    let totalQuestions = (await Ques.find()).length;
 
     return res.status(200).json({ 
       success: true, 
       questions: formattedQuestions, 
-      totalQuestions: totalQuestions,
       todaysQuestionsCount: todaysQuestionsCount,
       userRank: userRank,
       topperUser: {
