@@ -256,6 +256,7 @@ export const getAllQuestion = async (req, res) => {
         name: topperUser,
         QuestionsCount: topperUserQuestionsCount
       },
+    
      
     });
   } catch (error) {
@@ -265,6 +266,34 @@ export const getAllQuestion = async (req, res) => {
     });
   }
 };
+
+
+export const getTotalQuestions = async (req, res) => {
+  try {
+    const queryObject = {};
+
+    if (req.query.standard) queryObject.standard = req.query.standard;
+    if (req.query.subject) queryObject.subject = req.query.subject;
+    if (req.query.chapter) queryObject.chapter = req.query.chapter;
+    if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
+
+    console.log(queryObject);
+
+    const totalQuestions = await Ques.countDocuments(queryObject);
+
+    return res.status(200).json({
+      success: true,
+      totalQuestions: totalQuestions
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
 
 export const getMyQuestions = async (req, res) => {
   try {
@@ -278,6 +307,7 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.topic) queryObject.topics = req.query.topic;
 
     const questions = await Ques.find(queryObject);
+    
 
     if (!questions) {
       return res.status(400).json({ success: false, message: "No questions found." });
