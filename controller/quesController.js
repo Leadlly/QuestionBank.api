@@ -119,12 +119,14 @@ export const deleteQuestion = async (req, res) => {
 
     if(question.images && question.images.length > 0) await deleteImages(question.images);
 
+    console.log("dletee")
     question.options.forEach(async (option) => {
       if (option.images && option.images.length > 0) {
         await deleteImages(option.images);
       }
     });
 
+    console.log("option delete")
     await question.deleteOne();
 
     user.questions.pull(question._id);
@@ -154,18 +156,7 @@ export const getAllQuestion = async (req, res) => {
 
     let formattedQuestions = []
     if(req.user.role === "admin"){
-      let questionsData = Ques.find(queryObject);
-
-      let page = req.query.page || 1;
-      let limit = req.query.limit || 50;
-  
-      let skip = (page - 1) * limit;
-
-      questionsData = questionsData.skip(skip).limit(limit);
-
-      const questions = await questionsData
-
-
+      const questions = await Ques.find(queryObject);
       if (!questions || questions.length === 0) {
         return res.status(404).json({ success: false, message: "Question not found" });
       }
@@ -176,7 +167,7 @@ export const getAllQuestion = async (req, res) => {
       }));
     }
    
-    
+
     
 
     let todaysQuestionsCount = 0;
@@ -243,7 +234,6 @@ export const getAllQuestion = async (req, res) => {
       }
     }
 
-
     return res.status(200).json({ 
       success: true, 
       questions: formattedQuestions, 
@@ -253,7 +243,6 @@ export const getAllQuestion = async (req, res) => {
         name: topperUser,
         QuestionsCount: topperUserQuestionsCount
       },
-    
      
     });
   } catch (error) {
@@ -263,43 +252,6 @@ export const getAllQuestion = async (req, res) => {
     });
   }
 };
-
-
-export const getTotalQuestions = async (req, res) => {
-  try {
-    const queryObject = {};
-    const userId = req.user._id; 
-
-    const queryObjects = { createdBy: userId };
-    if (req.query.standard) queryObject.standard = req.query.standard;
-    if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
-    if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
-
-    console.log(queryObject);
-
-    const totalQuestions = await Ques.countDocuments(queryObject);
-
-    // Fetch questions length for the same criteria as getMyQuestions
-    const questions = await Ques.find(queryObject);
-    const myQuestion = await Ques.find(queryObjects);
-    const questionsLength = myQuestion.length;
-
-    return res.status(200).json({
-      success: true,
-      totalQuestions: totalQuestions,
-      questionsLength: questionsLength 
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message || "Internal Server Error",
-    });
-  }
-};
-
-
 
 export const getMyQuestions = async (req, res) => {
   try {
@@ -312,22 +264,9 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
 
-    // Get total count of questions matching the query
-    const totalQuestions = await Ques.countDocuments(queryObject);
+    const questions = await Ques.find(queryObject);
 
-    let questionsData = Ques.find(queryObject);
-
-    let page = req.query.page || 1;
-    let limit = req.query.limit || 50;
-  
-    let skip = (page - 1) * limit;
-
-    questionsData = questionsData.skip(skip).limit(limit);
-
-    const paginatedQuestions = await questionsData;
-
-
-    if (!paginatedQuestions.length) {
+    if (!questions) {
       return res.status(400).json({ success: false, message: "No questions found." });
     }
 
@@ -362,10 +301,9 @@ export const getMyQuestions = async (req, res) => {
 
     res.status(200).json({ 
       success: true, 
-      questions: paginatedQuestions,
+      questions: questions,
       todaysQuestionsCount: todaysQuestions.length,
-      userRank: userRank,
-      totalQuestions: totalQuestions
+      userRank: userRank
     });
     
   } catch (error) {
