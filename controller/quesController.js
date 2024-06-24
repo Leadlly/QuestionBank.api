@@ -119,14 +119,12 @@ export const deleteQuestion = async (req, res) => {
 
     if(question.images && question.images.length > 0) await deleteImages(question.images);
 
-    console.log("dletee")
     question.options.forEach(async (option) => {
       if (option.images && option.images.length > 0) {
         await deleteImages(option.images);
       }
     });
 
-    console.log("option delete")
     await question.deleteOne();
 
     user.questions.pull(question._id);
@@ -167,7 +165,6 @@ export const getAllQuestion = async (req, res) => {
 
       const questions = await questionsData
 
-      console.log(questions.length)
 
       if (!questions || questions.length === 0) {
         return res.status(404).json({ success: false, message: "Question not found" });
@@ -271,7 +268,9 @@ export const getAllQuestion = async (req, res) => {
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
+    const userId = req.user._id; 
 
+    const queryObjects = { createdBy: userId };
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
@@ -282,9 +281,15 @@ export const getTotalQuestions = async (req, res) => {
 
     const totalQuestions = await Ques.countDocuments(queryObject);
 
+    // Fetch questions length for the same criteria as getMyQuestions
+    const questions = await Ques.find(queryObject);
+    const myQuestion = await Ques.find(queryObjects);
+    const questionsLength = myQuestion.length;
+
     return res.status(200).json({
       success: true,
-      totalQuestions: totalQuestions
+      totalQuestions: totalQuestions,
+      questionsLength: questionsLength 
     });
   } catch (error) {
     return res.status(500).json({
@@ -293,6 +298,7 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
+
 
 
 export const getMyQuestions = async (req, res) => {
@@ -306,10 +312,22 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
 
-    const questions = await Ques.find(queryObject);
-    
+    // Get total count of questions matching the query
+    const totalQuestions = await Ques.countDocuments(queryObject);
 
-    if (!questions) {
+    let questionsData = Ques.find(queryObject);
+
+    let page = req.query.page || 1;
+    let limit = req.query.limit || 50;
+  
+    let skip = (page - 1) * limit;
+
+    questionsData = questionsData.skip(skip).limit(limit);
+
+    const paginatedQuestions = await questionsData;
+
+
+    if (!paginatedQuestions.length) {
       return res.status(400).json({ success: false, message: "No questions found." });
     }
 
@@ -344,9 +362,10 @@ export const getMyQuestions = async (req, res) => {
 
     res.status(200).json({ 
       success: true, 
-      questions: questions,
+      questions: paginatedQuestions,
       todaysQuestionsCount: todaysQuestions.length,
-      userRank: userRank
+      userRank: userRank,
+      totalQuestions: totalQuestions
     });
     
   } catch (error) {
