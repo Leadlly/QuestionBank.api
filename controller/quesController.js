@@ -270,7 +270,7 @@ export const getTotalQuestions = async (req, res) => {
     const queryObject = {};
     const userId = req.user._id; 
 
-    const queryObjects = { createdBy: userId };
+    // Building query object based on request parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
@@ -279,17 +279,21 @@ export const getTotalQuestions = async (req, res) => {
 
     console.log(queryObject);
 
+    // Fetch total questions based on the query object
     const totalQuestions = await Ques.countDocuments(queryObject);
 
-    // Fetch questions length for the same criteria as getMyQuestions
-    const questions = await Ques.find(queryObject);
-    const myQuestion = await Ques.find(queryObjects);
-    const questionsLength = myQuestion.length;
-
+    // Fetch questions for the user based on the same criteria
+    const queryObjects = { ...queryObject, createdBy: userId };
+    const myQuestions = await Ques.find(queryObjects);
+    const questionsLength = myQuestions.length;
+    const fixedTotalQuestions = await Ques.countDocuments({});
+    const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
     return res.status(200).json({
       success: true,
       totalQuestions: totalQuestions,
-      questionsLength: questionsLength 
+      questionsLength: questionsLength,
+      fixedTotalQuestions: fixedTotalQuestions,
+      totalMyQuestions: totalMyQuestions,
     });
   } catch (error) {
     return res.status(500).json({
@@ -298,6 +302,7 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
+
 
 
 
