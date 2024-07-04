@@ -151,9 +151,15 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
     if (req.query.search) {
-      const searchRegex = new RegExp(req.query.search, 'i'); // 'i' for case insensitive
-      queryObject.$or = [
-        { question: searchRegex }
+      // Split search query by spaces to handle multiple words
+      const searchTerms = req.query.search.split(' ').filter(term => term !== '');
+
+      // Create regex pattern to match each term individually
+      const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
+
+      // Use $and with $or to match any of the terms
+      queryObject.$and = [
+        { $or: searchRegex.map(regex => ({ question: regex })) }
       ];
     }
 
@@ -161,7 +167,7 @@ export const getAllQuestion = async (req, res) => {
 
     let formattedQuestions = []
     if (req.user.role === "admin") {
-      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 }); // Added sort to get questions in reverse order
+      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 }); 
 
       let page = req.query.page || 1;
       let limit = req.query.limit || 50;
@@ -277,21 +283,21 @@ export const getTotalQuestions = async (req, res) => {
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
+    
     if (req.query.search) {
-      const searchRegex = new RegExp(req.query.search, 'i'); // 'i' for case insensitive
-      queryObject.$or = [
-        { question: searchRegex }
+      // Split search query by spaces to handle multiple words
+      const searchTerms = req.query.search.split(' ').filter(term => term !== '');
+
+      // Create regex pattern to match each term individually
+      const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
+
+      // Use $and with $or to match any of the terms
+      queryObject.$and = [
+        { $or: searchRegex.map(regex => ({ question: regex })) }
       ];
     }
     console.log(queryObject);
 
-    let searchQuery = {};
-    if (req.query.search) {
-      const searchRegex = new RegExp(req.query.search, 'i');
-      searchQuery = { question: searchRegex };
-    }
-    const totalSearchQuestions = await Ques.countDocuments(searchQuery);
-    // Fetch total questions based on the query object
     const totalQuestions = await Ques.countDocuments(queryObject);
 
     // Fetch questions for the user based on the same criteria
@@ -304,8 +310,8 @@ export const getTotalQuestions = async (req, res) => {
     return res.status(200).json({
       success: true,
       totalQuestions: totalQuestions,
-      totalSearchQuestions: totalSearchQuestions,
       questionsLength: questionsLength,
+      // totalSearchQuestions: totalSearchQuestions,
       fixedTotalQuestions: fixedTotalQuestions,
       totalMyQuestions: totalMyQuestions,
     });
@@ -330,7 +336,18 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.search) {
+      // Split search query by spaces to handle multiple words
+      const searchTerms = req.query.search.split(' ').filter(term => term !== '');
 
+      // Create regex pattern to match each term individually
+      const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
+
+      // Use $and with $or to match any of the terms
+      queryObject.$and = [
+        { $or: searchRegex.map(regex => ({ question: regex })) }
+      ];
+    }
     // Get total count of questions matching the query
     const totalQuestions = await Ques.countDocuments(queryObject);
 
