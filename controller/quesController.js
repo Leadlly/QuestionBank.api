@@ -150,21 +150,27 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, 'i'); // 'i' for case insensitive
+      queryObject.$or = [
+        { question: searchRegex }
+      ];
+    }
+
     console.log(queryObject);
 
     let formattedQuestions = []
-    if(req.user.role === "admin"){
-      let questionsData = Ques.find(queryObject);
+    if (req.user.role === "admin") {
+      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 }); // Added sort to get questions in reverse order
 
       let page = req.query.page || 1;
       let limit = req.query.limit || 50;
-  
+
       let skip = (page - 1) * limit;
 
       questionsData = questionsData.skip(skip).limit(limit);
 
-      const questions = await questionsData
-
+      const questions = await questionsData;
 
       if (!questions || questions.length === 0) {
         return res.status(404).json({ success: false, message: "Question not found" });
@@ -175,9 +181,6 @@ export const getAllQuestion = async (req, res) => {
         nestedSubTopic: question.nestedSubTopic || "" 
       }));
     }
-   
-    
-    
 
     let todaysQuestionsCount = 0;
     let userRank = null;
@@ -243,18 +246,15 @@ export const getAllQuestion = async (req, res) => {
       }
     }
 
-
-    return res.status(200).json({ 
-      success: true, 
-      questions: formattedQuestions, 
+    return res.status(200).json({
+      success: true,
+      questions: formattedQuestions,
       todaysQuestionsCount: todaysQuestionsCount,
       userRank: userRank,
       topperUser: {
         name: topperUser,
         QuestionsCount: topperUserQuestionsCount
       },
-    
-     
     });
   } catch (error) {
     return res.status(500).json({
@@ -263,6 +263,7 @@ export const getAllQuestion = async (req, res) => {
     });
   }
 };
+
 
 
 export const getTotalQuestions = async (req, res) => {
@@ -276,9 +277,20 @@ export const getTotalQuestions = async (req, res) => {
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
-
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, 'i'); // 'i' for case insensitive
+      queryObject.$or = [
+        { question: searchRegex }
+      ];
+    }
     console.log(queryObject);
 
+    let searchQuery = {};
+    if (req.query.search) {
+      const searchRegex = new RegExp(req.query.search, 'i');
+      searchQuery = { question: searchRegex };
+    }
+    const totalSearchQuestions = await Ques.countDocuments(searchQuery);
     // Fetch total questions based on the query object
     const totalQuestions = await Ques.countDocuments(queryObject);
 
@@ -288,9 +300,11 @@ export const getTotalQuestions = async (req, res) => {
     const questionsLength = myQuestions.length;
     const fixedTotalQuestions = await Ques.countDocuments({});
     const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+
     return res.status(200).json({
       success: true,
       totalQuestions: totalQuestions,
+      totalSearchQuestions: totalSearchQuestions,
       questionsLength: questionsLength,
       fixedTotalQuestions: fixedTotalQuestions,
       totalMyQuestions: totalMyQuestions,
