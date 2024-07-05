@@ -151,13 +151,10 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
     if (req.query.search) {
-      // Split search query by spaces to handle multiple words
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
 
-      // Create regex pattern to match each term individually
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
 
-      // Use $and with $or to match any of the terms
       queryObject.$and = [
         { $or: searchRegex.map(regex => ({ question: regex })) }
       ];
@@ -200,7 +197,6 @@ export const getAllQuestion = async (req, res) => {
     endOfToday.setHours(23, 59, 59, 999);
 
     if (req.query.createdBy) {
-      // Get today's questions for the specific user
       const todaysQuestions = await Ques.find({
         createdBy: req.query.createdBy,
         createdAt: { $gte: startOfToday, $lt: endOfToday },
@@ -208,7 +204,6 @@ export const getAllQuestion = async (req, res) => {
 
       todaysQuestionsCount = todaysQuestions.length;
 
-      // Get all users' today's questions count
       const users = await User.find();
       const userCounts = await Promise.all(users.map(async user => {
         const userQuestions = await Ques.find({
@@ -218,20 +213,16 @@ export const getAllQuestion = async (req, res) => {
         return { userId: user._id, count: userQuestions.length };
       }));
 
-      // Sort users by their today's questions count in descending order
       userCounts.sort((a, b) => b.count - a.count);
 
-      // Determine the rank of the current user
       userRank = userCounts.findIndex(user => user.userId.toString() === req.query.createdBy) + 1;
 
-      // Determine the topper user
       if (userCounts.length > 0) {
         const topperUserId = userCounts[0].userId;
         topperUser = await User.findById(topperUserId).select('name');
         topperUserQuestionsCount = userCounts[0].count;
       }
     } else {
-      // Get all users' today's questions count if createdBy is not provided
       const users = await User.find();
       const userCounts = await Promise.all(users.map(async user => {
         const userQuestions = await Ques.find({
@@ -241,10 +232,8 @@ export const getAllQuestion = async (req, res) => {
         return { userId: user._id, count: userQuestions.length };
       }));
 
-      // Sort users by their today's questions count in descending order
       userCounts.sort((a, b) => b.count - a.count);
 
-      // Determine the topper user
       if (userCounts.length > 0) {
         const topperUserId = userCounts[0].userId;
         topperUser = await User.findById(topperUserId).select('name');
@@ -272,40 +261,54 @@ export const getAllQuestion = async (req, res) => {
 
 
 
+
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
-    // Building query object based on request parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
-    
-    if (req.query.search) {
-      // Split search query by spaces to handle multiple words
-      const searchTerms = req.query.search.split(' ').filter(term => term !== '');
 
-      // Create regex pattern to match each term individually
+    // const myquestion = req.query.createdBy ? true : false;
+
+    if (req.query.search) {
+      const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
 
-      // Use $and with $or to match any of the terms
+      queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
+    }
+
+    if (req.query.mySearch) {
+      const searchTerms = req.query.mySearch.split(' ').filter(term => term !== '');
+      const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
+
       queryObject.$and = [
-        { $or: searchRegex.map(regex => ({ question: regex })) }
+        { $or: searchRegex.map(regex => ({ question: regex })) },
+        { createdBy: userId },
       ];
     }
+
     console.log(queryObject);
 
     const totalQuestions = await Ques.countDocuments(queryObject);
 
-    // Fetch questions for the user based on the same criteria
-    const queryObjects = { ...queryObject, createdBy: userId };
-    const myQuestions = await Ques.find(queryObjects);
-    const questionsLength = myQuestions.length;
-    const fixedTotalQuestions = await Ques.countDocuments({});
-    const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+    let myQuestions, questionsLength, fixedTotalQuestions, totalMyQuestions, totalMyPages, totalPages;
+
+    // if (myquestion) {
+      const queryObjects = { ...queryObject, createdBy: userId };
+      myQuestions = await Ques.find(queryObjects);
+      questionsLength = myQuestions.length;
+      totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+      totalMyPages = Math.ceil(totalMyQuestions / req.query.questionsPerPage);
+   
+
+    // const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+    fixedTotalQuestions = await Ques.countDocuments({});
+    totalPages = Math.ceil(totalQuestions / req.query.questionsPerPage);
 
     return res.status(200).json({
       success: true,
@@ -326,6 +329,11 @@ export const getTotalQuestions = async (req, res) => {
 
 
 
+
+
+
+
+
 export const getMyQuestions = async (req, res) => {
   try {
     const userId = req.user._id; 
@@ -336,7 +344,7 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
-    if (req.query.search) {
+     if (req.query.search) {
       // Split search query by spaces to handle multiple words
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
 
@@ -348,7 +356,7 @@ export const getMyQuestions = async (req, res) => {
         { $or: searchRegex.map(regex => ({ question: regex })) }
       ];
     }
-    // Get total count of questions matching the query
+    console.log(queryObject)
     const totalQuestions = await Ques.countDocuments(queryObject);
 
     let questionsData = Ques.find(queryObject);
