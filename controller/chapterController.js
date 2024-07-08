@@ -170,7 +170,7 @@ export const getChapter = async (req, res) => {
       const updatedExamTags = req.body.examTags;
   
       const chapter = await Chapter.findByIdAndUpdate(chapterId, {
-        $set: { examTags: updatedExamTags },
+        $set: { exam: updatedExamTags },
       }, { new: true });
   
       if (!chapter) {
