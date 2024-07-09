@@ -167,6 +167,7 @@ export const getChapterById = async (req, res) => {
   }
 };
 export const updateChapterExamTags = async (req, res) => {
+  
   try {
     const chapterId = req.params.id;
     const updatedExamTags = req.body.examTags;
