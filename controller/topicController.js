@@ -69,39 +69,23 @@ export const createTopic = async (req, res) => {
   }
 };
 
-
-
-
-
 export const getTopic = async (req, res) => {
   try {
     const { subjectName, standard, chapterName } = req.query;
 
     let filter = {};
 
-    if (subjectName) {
-      filter.subject = subjectName;
-    }
+    if (subjectName) filter.subjectName = subjectName;
+    if (standard) filter.standard = standard;
+    if (chapterName) filter.chapterName = chapterName;
 
-    if (standard) {
-      filter.standard = standard;
-    }
-
-    if (chapterName) {
-      const chapterNameArray = chapterName.split(',').map(name => name.trim());
-      filter.chapters = { $elemMatch: { name: { $in: chapterNameArray } } };
-    }
-
-    const topics = await Topic.find(filter)
-      .populate({
-        path: 'subtopics',
-      });
+    const topics = await Topic.find(filter);
 
     if (topics.length === 0) {
       return res.status(404).json({ success: false, message: 'No topics found' });
     }
 
-    return res.status(200).json({ success: true, topics, exam: topics.exam });
+    return res.status(200).json({ success: true, topics });
   } catch (error) {
     console.error('Error in getTopic:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
@@ -132,6 +116,7 @@ export const getTopicById = async (req, res) => {
   }
 };
 
+
 export const updateTopicExamTags = async (req, res) => {
   try {
     const topicId = req.params.id;
@@ -145,8 +130,9 @@ export const updateTopicExamTags = async (req, res) => {
     }
 
     const topic = await Topic.findByIdAndUpdate(topicId, {
-      $addToSet: { exam: { $each: updatedExamTags } },
+      $set: { exam: updatedExamTags }, 
     }, { new: true });
+
 
     if (!topic) {
       return res.status(404).json({
@@ -168,6 +154,3 @@ export const updateTopicExamTags = async (req, res) => {
     });
   }
 };
-
-
-

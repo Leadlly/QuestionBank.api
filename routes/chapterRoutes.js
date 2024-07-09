@@ -15,6 +15,6 @@ router.post(
   );
 router.get("/get/chapter", getChapter);
 router.get("/get/chapter/:id", getChapterById);
-router.post("/chapter/:id/examtag", updateChapterExamTags);
+router.put("/chapter/:id/examtag", updateChapterExamTags);
 
 export default router;

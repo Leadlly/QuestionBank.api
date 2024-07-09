@@ -171,9 +171,18 @@ export const updateChapterExamTags = async (req, res) => {
     const chapterId = req.params.id;
     const updatedExamTags = req.body.examTags;
 
+    if (!updatedExamTags || !Array.isArray(updatedExamTags)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid exam tags. Must be an array.',
+      });
+    }
+
     const chapter = await Chapter.findByIdAndUpdate(chapterId, {
-      $addToSet: { exam: { $each: updatedExamTags } },
+      $set: { exam: updatedExamTags },
     }, { new: true });
+
+    console.log(chapter); 
 
     if (!chapter) {
       return res.status(404).json({
@@ -196,32 +205,3 @@ export const updateChapterExamTags = async (req, res) => {
   }
 };
 
-export const updateTopicExamTags = async (req, res) => {
-  try {
-    const topicId = req.params.id;
-    const updatedExamTags = req.body.examTags;
-
-    const topic = await Topic.findByIdAndUpdate(topicId, {
-      $addToSet: { exam: { $each: updatedExamTags } },
-    }, { new: true });
-
-    if (!topic) {
-      return res.status(404).json({
-        success: false,
-        message: 'Topic not found',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Exam tags updated successfully',
-      topic: topic,
-    });
-  } catch (error) {
-    console.error('Error updating exam tags:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Internal Server Error',
-    });
-  }
-};
