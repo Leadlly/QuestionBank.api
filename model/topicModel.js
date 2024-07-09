@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const topicSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true,
+      type: String,
+      required: true,
   },
   chapterName: {
     type: String,
@@ -12,19 +12,18 @@ const topicSchema = new mongoose.Schema({
   subjectName: {
     type: String,
     required: true,
-  },
-  standard: {
+},
+standard: {
     type: String,
     required: true,
-  },
+},
   subtopics: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Subtopic",
-    default: [],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subtopic",
+      default: [],
   }],
-  exam: [{ type: String }]
 }, { timestamps: true });
 
-
-export const Topic = mongoose.model("Topic", topicSchema)
+ 
+export const Topic = mongoose.model("Topic", topicSchema)  
 
