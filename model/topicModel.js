@@ -22,6 +22,7 @@ standard: {
       ref: "Subtopic",
       default: [],
   }],
+  exam: [{ type: String }]
 }, { timestamps: true });
 
  

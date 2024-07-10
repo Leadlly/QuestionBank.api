@@ -17,6 +17,7 @@ const chapterSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Topic"
     }],
+    exam: [{ type: String }]
   });
 
 export const Chapter = mongoose.model("Chapter", chapterSchema)  
