@@ -1,6 +1,8 @@
 import { Topic } from "../model/topicModel.js";
 import { Subject } from "../model/subjectModel.js";
 import { Chapter } from "../model/chapterModel.js";
+import {Ques} from "../model/quesModel.js";
+import {Subtopic} from "../model/subtopicModel.js"
 
 
 export const createTopic = async (req, res) => {
@@ -86,11 +88,21 @@ export const editTopic = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Topic not found' });
     }
 
+    const oldName = topic.name;
     topic.name = name;
-
     await topic.save();
 
-    return res.status(200).json({ success: true, message: 'Topic name edited successfully' });
+    await Ques.updateMany(
+      { topics: oldName },
+      { $set: { "topics.$": name } }
+    );
+
+    await Subtopic.updateMany(
+      { topicName: oldName },
+      { $set: { topicName: name } }
+    );
+
+    return res.status(200).json({ success: true, message: 'Topic name edited successfully in Topic, QuestionBank, and Subtopic collections' });
   } catch (error) {
     console.error('Error in editTopic:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
