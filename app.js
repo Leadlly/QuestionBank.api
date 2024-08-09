@@ -9,8 +9,6 @@ import TopicRouter from "./routes/topicRoutes.js";
 import ChapterRouter from "./routes/chapterRoutes.js"
 import SubTopicRouter from "./routes/subtopicRoutes.js";
 import SubjectRouter from "./routes/subjectRoutes.js"
-import serverless from "serverless-http";
-
 
 config({
   path: "./.env",
@@ -43,8 +41,6 @@ app.use(
       credentials: true,
   })
 );
-
-
 
 app.use("/api", QuestionRouter, TopicRouter, SubjectRouter, ChapterRouter, SubTopicRouter);
 app.use("/api/user", UserRouter);

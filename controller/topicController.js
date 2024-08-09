@@ -219,3 +219,100 @@ export const updateTopicExamTags = async (req, res) => {
     });
   }
 };
+
+export const updateTopic = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!id || !name) {
+      return res.status(400).json({ success: false, message: 'Topic ID and new name must be provided' });
+    }
+
+    const topic = await Topic.findById(id);
+
+    if (!topic) {
+      return res.status(404).json({ success: false, message: 'Topic not found' });
+    }
+
+    // Find the chapter associated with the topic by name and subjectName
+    const existingChapter = await Chapter.findOne({
+      name: topic.chapterName,
+      subjectName: topic.subjectName,
+    }).populate('topics');
+
+    // Check if the chapter exists
+    if (!existingChapter) {
+      return res.status(404).json({ success: false, message: 'Chapter not found' });
+    }
+
+    // Check if the new name already exists in the same chapter
+    const topicExists = existingChapter.topics.some(t => t.name === name && t._id.toString() !== id);
+
+    if (topicExists) {
+      return res.status(400).json({ success: false, message: `Topic name "${name}" already exists in the chapter` });
+    }
+
+    const oldName = topic.name;
+    topic.name = name;
+    await topic.save();
+
+    // Update the name in Ques and Subtopic collections
+    await Ques.updateMany(
+      { topics: oldName },
+      { $set: { "topics.$": name } }
+    );
+
+    await Subtopic.updateMany(
+      { topicName: oldName },
+      { $set: { topicName: name } }
+    );
+
+    return res.status(200).json({ success: true, message: 'Topic name updated successfully across all related collections' });
+  } catch (error) {
+    console.error('Error in updateTopic:', error);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
+
+export const deleteTopicnullquestion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ success: false, message: 'Topic ID must be provided' });
+    }
+
+    const topic = await Topic.findById(id);
+
+    if (!topic) {
+      return res.status(404).json({ success: false, message: 'Topic not found' });
+    }
+
+    const associatedQuestions = await Ques.find({ topics: topic.name });
+
+    if (associatedQuestions.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Topic "${topic.name}" cannot be deleted because it is associated with ${associatedQuestions.length} question(s).`,
+      });
+    }
+
+    await Topic.findByIdAndDelete(id);
+
+    await Chapter.updateMany({ topics: id }, { $pull: { topics: id } });
+
+    await Subtopic.deleteMany({ _id: { $in: topic.subtopics } });
+
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Topic and its associated subtopics deleted successfully' 
+    });
+  } catch (error) {
+    console.error('Error in deleteTopicnullquestion:', error);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
+
