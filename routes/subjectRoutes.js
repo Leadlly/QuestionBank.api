@@ -17,7 +17,7 @@ router.post(
   createSubject
 );
 
-router.get("/get/subject", isAuthenticated, getAllSubject);
+router.get("/get/subject", getAllSubject);
 
 
 

@@ -21,14 +21,14 @@ router.post(
   isAuthenticated,
   createQuestion
 );
-router.put("/edit/question/:id", isAuthenticated,convertToLowercase, editQuestion)
-router.put("/edit/question/:id/option/:optionId", isAuthenticated, convertToLowercase, updateOption)
-router.delete("/delete/:id", isAuthenticated, deleteQuestion);
+router.put("/edit/question/:id", convertToLowercase, editQuestion)
+router.put("/edit/question/:id/option/:optionId", convertToLowercase, updateOption)
+router.delete("/delete/:id", deleteQuestion);
 
-router.get("/get/question", isAuthenticated, getAllQuestion);
-router.get("/get/myquestion", isAuthenticated, getMyQuestions )
-router.get("/get/users", isAuthenticated, allUser);
-router.get("/get/totalquestion", isAuthenticated, getTotalQuestions);
+router.get("/get/question", getAllQuestion);
+router.get("/get/myquestion", getMyQuestions )
+router.get("/get/users", allUser);
+router.get("/get/totalquestion", getTotalQuestions);
 
 
 export default router;
