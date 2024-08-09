@@ -12,7 +12,7 @@ router.post(
     checkAdmin,
     createSubtopic
 );
-router.get("/get/subtopic",isAuthenticated,  getSubtopics);
-router.get('/nestedsubtopic', isAuthenticated, getNestedSubtopicsByName);
+router.get("/get/subtopic",  getSubtopics);
+router.get('/nestedsubtopic', getNestedSubtopicsByName);
 
 export default router;
