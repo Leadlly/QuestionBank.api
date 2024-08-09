@@ -13,13 +13,13 @@ router.post(
     checkAdmin,
     createTopic
 );
-router.get("/get/topic", getTopic);
-router.get("/get/topic/:id", getTopicById);
-router.put("/topic/:id/examtag", updateTopicExamTags);
-router.put("/edit/topic/:id", editTopic);
-router.delete("/delete/topic/:id", deleteTopic)
-router.put("/update/topic/:id", convertToLowercase, updateTopic)
-router.delete("/delete/null/topic/:id", deleteTopicnullquestion)
+router.get("/get/topic", isAuthenticated, getTopic);
+router.get("/get/topic/:id", isAuthenticated,  getTopicById);
+router.put("/topic/:id/examtag", isAuthenticated, convertToLowercase, updateTopicExamTags);
+router.put("/edit/topic/:id", isAuthenticated, convertToLowercase, editTopic);
+router.delete("/delete/topic/:id",isAuthenticated, deleteTopic)
+router.put("/update/topic/:id", isAuthenticated, convertToLowercase, updateTopic)
+router.delete("/delete/null/topic/:id", isAuthenticated, deleteTopicnullquestion)
 
 
 export default router;

@@ -13,9 +13,9 @@ router.post(
     checkAdmin,
     createChapter
   );
-router.get("/get/chapter", getChapter);
-router.get("/get/chapter/:id", getChapterById);
-router.put("/chapter/:id/examtag", convertToLowercase, updateChapterExamTags);
+router.get("/get/chapter", isAuthenticated, getChapter);
+router.get("/get/chapter/:id", isAuthenticated, getChapterById);
+router.put("/chapter/:id/examtag", isAuthenticated, convertToLowercase, updateChapterExamTags);
 
 
 export default router;
