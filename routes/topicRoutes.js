@@ -18,7 +18,7 @@ router.get("/get/topic/:id", getTopicById);
 router.put("/topic/:id/examtag", updateTopicExamTags);
 router.put("/edit/topic/:id", editTopic);
 router.delete("/delete/topic/:id", deleteTopic)
-router.put("/update/topic/:id", updateTopic)
+router.put("/update/topic/:id", convertToLowercase, updateTopic)
 router.delete("/delete/null/topic/:id", deleteTopicnullquestion)
 
 
