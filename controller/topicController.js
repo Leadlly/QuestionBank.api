@@ -290,26 +290,29 @@ export const deleteTopicnullquestion = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Topic not found' });
     }
 
-    // Check if the topic is associated with any questions
     const associatedQuestions = await Ques.find({ topics: topic.name });
 
-    // If no associated questions exist, prevent deletion
-    if (associatedQuestions.length === 0) {
+    if (associatedQuestions.length > 0) {
       return res.status(400).json({
         success: false,
-        message: `Topic "${topic.name}" cannot be deleted because it is not associated with any questions.`,
+        message: `Topic "${topic.name}" cannot be deleted because it is associated with ${associatedQuestions.length} question(s).`,
       });
     }
 
-    // If associated questions exist, proceed to delete the topic
     await Topic.findByIdAndDelete(id);
 
-    // Remove the topic ID from the chapter's topics array
     await Chapter.updateMany({ topics: id }, { $pull: { topics: id } });
 
-    return res.status(200).json({ success: true, message: 'Topic deleted successfully' });
+    await Subtopic.deleteMany({ _id: { $in: topic.subtopics } });
+
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Topic and its associated subtopics deleted successfully' 
+    });
   } catch (error) {
     console.error('Error in deleteTopicnullquestion:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
   }
 };
+
+
