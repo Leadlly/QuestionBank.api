@@ -1,5 +1,7 @@
+import { Ques } from '../model/quesModel.js';
 import { Subject } from '../model/subjectModel.js';
 import { Subtopic } from '../model/subtopicModel.js';
+import { Topic } from '../model/topicModel.js';
 
 
 export const createSubtopic = async (req, res) => {
@@ -193,4 +195,87 @@ export const getNestedSubtopicsByName = async (req, res) => {
 
 
 
+export const updateSubtopic = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name } = req.body;
+  
+      if (!id || !name) {
+        return res.status(400).json({ success: false, message: 'Subtopic ID and new name must be provided' });
+      }
+  
+      const subtopic = await Subtopic.findById(id);
+  
+      if (!subtopic) {
+        return res.status(404).json({ success: false, message: 'Subtopic not found' });
+      }
+  
+      const oldName = subtopic.name;
+      subtopic.name = name; 
+      await subtopic.save();
+  
+      await Ques.updateMany(
+        { subtopics: oldName },
+        { $set: { "subtopics.$[elem]": name } },
+        { arrayFilters: [{ "elem": oldName }] }
+      );
+      await Topic.updateMany(
+        { subtopics: id },
+        { $set: { "subtopics.$[elem]": id } },
+        { arrayFilters: [{ "elem": id }] }
+      );
+      return res.status(200).json({ success: true, message: 'Subtopic name updated successfully in Subtopic and Ques collections' });
+    } catch (error) {
+      console.error('Error in updateSubtopic:', error);
+      return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+    }
+  };
 
+  export const deleteSubtopic = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Subtopic ID must be provided' });
+      }
+  
+      const subtopic = await Subtopic.findById(id);
+  
+      if (!subtopic) {
+        return res.status(404).json({ success: false, message: 'Subtopic not found' });
+      }
+  
+      const associatedQuestions = await Ques.find({ subtopics: subtopic.name });
+
+    if (associatedQuestions.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Subtopic "${subtopic.name}" cannot be deleted because it is associated with ${associatedQuestions.length} question(s).`,
+      });
+    }
+  
+      await Subtopic.findByIdAndDelete(id);
+  
+      await Topic.updateMany(
+        { subtopics: id }, 
+        { $pull: { subtopics: id } }
+      );
+
+      await Ques.updateMany(
+        { subtopics: subtopic.name }, 
+        { $pull: { subtopics: subtopic.name } }
+      );
+  
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Subtopic deleted successfully and removed from all related topics' 
+      });
+    } catch (error) {
+      console.error('Error in deleteSubtopicnullquestion:', error);
+      return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+    }
+  };
+  
+  
+  
+  
