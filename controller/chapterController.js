@@ -1,5 +1,7 @@
 import { Chapter } from "../model/chapterModel.js";
+import { Ques } from "../model/quesModel.js";
 import { Subject } from "../model/subjectModel.js"
+import { Subtopic } from "../model/subtopicModel.js";
 import { Topic } from "../model/topicModel.js"
 
 
@@ -52,14 +54,6 @@ export const createChapter = async (req, res) => {
     res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
-
-
-
-
-
-
-
-
 
 export const getChapter = async (req, res) => {
   try {
@@ -205,4 +199,102 @@ export const updateChapterExamTags = async (req, res) => {
     });
   }
 };
+
+export const updateChapter = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!id || !name) {
+      return res.status(400).json({ success: false, message: 'Chapter ID and new name must be provided' });
+    }
+
+    const chapter = await Chapter.findById(id);
+
+    if (!chapter) {
+      return res.status(404).json({ success: false, message: 'Chapter not found' });
+    }
+
+    const oldName = chapter.name;
+    chapter.name = name;
+    await chapter.save();
+
+    // Update the chapter ID in the Subject collection where the chapter ID matches
+    await Subject.updateOne(
+      { chapters: id },
+      { $set: { "chapters.$": id } }
+    );
+
+    await Ques.updateMany(
+      { chapter: oldName },
+      { $set: { "chapter.$[elem]": name } },
+      { arrayFilters: [{ "elem": oldName }] }
+    );
+    // Update chapter name in the Topic collection
+    await Topic.updateMany(
+      { chapterName: oldName,},
+      { $set: { chapterName: name } }
+    );
+
+    // Update chapter name in the Subtopic collection
+    await Subtopic.updateMany(
+      { chapterName: oldName, },
+      { $set: { chapterName: name } }
+    );
+
+    return res.status(200).json({ success: true, message: 'Chapter name updated successfully in all relevant collections' });
+  } catch (error) {
+    console.error('Error in updateChapter:', error);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
+
+export const deleteChapter = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ success: false, message: 'Chapter ID must be provided' });
+    }
+
+    // Find the chapter by its ID
+    const chapter = await Chapter.findById(id);
+
+    if (!chapter) {
+      return res.status(404).json({ success: false, message: 'Chapter not found' });
+    }
+
+    // Check if there are any questions associated with the chapter
+    const associatedQuestionsCount = await Ques.countDocuments({ chapters: chapter.name });
+
+    // Check if there are any topics associated with the chapter
+    const associatedTopicsCount = await Topic.countDocuments({ chapterName: chapter.name });
+
+    if (associatedQuestionsCount > 0 || associatedTopicsCount > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Chapter "${chapter.name}" cannot be deleted because it is associated with ${associatedQuestionsCount} question(s) and ${associatedTopicsCount} topic(s).`,
+      });
+    }
+
+    // Delete the chapter from the Chapter collection
+    await Chapter.findByIdAndDelete(id);
+
+    // Remove the chapter ID from the associated subjects
+    await Subject.updateMany(
+      { chapters: id },
+      { $pull: { chapters: id } }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: 'Chapter deleted successfully and removed from all related subjects',
+    });
+  } catch (error) {
+    console.error('Error in deleteChapter:', error);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
 
