@@ -14,7 +14,7 @@ router.post(
 );
 router.get("/get/subtopic",  getSubtopics);
 router.get('/nestedsubtopic', getNestedSubtopicsByName);
-router.put('/update/subtopic/:id', updateSubtopic)
+router.put('/update/subtopic/:id', convertToLowercase, updateSubtopic)
 router.delete('/delete/subtopic/:id', deleteSubtopic)
 
 export default router;
