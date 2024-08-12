@@ -20,5 +20,4 @@ router.put("/update/chapter/:id", convertToLowercase, updateChapter);
 router.delete("/delete/chapter/:id", deleteChapter)
 
 
-
 export default router;
