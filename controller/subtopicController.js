@@ -220,7 +220,7 @@ export const updateSubtopic = async (req, res) => {
         { arrayFilters: [{ "elem": oldName }] }
       );
       await Topic.updateMany(
-        { subtopics: id }, 
+        { subtopics: id },
         { $set: { "subtopics.$[elem]": id } },
         { arrayFilters: [{ "elem": id }] }
       );
