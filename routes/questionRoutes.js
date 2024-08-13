@@ -8,6 +8,7 @@ import {
   getMyQuestions,
   getTotalQuestions,
   updateOption,
+  updateQuestionSubject,
   // toggleOptionTag,
 } from "../controller/quesController.js";
 import isAuthenticated from "../middlewares/auth.js";
@@ -24,7 +25,7 @@ router.post(
 router.put("/edit/question/:id", isAuthenticated, convertToLowercase, editQuestion)
 router.put("/edit/question/:id/option/:optionId", isAuthenticated, convertToLowercase, updateOption)
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);
-
+router.put('/question/:id/subject', updateQuestionSubject);
 router.get("/get/question", isAuthenticated, getAllQuestion);
 router.get("/get/myquestion", isAuthenticated, getMyQuestions)
 router.get("/get/users", isAuthenticated, allUser);

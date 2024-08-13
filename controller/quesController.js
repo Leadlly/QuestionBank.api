@@ -3,6 +3,9 @@ import { body, validationResult } from "express-validator";
 import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
 import deleteImages from "../helper/deleteImages.js";
+import { Chapter } from "../model/chapterModel.js";
+import { Topic } from "../model/topicModel.js";
+import { Subtopic } from "../model/subtopicModel.js";
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -260,8 +263,6 @@ export const getAllQuestion = async (req, res) => {
 };
 
 
-
-
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
@@ -325,12 +326,6 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
-
-
-
-
-
-
 
 
 
@@ -496,5 +491,45 @@ export const allUser = async (req, res) => {
   } catch (error) {
     console.error('Error fetching questions:', error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+
+export const updateQuestionSubject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { subject } = req.body;
+
+    if (!subject) {
+      return res.status(400).json({ error: 'Subject is required' });
+    }
+
+    const question = await Ques.findById(id);
+    if (!question) {
+      return res.status(404).json({ error: 'Question not found' });
+    }
+
+    const oldSubject = question.subject;
+
+    const updatedQuestion = await Ques.findByIdAndUpdate(
+      id,
+      { subject },
+      { new: true }
+    );
+
+    if (!updatedQuestion) {
+      return res.status(404).json({ error: 'Question update failed' });
+    }
+
+    const chapterUpdate = Chapter.updateMany({ subjectName: oldSubject }, { $set: { subjectName: subject } });
+    const topicUpdate = Topic.updateMany({ subjectName: oldSubject }, { $set: { subjectName: subject } });
+    const subtopicUpdate = Subtopic.updateMany({ subjectName: oldSubject }, { $set: { subjectName: subject } });
+
+    await Promise.all([chapterUpdate, topicUpdate, subtopicUpdate]);
+
+    res.json({ message: 'Question and related documents updated successfully', question: updatedQuestion });
+  } catch (error) {
+    console.error('Error updating question subject:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
