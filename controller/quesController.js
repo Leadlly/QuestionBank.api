@@ -25,7 +25,6 @@ export const createQuestion = async (req, res) => {
 
     const data = req.body;
 
-    // Check for existing question
     const existingQuestion = await Ques.findOne({
       question: data.question,
       subject: data.subject,
@@ -39,11 +38,9 @@ export const createQuestion = async (req, res) => {
       });
     }
 
-    // Process question images
     const imageUrls = await processImages(data.images);
 
    
-    // Process option images
     const options = await Promise.all(data.options.map(async (option) => {
    
       let optionImageUrls = [];
@@ -138,7 +135,6 @@ export const deleteQuestion = async (req, res) => {
     });
   }
 };
-
 
 export const getAllQuestion = async (req, res) => {
   try {
@@ -259,9 +255,6 @@ export const getAllQuestion = async (req, res) => {
   }
 };
 
-
-
-
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
@@ -325,14 +318,6 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
-
-
-
-
-
-
-
-
 
 export const getMyQuestions = async (req, res) => {
   try {
@@ -496,5 +481,42 @@ export const allUser = async (req, res) => {
   } catch (error) {
     console.error('Error fetching questions:', error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateQuestionDetails = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    const { standard, subject, chapter, topic, subtopic } = req.body;
+
+    // Find the question by ID
+    const question = await Ques.findById(questionId);
+    if (!question) {
+      return res.status(404).json({
+        success: false,
+        message: 'Question not found',
+      });
+    }
+
+    // Update the question fields
+    question.standard = standard || question.standard;
+    question.subject = subject || question.subject;
+    question.chapter = chapter || question.chapter;
+    question.topics = topic || question.topics;
+    question.subtopics = subtopic || question.subtopics;
+
+    // Save the updated question
+    await question.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Question updated successfully',
+      question,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+    });
   }
 };
