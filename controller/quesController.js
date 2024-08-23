@@ -1,4 +1,7 @@
 import { Ques } from "../model/quesModel.js";
+import { Chapter } from "../model/chapterModel.js";
+import { Topic } from "../model/topicModel.js";
+import { Subtopic } from "../model/subtopicModel.js";
 import { body, validationResult } from "express-validator";
 import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
@@ -25,7 +28,6 @@ export const createQuestion = async (req, res) => {
 
     const data = req.body;
 
-    // Check for existing question
     const existingQuestion = await Ques.findOne({
       question: data.question,
       subject: data.subject,
@@ -39,11 +41,9 @@ export const createQuestion = async (req, res) => {
       });
     }
 
-    // Process question images
     const imageUrls = await processImages(data.images);
 
    
-    // Process option images
     const options = await Promise.all(data.options.map(async (option) => {
    
       let optionImageUrls = [];
@@ -138,7 +138,6 @@ export const deleteQuestion = async (req, res) => {
     });
   }
 };
-
 
 export const getAllQuestion = async (req, res) => {
   try {
@@ -259,9 +258,6 @@ export const getAllQuestion = async (req, res) => {
   }
 };
 
-
-
-
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
@@ -325,14 +321,6 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
-
-
-
-
-
-
-
-
 
 export const getMyQuestions = async (req, res) => {
   try {
@@ -498,3 +486,60 @@ export const allUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+export const updateQuestionDetails = async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    const { standard, subject, chapter, topics, subtopics } = req.body;
+
+    const question = await Ques.findById(questionId);
+    if (!question) {
+      return res.status(404).json({
+        success: false,
+        message: 'Question not found',
+      });
+    }
+
+    if (subject && subject !== question.subject) {
+      question.subject = subject;
+
+      if (chapter) {
+        question.chapter = chapter;
+      } else {
+        question.chapter = [];
+      }
+
+      if (topics) {
+        question.topics = topics;
+      } else {
+        question.topics = [];
+      }
+
+      if (subtopics) {
+        question.subtopics = subtopics;
+      } else {
+        question.subtopics = [];
+      }
+    } else {
+      if (standard) question.standard = standard;
+      if (chapter) question.chapter = chapter;
+      if (topics) question.topics = topics;
+      if (subtopics) question.subtopics = subtopics;
+    }
+
+    await question.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Question updated successfully',
+      question,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+    });
+  }
+};
+
