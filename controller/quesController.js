@@ -143,27 +143,49 @@ export const getAllQuestion = async (req, res) => {
   try {
     const queryObject = {};
 
+    // Handle standard and subject queries
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
+    // Handle multiple chapters
+    if (req.query.chapter) {
+      const chapters = Array.isArray(req.query.chapter)
+        ? req.query.chapter
+        : req.query.chapter.split(',').map(ch => ch.trim());
+      queryObject.chapter = { $in: chapters };
+    }
+
+    // Handle single or multiple topics
+    if (req.query.topic) {
+      const topics = Array.isArray(req.query.topic)
+        ? req.query.topic
+        : req.query.topic.split(',').map(tp => tp.trim());
+
+      if (topics.length === 1) {
+        // If single topic, use direct equality
+        queryObject.topics = topics[0];
+      } else {
+        // If multiple topics, use $in
+        queryObject.topics = { $in: topics };
+      }
+    }
+
+    // Handle search query
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
-
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-
       queryObject.$and = [
         { $or: searchRegex.map(regex => ({ question: regex })) }
       ];
     }
 
-    console.log(queryObject);
+    console.log(queryObject); // For debugging purposes
 
-    let formattedQuestions = []
+    let formattedQuestions = [];
+
     if (req.user.role === "admin") {
-      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 }); 
+      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 });
 
       let page = req.query.page || 1;
       let limit = req.query.limit || 50;
@@ -180,7 +202,7 @@ export const getAllQuestion = async (req, res) => {
 
       formattedQuestions = questions.map(question => ({
         ...question.toObject(),
-        nestedSubTopic: question.nestedSubTopic || "" 
+        nestedSubTopic: question.nestedSubTopic || ""
       }));
     }
 
@@ -258,6 +280,9 @@ export const getAllQuestion = async (req, res) => {
   }
 };
 
+
+
+
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
@@ -265,11 +290,24 @@ export const getTotalQuestions = async (req, res) => {
 
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
-    if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
-    // const myquestion = req.query.createdBy ? true : false;
+    // Handle multiple chapters
+    if (req.query.chapter) {
+      const chapters = Array.isArray(req.query.chapter)
+        ? req.query.chapter  // If it's already an array, use it directly
+        : req.query.chapter.split(',').map(chapter => chapter.trim());
+      queryObject.chapter = { $in: chapters }; // Matches any of the chapters
+    }
+
+    // Handle multiple topics
+    if (req.query.topic) {
+      const topics = Array.isArray(req.query.topic)
+        ? req.query.topic  // If it's already an array, use it directly
+        : req.query.topic.split(',').map(topic => topic.trim());
+      queryObject.topics = { $in: topics }; // Matches any of the topics
+    }
+
+    if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
@@ -290,29 +328,31 @@ export const getTotalQuestions = async (req, res) => {
 
     console.log(queryObject);
 
+    // Get the total count of questions matching the query
     const totalQuestions = await Ques.countDocuments(queryObject);
 
     let myQuestions, questionsLength, fixedTotalQuestions, totalMyQuestions, totalMyPages, totalPages;
 
-    // if (myquestion) {
-      const queryObjects = { ...queryObject, createdBy: userId };
-      myQuestions = await Ques.find(queryObjects);
-      questionsLength = myQuestions.length;
-      totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
-      totalMyPages = Math.ceil(totalMyQuestions / req.query.questionsPerPage);
-   
+    // Get the count of questions created by the user
+    const queryObjects = { ...queryObject, createdBy: userId };
+    myQuestions = await Ques.find(queryObjects);
+    questionsLength = myQuestions.length;
 
-    // const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
-    fixedTotalQuestions = await Ques.countDocuments({});
+    totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+
+    // Calculate total pages for the user's questions and total questions
+    totalMyPages = Math.ceil(totalMyQuestions / req.query.questionsPerPage);
+    fixedTotalQuestions = await Ques.countDocuments({}); // Total questions in the collection
     totalPages = Math.ceil(totalQuestions / req.query.questionsPerPage);
 
     return res.status(200).json({
       success: true,
       totalQuestions: totalQuestions,
       questionsLength: questionsLength,
-      // totalSearchQuestions: totalSearchQuestions,
       fixedTotalQuestions: fixedTotalQuestions,
       totalMyQuestions: totalMyQuestions,
+      totalPages: totalPages,
+      totalMyPages: totalMyPages,
     });
   } catch (error) {
     return res.status(500).json({
@@ -321,6 +361,8 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
+
+
 
 export const getMyQuestions = async (req, res) => {
   try {
