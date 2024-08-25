@@ -139,11 +139,12 @@ export const deleteQuestion = async (req, res) => {
   }
 };
 
+
 export const getAllQuestion = async (req, res) => {
   try {
     const queryObject = {};
 
-    // Handle standard and subject queries
+    // Handle standard, subject, and createdBy queries
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
@@ -161,14 +162,15 @@ export const getAllQuestion = async (req, res) => {
       const topics = Array.isArray(req.query.topic)
         ? req.query.topic
         : req.query.topic.split(',').map(tp => tp.trim());
+      queryObject.topics = { $in: topics };
+    }
 
-      if (topics.length === 1) {
-        // If single topic, use direct equality
-        queryObject.topics = topics[0];
-      } else {
-        // If multiple topics, use $in
-        queryObject.topics = { $in: topics };
-      }
+    // Handle subtopics
+    if (req.query.subtopic) {
+      const subtopics = Array.isArray(req.query.subtopic)
+        ? req.query.subtopic
+        : req.query.subtopic.split(',').map(st => st.trim());
+queryObject.subtopics = {$in: subtopics}
     }
 
     // Handle search query
@@ -273,6 +275,7 @@ export const getAllQuestion = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Error in getAllQuestion:", error);
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
@@ -288,79 +291,100 @@ export const getTotalQuestions = async (req, res) => {
     const queryObject = {};
     const userId = req.user._id;
 
+    // Handle standard and subject queries
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
 
     // Handle multiple chapters
     if (req.query.chapter) {
       const chapters = Array.isArray(req.query.chapter)
-        ? req.query.chapter  // If it's already an array, use it directly
+        ? req.query.chapter
         : req.query.chapter.split(',').map(chapter => chapter.trim());
-      queryObject.chapter = { $in: chapters }; // Matches any of the chapters
+      queryObject.chapter = { $in: chapters };
     }
 
-    // Handle multiple topics
+    // Handle single or multiple topics
     if (req.query.topic) {
       const topics = Array.isArray(req.query.topic)
-        ? req.query.topic  // If it's already an array, use it directly
+        ? req.query.topic
         : req.query.topic.split(',').map(topic => topic.trim());
-      queryObject.topics = { $in: topics }; // Matches any of the topics
+      queryObject.topics = { $in: topics };
     }
 
+    // Handle subtopics
+    if (req.query.subtopic) {
+      const subtopics = Array.isArray(req.query.subtopic)
+        ? req.query.subtopic
+        : req.query.subtopic.split(',').map(subtopic => subtopic.trim());
+
+      queryObject.subtopics = { $in: subtopics };
+    }
+
+    // Handle createdBy query
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
+    // Handle search query
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-
       queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
     }
 
+    // Handle mySearch query to search within user's created questions
     if (req.query.mySearch) {
       const searchTerms = req.query.mySearch.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-
       queryObject.$and = [
         { $or: searchRegex.map(regex => ({ question: regex })) },
         { createdBy: userId },
       ];
     }
 
-    console.log(queryObject);
+    console.log(queryObject); // For debugging purposes
 
     // Get the total count of questions matching the query
     const totalQuestions = await Ques.countDocuments(queryObject);
 
-    let myQuestions, questionsLength, fixedTotalQuestions, totalMyQuestions, totalMyPages, totalPages;
-
     // Get the count of questions created by the user
-    const queryObjects = { ...queryObject, createdBy: userId };
-    myQuestions = await Ques.find(queryObjects);
-    questionsLength = myQuestions.length;
+    const myQuestionsQueryObject = { ...queryObject, createdBy: userId };
+    const totalMyQuestions = await Ques.countDocuments(myQuestionsQueryObject);
 
-    totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+    // Calculate total pages
+    const questionsPerPage = parseInt(req.query.questionsPerPage) || 10; // Set a default value if not provided
+    const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+    const totalMyPages = Math.ceil(totalMyQuestions / questionsPerPage);
 
-    // Calculate total pages for the user's questions and total questions
-    totalMyPages = Math.ceil(totalMyQuestions / req.query.questionsPerPage);
-    fixedTotalQuestions = await Ques.countDocuments({}); // Total questions in the collection
-    totalPages = Math.ceil(totalQuestions / req.query.questionsPerPage);
+    // Get the total count of all questions in the collection
+    const fixedTotalQuestions = await Ques.countDocuments({});
 
     return res.status(200).json({
       success: true,
       totalQuestions: totalQuestions,
-      questionsLength: questionsLength,
-      fixedTotalQuestions: fixedTotalQuestions,
       totalMyQuestions: totalMyQuestions,
+      fixedTotalQuestions: fixedTotalQuestions,
       totalPages: totalPages,
       totalMyPages: totalMyPages,
     });
   } catch (error) {
+    console.error("Error in getTotalQuestions:", error); // Added logging for debugging
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
     });
   }
 };
+
+// Function to convert subtopic names to IDs
+const convertSubtopicNamesToIds = async (subtopicNames) => {
+  try {
+    const subtopics = await Subtopic.find({ name: { $in: subtopicNames } });
+    return subtopics.map(subtopic => subtopic._id);
+  } catch (error) {
+    console.error("Error converting subtopic names to IDs:", error);
+    throw new Error("Error converting subtopic names to IDs");
+  }
+};
+
 
 
 
