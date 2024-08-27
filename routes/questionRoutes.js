@@ -9,6 +9,7 @@ import {
   getTotalQuestions,
   updateOption,
   updateQuestionDetails,
+  updateQuestionTopics,
   // toggleOptionTag,
 } from "../controller/quesController.js";
 import isAuthenticated from "../middlewares/auth.js";
@@ -31,5 +32,6 @@ router.get("/get/myquestion", isAuthenticated, getMyQuestions)
 router.get("/get/users", isAuthenticated, allUser);
 router.get("/get/totalquestion", isAuthenticated, getTotalQuestions);
 router.put('/updatequestion/:questionId', updateQuestionDetails);
+router.put('/updatequestiontopic', updateQuestionTopics)
 
 export default router;

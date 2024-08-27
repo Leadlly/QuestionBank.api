@@ -283,9 +283,6 @@ queryObject.subtopics = {$in: subtopics}
   }
 };
 
-
-
-
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
@@ -373,20 +370,6 @@ export const getTotalQuestions = async (req, res) => {
     });
   }
 };
-
-// Function to convert subtopic names to IDs
-const convertSubtopicNamesToIds = async (subtopicNames) => {
-  try {
-    const subtopics = await Subtopic.find({ name: { $in: subtopicNames } });
-    return subtopics.map(subtopic => subtopic._id);
-  } catch (error) {
-    console.error("Error converting subtopic names to IDs:", error);
-    throw new Error("Error converting subtopic names to IDs");
-  }
-};
-
-
-
 
 export const getMyQuestions = async (req, res) => {
   try {
@@ -609,3 +592,34 @@ export const updateQuestionDetails = async (req, res) => {
   }
 };
 
+export const updateQuestionTopics = async (req, res) => {
+  try {
+    const { questionIds, subtopic, topic } = req.body;
+
+    if (!questionIds || questionIds.length === 0) {
+      return res.status(400).json({ message: 'No question IDs provided.' });
+    }
+
+    // Check if subtopic is provided for updating
+    if (subtopic) {
+      // Update the subtopic of the questions
+      await Ques.updateMany(
+        { _id: { $in: questionIds }, subtopic: { $exists: true } },
+        { $set: { subtopic: subtopic } }
+      );
+      res.status(200).json({ message: 'Subtopics updated successfully.' });
+    } else if (topic) {
+      // If no subtopic, update the topic
+      await Ques.updateMany(
+        { _id: { $in: questionIds }, subtopic: { $exists: false } },
+        { $set: { topic: topic } }
+      );
+      res.status(200).json({ message: 'Topics updated successfully.' });
+    } else {
+      res.status(400).json({ message: 'No subtopic or topic provided for update.' });
+    }
+  } catch (error) {
+    console.error('Error updating questions:', error);
+    res.status(500).json({ message: 'An error occurred while updating questions.' });
+  }
+};
