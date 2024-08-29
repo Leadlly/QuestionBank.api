@@ -596,30 +596,54 @@ export const updateQuestionTopics = async (req, res) => {
   try {
     const { questionIds, subtopic, topic } = req.body;
 
-    if (!questionIds || questionIds.length === 0) {
+    // Ensure questionIds is an array
+    const ids = Array.isArray(questionIds) ? questionIds : [questionIds];
+
+    if (ids.length === 0) {
       return res.status(400).json({ message: 'No question IDs provided.' });
     }
 
-    // Check if subtopic is provided for updating
-    if (subtopic) {
-      // Update the subtopic of the questions
-      await Ques.updateMany(
-        { _id: { $in: questionIds }, subtopic: { $exists: true } },
-        { $set: { subtopic: subtopic } }
-      );
-      res.status(200).json({ message: 'Subtopics updated successfully.' });
-    } else if (topic) {
-      // If no subtopic, update the topic
-      await Ques.updateMany(
-        { _id: { $in: questionIds }, subtopic: { $exists: false } },
-        { $set: { topic: topic } }
-      );
-      res.status(200).json({ message: 'Topics updated successfully.' });
+    // Find questions with the provided IDs
+    const existingQuestions = await Ques.find({ _id: { $in: ids } });
+    if (existingQuestions.length === 0) {
+      return res.status(404).json({ message: 'No questions found with the provided IDs.' });
+    }
+
+    const updateFields = {};
+
+    // Handle topic update
+    if (topic && topic.length > 0) {
+      updateFields.topics = topic; // Set topics to the provided value
+      updateFields.subtopics = []; // Clear subtopics if topics are being updated
+    }
+
+    // Handle subtopic update
+    if (subtopic && subtopic.length > 0) {
+      updateFields.subtopics = subtopic; // Update subtopics
+    }
+
+    console.log('Update fields:', updateFields); // Log update fields for debugging
+
+    // Perform the update
+    const result = await Ques.updateMany(
+      { _id: { $in: ids } },
+      { $set: updateFields }
+    );
+
+    // Check if any documents were matched and modified
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'No questions found with the provided IDs.' });
+    }
+
+    if (result.modifiedCount > 0) {
+      return res.status(200).json({ message: 'Questions updated successfully.' });
     } else {
-      res.status(400).json({ message: 'No subtopic or topic provided for update.' });
+      return res.status(200).json({ message: 'Questions found but nothing was updated because the data was the same.' });
     }
   } catch (error) {
     console.error('Error updating questions:', error);
     res.status(500).json({ message: 'An error occurred while updating questions.' });
   }
 };
+
+
