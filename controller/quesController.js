@@ -139,31 +139,55 @@ export const deleteQuestion = async (req, res) => {
   }
 };
 
+
 export const getAllQuestion = async (req, res) => {
   try {
     const queryObject = {};
 
+    // Handle standard, subject, and createdBy queries
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
+    // Handle multiple chapters
+    if (req.query.chapter) {
+      const chapters = Array.isArray(req.query.chapter)
+        ? req.query.chapter
+        : req.query.chapter.split(',').map(ch => ch.trim());
+      queryObject.chapter = { $in: chapters };
+    }
+
+    // Handle single or multiple topics
+    if (req.query.topic) {
+      const topics = Array.isArray(req.query.topic)
+        ? req.query.topic
+        : req.query.topic.split(',').map(tp => tp.trim());
+      queryObject.topics = { $in: topics };
+    }
+
+    // Handle subtopics
+    if (req.query.subtopic) {
+      const subtopics = Array.isArray(req.query.subtopic)
+        ? req.query.subtopic
+        : req.query.subtopic.split(',').map(st => st.trim());
+queryObject.subtopics = {$in: subtopics}
+    }
+
+    // Handle search query
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
-
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-
       queryObject.$and = [
         { $or: searchRegex.map(regex => ({ question: regex })) }
       ];
     }
 
-    console.log(queryObject);
+    console.log(queryObject); // For debugging purposes
 
-    let formattedQuestions = []
+    let formattedQuestions = [];
+
     if (req.user.role === "admin") {
-      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 }); 
+      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 });
 
       let page = req.query.page || 1;
       let limit = req.query.limit || 50;
@@ -180,7 +204,7 @@ export const getAllQuestion = async (req, res) => {
 
       formattedQuestions = questions.map(question => ({
         ...question.toObject(),
-        nestedSubTopic: question.nestedSubTopic || "" 
+        nestedSubTopic: question.nestedSubTopic || ""
       }));
     }
 
@@ -251,6 +275,7 @@ export const getAllQuestion = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Error in getAllQuestion:", error);
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
@@ -263,58 +288,82 @@ export const getTotalQuestions = async (req, res) => {
     const queryObject = {};
     const userId = req.user._id;
 
+    // Handle standard and subject queries
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+
+    // Handle multiple chapters
+    if (req.query.chapter) {
+      const chapters = Array.isArray(req.query.chapter)
+        ? req.query.chapter
+        : req.query.chapter.split(',').map(chapter => chapter.trim());
+      queryObject.chapter = { $in: chapters };
+    }
+
+    // Handle single or multiple topics
+    if (req.query.topic) {
+      const topics = Array.isArray(req.query.topic)
+        ? req.query.topic
+        : req.query.topic.split(',').map(topic => topic.trim());
+      queryObject.topics = { $in: topics };
+    }
+
+    // Handle subtopics
+    if (req.query.subtopic) {
+      const subtopics = Array.isArray(req.query.subtopic)
+        ? req.query.subtopic
+        : req.query.subtopic.split(',').map(subtopic => subtopic.trim());
+
+      queryObject.subtopics = { $in: subtopics };
+    }
+
+    // Handle createdBy query
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
-    // const myquestion = req.query.createdBy ? true : false;
-
+    // Handle search query
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-
       queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
     }
 
+    // Handle mySearch query to search within user's created questions
     if (req.query.mySearch) {
       const searchTerms = req.query.mySearch.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-
       queryObject.$and = [
         { $or: searchRegex.map(regex => ({ question: regex })) },
         { createdBy: userId },
       ];
     }
 
-    console.log(queryObject);
+    console.log(queryObject); // For debugging purposes
 
+    // Get the total count of questions matching the query
     const totalQuestions = await Ques.countDocuments(queryObject);
 
-    let myQuestions, questionsLength, fixedTotalQuestions, totalMyQuestions, totalMyPages, totalPages;
+    // Get the count of questions created by the user
+    const myQuestionsQueryObject = { ...queryObject, createdBy: userId };
+    const totalMyQuestions = await Ques.countDocuments(myQuestionsQueryObject);
 
-    // if (myquestion) {
-      const queryObjects = { ...queryObject, createdBy: userId };
-      myQuestions = await Ques.find(queryObjects);
-      questionsLength = myQuestions.length;
-      totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
-      totalMyPages = Math.ceil(totalMyQuestions / req.query.questionsPerPage);
-   
+    // Calculate total pages
+    const questionsPerPage = parseInt(req.query.questionsPerPage) || 10; // Set a default value if not provided
+    const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+    const totalMyPages = Math.ceil(totalMyQuestions / questionsPerPage);
 
-    // const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
-    fixedTotalQuestions = await Ques.countDocuments({});
-    totalPages = Math.ceil(totalQuestions / req.query.questionsPerPage);
+    // Get the total count of all questions in the collection
+    const fixedTotalQuestions = await Ques.countDocuments({});
 
     return res.status(200).json({
       success: true,
       totalQuestions: totalQuestions,
-      questionsLength: questionsLength,
-      // totalSearchQuestions: totalSearchQuestions,
-      fixedTotalQuestions: fixedTotalQuestions,
       totalMyQuestions: totalMyQuestions,
+      fixedTotalQuestions: fixedTotalQuestions,
+      totalPages: totalPages,
+      totalMyPages: totalMyPages,
     });
   } catch (error) {
+    console.error("Error in getTotalQuestions:", error); // Added logging for debugging
     return res.status(500).json({
       success: false,
       message: error.message || "Internal Server Error",
@@ -542,4 +591,59 @@ export const updateQuestionDetails = async (req, res) => {
     });
   }
 };
+
+export const updateQuestionTopics = async (req, res) => {
+  try {
+    const { questionIds, subtopic, topic } = req.body;
+
+    // Ensure questionIds is an array
+    const ids = Array.isArray(questionIds) ? questionIds : [questionIds];
+
+    if (ids.length === 0) {
+      return res.status(400).json({ message: 'No question IDs provided.' });
+    }
+
+    // Find questions with the provided IDs
+    const existingQuestions = await Ques.find({ _id: { $in: ids } });
+    if (existingQuestions.length === 0) {
+      return res.status(404).json({ message: 'No questions found with the provided IDs.' });
+    }
+
+    const updateFields = {};
+
+    // Handle topic update
+    if (topic && topic.length > 0) {
+      updateFields.topics = topic; // Set topics to the provided value
+      updateFields.subtopics = []; // Clear subtopics if topics are being updated
+    }
+
+    // Handle subtopic update
+    if (subtopic && subtopic.length > 0) {
+      updateFields.subtopics = subtopic; // Update subtopics
+    }
+
+    console.log('Update fields:', updateFields); // Log update fields for debugging
+
+    // Perform the update
+    const result = await Ques.updateMany(
+      { _id: { $in: ids } },
+      { $set: updateFields }
+    );
+
+    // Check if any documents were matched and modified
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'No questions found with the provided IDs.' });
+    }
+
+    if (result.modifiedCount > 0) {
+      return res.status(200).json({ message: 'Questions updated successfully.' });
+    } else {
+      return res.status(200).json({ message: 'Questions found but nothing was updated because the data was the same.' });
+    }
+  } catch (error) {
+    console.error('Error updating questions:', error);
+    res.status(500).json({ message: 'An error occurred while updating questions.' });
+  }
+};
+
 

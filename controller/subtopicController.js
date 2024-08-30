@@ -107,6 +107,7 @@ export const getSubtopics = async (req, res) => {
         const chapterNameArray = chapterName.split(',').map(name => name.trim());
         const topicNameArray = topicName.split(',').map(name => name.trim());
 
+        // Fetch the subject and populate chapters, topics, and subtopics
         const subject = await Subject.findOne({
             name: subjectName,
             standard,
@@ -116,37 +117,38 @@ export const getSubtopics = async (req, res) => {
             populate: {
                 path: 'topics',
                 match: { name: { $in: topicNameArray } },
-                populate: 'subtopics'
+                populate: {
+                    path: 'subtopics',  // Ensure this path includes subtopic names
+                    select: 'name',     // Select fields you need
+                }
             }
         });
 
         if (!subject) {
-            return res.status(400).json({ success: false, message: "Subject not found" });
+            return res.status(404).json({ success: false, message: "Subject not found" });
         }
 
         let subtopics = [];
 
+        // Flatten and collect all subtopics from the populated data
         subject.chapters.forEach(chapter => {
             chapter.topics.forEach(topic => {
                 subtopics.push(...topic.subtopics);
             });
         });
 
-        for (let i = 0; i < subtopics.length; i++) {
-            const subtopic = subtopics[i];
-            if (subtopic.subtopics && subtopic.subtopics.length > 0) {
-                const nestedSubtopicIds = subtopic.subtopics;
-                const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
-                subtopics[i].subtopics = nestedSubtopics;
-            }
-        }
+        // Map subtopics with their names
+        subtopics = subtopics.map(subtopic => ({
+            _id: subtopic._id,
+            name: subtopic.name, // Use the name directly
+        }));
 
         res.status(200).json({
             success: true,
             subtopics,
         });
     } catch (error) {
-        console.error('Error in getSubTopic:', error);
+        console.error('Error in getSubtopics:', error);
         res.status(500).json({
             success: false,
             message: error.message || 'Internal Server Error',
