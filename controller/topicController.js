@@ -139,15 +139,24 @@ export const getTopic = async (req, res) => {
 
     let filter = {};
 
-    if (subjectName) filter.subjectName = subjectName;
-    if (standard) filter.standard = standard;
-    if (chapterName) filter.chapterName = chapterName;
+    if (subjectName) {
+      filter.subjectName = subjectName;
+    }
+
+    if (standard) {
+      filter.standard = standard;
+    }
+
+    if (chapterName) {
+      // Split chapterName by commas to handle multiple values, trimming spaces
+      const chaptersArray = chapterName.split(',').map(chapter => chapter.trim());
+      
+      // Use MongoDB $in operator for filtering by multiple chapters
+      filter.chapterName = { $in: chaptersArray };
+    }
 
     const topics = await Topic.find(filter);
 
-    if (topics.length === 0) {
-      return res.status(404).json({ success: false, message: 'No topics found' });
-    }
 
     return res.status(200).json({ success: true, topics });
   } catch (error) {
@@ -155,6 +164,7 @@ export const getTopic = async (req, res) => {
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
   }
 };
+
 
 export const getTopicById = async (req, res) => {
   try {
