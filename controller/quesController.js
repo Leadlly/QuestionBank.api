@@ -43,23 +43,25 @@ export const createQuestion = async (req, res) => {
 
     const imageUrls = await processImages(data.images);
 
-   
+
     const options = await Promise.all(data.options.map(async (option) => {
-   
+
       let optionImageUrls = [];
       if (option.image && Array.isArray(option.image) && option.image.length > 0) {
         optionImageUrls = await processImages(option.image);
       }
 
       return {
-      image: optionImageUrls,
-       optionDb: { name: option.name,
-        tag: option.isCorrect === true ? "Correct" : "Incorrect", 
-        images: optionImageUrls.length > 0 ? optionImageUrls.map(image => ({ url: image?.getUrl, key: image?.key })) : null,}
+        image: optionImageUrls,
+        optionDb: {
+          name: option.name,
+          tag: option.isCorrect === true ? "Correct" : "Incorrect",
+          images: optionImageUrls.length > 0 ? optionImageUrls.map(image => ({ url: image?.getUrl, key: image?.key })) : null,
+        }
       };
     }));
     const optionsSignedUrls = options.flatMap(option => (option.image ? option.image.map(image => image.putUrl) : []));
-  
+
     const hasCorrectOption = options.some(
       (option) => option.optionDb.tag === 'Correct'
     );
@@ -69,7 +71,7 @@ export const createQuestion = async (req, res) => {
         message: 'At least one option must be correct',
       });
     }
-    
+
     const newQuestion = new Ques({
       question: data.question,
       options: options.map((option) => option.optionDb),
@@ -117,7 +119,7 @@ export const deleteQuestion = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
 
-    if(question.images && question.images.length > 0) await deleteImages(question.images);
+    if (question.images && question.images.length > 0) await deleteImages(question.images);
 
     question.options.forEach(async (option) => {
       if (option.images && option.images.length > 0) {
@@ -170,7 +172,7 @@ export const getAllQuestion = async (req, res) => {
       const subtopics = Array.isArray(req.query.subtopic)
         ? req.query.subtopic
         : req.query.subtopic.split(',').map(st => st.trim());
-queryObject.subtopics = {$in: subtopics}
+      queryObject.subtopics = { $in: subtopics }
     }
 
     // Handle search query
@@ -373,15 +375,15 @@ export const getTotalQuestions = async (req, res) => {
 
 export const getMyQuestions = async (req, res) => {
   try {
-    const userId = req.user._id; 
+    const userId = req.user._id;
 
     const queryObject = { createdBy: userId };
-    
+
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapter) queryObject.chapter = req.query.chapter;
     if (req.query.topic) queryObject.topics = req.query.topic;
-     if (req.query.search) {
+    if (req.query.search) {
       // Split search query by spaces to handle multiple words
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
 
@@ -400,7 +402,7 @@ export const getMyQuestions = async (req, res) => {
 
     let page = req.query.page || 1;
     let limit = req.query.limit || 50;
-  
+
     let skip = (page - 1) * limit;
 
     questionsData = questionsData.skip(skip).limit(limit);
@@ -441,14 +443,14 @@ export const getMyQuestions = async (req, res) => {
     // Determine the rank of the current user
     const userRank = userCounts.findIndex(user => user.userId.toString() === userId.toString()) + 1;
 
-    res.status(200).json({ 
-      success: true, 
+    res.status(200).json({
+      success: true,
       questions: paginatedQuestions,
       todaysQuestionsCount: todaysQuestions.length,
       userRank: userRank,
       totalQuestions: totalQuestions
     });
-    
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Server error" });
@@ -523,13 +525,13 @@ export const updateOption = async (req, res) => {
 
 export const allUser = async (req, res) => {
   try {
-     const users = await User.find({})
-     if(!users) return res.status(404).json({ error: "Users not found" });
+    const users = await User.find({})
+    if (!users) return res.status(404).json({ error: "Users not found" });
 
-     res.status(200).json({
+    res.status(200).json({
       success: true,
       users
-     });
+    });
   } catch (error) {
     console.error('Error fetching questions:', error);
     res.status(500).json({ error: error.message });
@@ -592,9 +594,11 @@ export const updateQuestionDetails = async (req, res) => {
   }
 };
 
+
+
 export const updateQuestionTopics = async (req, res) => {
   try {
-    const { questionIds, subtopic, topic } = req.body;
+    const { questionIds, topic, selectedTopic } = req.body;
 
     // Ensure questionIds is an array
     const ids = Array.isArray(questionIds) ? questionIds : [questionIds];
@@ -603,47 +607,60 @@ export const updateQuestionTopics = async (req, res) => {
       return res.status(400).json({ message: 'No question IDs provided.' });
     }
 
-    // Find questions with the provided IDs
     const existingQuestions = await Ques.find({ _id: { $in: ids } });
     if (existingQuestions.length === 0) {
       return res.status(404).json({ message: 'No questions found with the provided IDs.' });
     }
 
-    const updateFields = {};
+    const updateOperations = existingQuestions.map(async (question) => {
+      let updateFields = {};
 
-    // Handle topic update
-    if (topic && topic.length > 0) {
-      updateFields.topics = topic; // Set topics to the provided value
-      updateFields.subtopics = []; // Clear subtopics if topics are being updated
-    }
+      // Ensure topics is an array
+      question.topics = question.topics || [];
 
-    // Handle subtopic update
-    if (subtopic && subtopic.length > 0) {
-      updateFields.subtopics = subtopic; // Update subtopics
-    }
+      // Case 1: Add the new topic if no selected topic exists
+      if (topic && !selectedTopic) {
+        if (!question.topics.includes(topic.trim())) {
+          question.topics.push(topic.trim());
+          updateFields.topics = question.topics;
+        }
+      }
 
-    console.log('Update fields:', updateFields); // Log update fields for debugging
+      // Case 2: Replace the selected topic with the new one
+      if (topic && selectedTopic) {
+        const index = question.topics.indexOf(selectedTopic.trim());
+        if (index !== -1) {
+          question.topics[index] = topic.trim();
+        } else {
+          question.topics.push(topic.trim());
+        }
+        updateFields.topics = question.topics;
+      }
 
-    // Perform the update
-    const result = await Ques.updateMany(
-      { _id: { $in: ids } },
-      { $set: updateFields }
-    );
+      // Only update if there are changes
+      if (Object.keys(updateFields).length > 0) {
+        await Ques.updateOne({ _id: question._id }, { $set: updateFields });
+      }
 
-    // Check if any documents were matched and modified
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ message: 'No questions found with the provided IDs.' });
-    }
+      return { questionId: question._id, updatedFields: updateFields };
+    });
 
-    if (result.modifiedCount > 0) {
-      return res.status(200).json({ message: 'Questions updated successfully.' });
-    } else {
-      return res.status(200).json({ message: 'Questions found but nothing was updated because the data was the same.' });
-    }
+    const results = await Promise.all(updateOperations);
+
+    res.status(200).json({ message: 'Questions updated successfully.', updateOperations: results });
   } catch (error) {
     console.error('Error updating questions:', error);
     res.status(500).json({ message: 'An error occurred while updating questions.' });
   }
 };
+
+
+
+
+
+
+
+
+
 
 
