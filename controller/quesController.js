@@ -163,7 +163,7 @@ export const getAllQuestion = async (req, res) => {
 
     let formattedQuestions = []
     if (req.user.role === "admin") {
-      let questionsData = Ques.find(queryObject).sort({ createdAt: -1 }); 
+      let questionsData = Ques.find(queryObject).sort({ createdAt: 1 }); 
 
       let page = req.query.page || 1;
       let limit = req.query.limit || 50;
@@ -491,7 +491,7 @@ export const allUser = async (req, res) => {
 export const updateQuestionDetails = async (req, res) => {
   try {
     const { questionId } = req.params;
-    const { standard, subject, chapter, topics, subtopics } = req.body;
+    const { standard, subject, chapter, topics, subtopics, level } = req.body;
 
     const question = await Ques.findById(questionId);
     if (!question) {
@@ -521,11 +521,18 @@ export const updateQuestionDetails = async (req, res) => {
       } else {
         question.subtopics = [];
       }
+
+      if (level) {
+        question.level = level;
+      } else {
+        question.level = [];
+      }
     } else {
       if (standard) question.standard = standard;
       if (chapter) question.chapter = chapter;
       if (topics) question.topics = topics;
       if (subtopics) question.subtopics = subtopics;
+      if (level) question.level = level;
     }
 
     await question.save();
@@ -543,3 +550,32 @@ export const updateQuestionDetails = async (req, res) => {
   }
 };
 
+export const checkIfTagged = async (req, res) => {
+  try {
+    const { id } = req.params; // Get question ID from request parameters
+
+    const question = await Ques.findById(id);
+
+    if (!question) {
+      return res.status(404).json({
+        success: false,
+        message: 'Question not found',
+      });
+    }
+
+    // Check if topics or subtopics exist
+    const isTagged = (question.topics && question.topics.length > 0) || 
+                     (question.subtopics && question.subtopics.length > 0);
+
+    res.status(200).json({
+      success: true,
+      questionId: id,
+      status: isTagged ? 'Tagged' : 'Untagged',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Internal Server Error',
+    });
+  }
+};

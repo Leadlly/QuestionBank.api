@@ -43,7 +43,7 @@ const quesSchema = new mongoose.Schema({
   },
   level: {
     type: String,
-    required: true,
+    required: false,
   },
   images: [{
     url: String,

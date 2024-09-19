@@ -1,6 +1,7 @@
 import express from "express";
 import {
   allUser,
+  checkIfTagged,
   createQuestion,
   deleteQuestion,
   editQuestion,
@@ -31,5 +32,6 @@ router.get("/get/myquestion", isAuthenticated, getMyQuestions)
 router.get("/get/users", isAuthenticated, allUser);
 router.get("/get/totalquestion", isAuthenticated, getTotalQuestions);
 router.put('/updatequestion/:questionId', updateQuestionDetails);
+router.get('/questions/:id/status', checkIfTagged);
 
 export default router;
