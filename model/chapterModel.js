@@ -20,4 +20,6 @@ const chapterSchema = new mongoose.Schema({
     exam: [{ type: String }]
   });
 
+chapterSchema.index({ name: 1, subjectName: 1 }, { unique: true });
+
 export const Chapter = mongoose.model("Chapter", chapterSchema)  
