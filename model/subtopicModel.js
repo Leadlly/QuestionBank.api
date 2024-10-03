@@ -19,7 +19,7 @@ const subtopicSchema = new mongoose.Schema({
       required: true,
   },
   standard: {
-      type: String,
+      type: Number,
       required: true,
   },
     subtopics: [
