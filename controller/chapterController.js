@@ -58,7 +58,8 @@ export const createChapter = async (req, res) => {
 export const getChapter = async (req, res) => {
   try {
     const subjectName = (req.query.subjectName || req.body.subjectName || '').trim();
-    const standard = (req.query.standard || req.body.standard || '').trim();
+    const standard = req.query.standard || req.body.standard;
+    const parsedStandard = parseInt(standard, 10);
 
     let filter = {};
 
@@ -66,8 +67,8 @@ export const getChapter = async (req, res) => {
       filter.subjectName = { $regex: new RegExp(`^${subjectName}$`, 'i') };
     }
 
-    if (standard) {
-      filter.standard = { $regex: new RegExp(`^${standard}$`, 'i') };
+    if (!isNaN(parsedStandard)) {
+      filter.standard = parsedStandard;
     }
 
     const chapters = await Chapter.aggregate([
