@@ -10,7 +10,7 @@ export const createTopic = async (req, res) => {
 
 
     console.log(req.body)
-    const { subjectName, standard, chapterName, topics } = req.body;
+    const { subjectName, standard, chapterName, chapterId, topics } = req.body;
 
     if (!subjectName || !chapterName || !Array.isArray(topics) || topics.length === 0) {
       return res.status(400).json({ success: false, message: 'Subject name, chapter name, and topics (array) must be provided' });
@@ -53,7 +53,7 @@ export const createTopic = async (req, res) => {
 
     const newTopics = [];
     for (const topic of topics) {
-      const newTopic = new Topic({ name: topic.name, chapterName, subjectName, standard });
+      const newTopic = new Topic({ name: topic.name, chapterName, chapterId, subjectName, standard });
 
       await newTopic.save();
 

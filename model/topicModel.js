@@ -10,6 +10,11 @@ const topicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  chapterId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Chapter",
+    required: true,
+},
   subjectName: {
     type: String,
     required: true,

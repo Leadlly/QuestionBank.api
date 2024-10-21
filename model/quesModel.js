@@ -30,6 +30,9 @@ const quesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  chaptersId: Array,
+  topicsId: Array,
+  subtopicsId: Array,
   chapter: {
     type: Array,
     required: true

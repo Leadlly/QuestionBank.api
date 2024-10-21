@@ -75,9 +75,12 @@ export const createQuestion = async (req, res) => {
       options: options.map((option) => option.optionDb),
       standard: data.standard,
       subject: data.subject,
-      chapter: data.chapter,
-      topics: data.topics,
-      subtopics: data.subtopics,
+      chapter: data.chapter?.map(el => el.name),
+      topics: data.topics?.map(el => el.name),
+      subtopics: data.subtopics?.map(el => el.name),
+      chaptersId: data.chapter?.map(el => el._id),
+      topicsId: data.topics?.map(el => el._id),
+      subtopicsId: data.subtopics?.map(el => el._id),
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
       images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
@@ -597,9 +600,18 @@ export const updateQuestionDetails = async (req, res) => {
       }
     } else {
       if (standard) question.standard = standard;
-      if (chapter) question.chapter = chapter;
-      if (topics) question.topics = topics;
-      if (subtopics) question.subtopics = subtopics;
+      if (chapter) {
+        question.chapter = chapter?.map(el => el.name);
+        question.chaptersId = chapter?.map(el => el._id);
+      }
+      if (topics) {
+        question.topics = topics?.map(el => el.name);
+        question.topicsId = topics?.map(el => el._id);
+      }
+      if (subtopics){
+         question.subtopics = subtopics?.map(el => el.name);
+         question.subtopicsId = subtopics?.map(el => el._id);
+        }
       if (level) question.level = level;
     }
 
