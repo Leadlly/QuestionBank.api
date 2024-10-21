@@ -8,7 +8,7 @@ export const createSubtopic = async (req, res) => {
     try {
         console.log("Received request body:", req.body);
 
-        const { subjectName, standard, chapterName, topicName, subtopics } = req.body;
+        const { subjectName, standard, chapterName, topicName, chapterId, topicId, subtopics } = req.body;
 
         if (!subjectName || !standard || !chapterName || !topicName || !subtopics || !subtopics[0].name) {
             return res.status(400).json({ success: false, message: 'All input fields must be provided, including a valid subtopic name.' });
@@ -55,6 +55,8 @@ export const createSubtopic = async (req, res) => {
                 topicName,
                 chapterName,
                 subjectName,
+                chapterId, 
+                topicId,
                 standard,
                 subtopics: [],
             });
