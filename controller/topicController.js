@@ -10,7 +10,7 @@ export const createTopic = async (req, res) => {
 
 
     console.log(req.body)
-    const { subjectName, standard, chapterName, topics } = req.body;
+    const { subjectName, standard, chapterName, chapterId, topics } = req.body;
 
     if (!subjectName || !chapterName || !Array.isArray(topics) || topics.length === 0) {
       return res.status(400).json({ success: false, message: 'Subject name, chapter name, and topics (array) must be provided' });
@@ -53,7 +53,7 @@ export const createTopic = async (req, res) => {
 
     const newTopics = [];
     for (const topic of topics) {
-      const newTopic = new Topic({ name: topic.name, chapterName, subjectName, standard });
+      const newTopic = new Topic({ name: topic.name, chapterName, chapterId, subjectName, standard });
 
       await newTopic.save();
 
@@ -135,13 +135,13 @@ export const deleteTopic = async (req, res) => {
 
 export const getTopic = async (req, res) => {
   try {
-    const { subjectName, standard, chapterName } = req.query;
+    const { subjectName, standard, chapterId } = req.query;
 
     let filter = {};
 
     if (subjectName) filter.subjectName = subjectName;
     if (standard) filter.standard = standard;
-    if (chapterName) filter.chapterName = chapterName;
+    if (chapterId) filter.chapterId = chapterId;  // Chapter ID filtering
 
     const topics = await Topic.find(filter);
 
@@ -155,6 +155,7 @@ export const getTopic = async (req, res) => {
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
   }
 };
+
 
 export const getTopicById = async (req, res) => {
   try {
