@@ -6,6 +6,7 @@ import { body, validationResult } from "express-validator";
 import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
 import deleteImages from "../helper/deleteImages.js";
+import mongoose from 'mongoose';
 
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
@@ -17,6 +18,7 @@ const validateAndSanitizeData = [
   body("topic").notEmpty().trim().escape(),
   body("level").notEmpty().trim().escape(),
 ];
+
 
 
 export const createQuestion = async (req, res) => {
@@ -41,25 +43,35 @@ export const createQuestion = async (req, res) => {
       });
     }
 
+    // Process images if needed
     const imageUrls = await processImages(data.images);
 
-   
-    const options = await Promise.all(data.options.map(async (option) => {
-   
-      let optionImageUrls = [];
-      if (option.image && Array.isArray(option.image) && option.image.length > 0) {
-        optionImageUrls = await processImages(option.image);
-      }
+    // Process options with image handling
+    const options = await Promise.all(
+      data.options.map(async (option) => {
+        let optionImageUrls = [];
+        if (option.image && Array.isArray(option.image) && option.image.length > 0) {
+          optionImageUrls = await processImages(option.image);
+        }
 
-      return {
-      image: optionImageUrls,
-       optionDb: { name: option.name,
-        tag: option.isCorrect === true ? "Correct" : "Incorrect", 
-        images: optionImageUrls.length > 0 ? optionImageUrls.map(image => ({ url: image?.getUrl, key: image?.key })) : null,}
-      };
-    }));
-    const optionsSignedUrls = options.flatMap(option => (option.image ? option.image.map(image => image.putUrl) : []));
-  
+        return {
+          image: optionImageUrls,
+          optionDb: {
+            name: option.name,
+            tag: option.isCorrect === true ? "Correct" : "Incorrect",
+            images: optionImageUrls.length > 0 
+              ? optionImageUrls.map((image) => ({ url: image?.getUrl, key: image?.key })) 
+              : null,
+          },
+        };
+      })
+    );
+
+    const optionsSignedUrls = options.flatMap(option =>
+      option.image ? option.image.map(image => image.putUrl) : []
+    );
+
+    // Ensure at least one correct option exists
     const hasCorrectOption = options.some(
       (option) => option.optionDb.tag === 'Correct'
     );
@@ -69,7 +81,12 @@ export const createQuestion = async (req, res) => {
         message: 'At least one option must be correct',
       });
     }
-    
+
+    // Convert chapterId, topicsId, subtopicsId to ObjectId
+    const chaptersId = data.chapter?.map(el => new mongoose.Types.ObjectId(el._id));
+    const topicsId = data.topics?.map(el => new mongoose.Types.ObjectId(el._id));
+    const subtopicsId = data.subtopics?.map(el => new mongoose.Types.ObjectId(el._id));
+
     const newQuestion = new Ques({
       question: data.question,
       options: options.map((option) => option.optionDb),
@@ -78,9 +95,9 @@ export const createQuestion = async (req, res) => {
       chapter: data.chapter?.map(el => el.name),
       topics: data.topics?.map(el => el.name),
       subtopics: data.subtopics?.map(el => el.name),
-      chaptersId: data.chapter?.map(el => el._id),
-      topicsId: data.topics?.map(el => el._id),
-      subtopicsId: data.subtopics?.map(el => el._id),
+      chaptersId: chaptersId,
+      topicsId: topicsId,
+      subtopicsId: subtopicsId,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
       images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
@@ -105,6 +122,7 @@ export const createQuestion = async (req, res) => {
     });
   }
 };
+
 
 export const deleteQuestion = async (req, res) => {
   try {

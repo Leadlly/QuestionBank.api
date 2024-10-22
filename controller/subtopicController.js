@@ -97,43 +97,49 @@ export const createSubtopic = async (req, res) => {
 
 export const getSubtopics = async (req, res) => {
     try {
-        const { subjectName, standard, chapterName, topicName } = req.query;
+        const { subjectName, standard, chapterId, topicId } = req.query;
 
-        if (!subjectName || !standard || !chapterName || !topicName) {
+        // Ensure all required parameters are present
+        if (!subjectName || !standard || !chapterId || !topicId) {
             return res.status(400).json({
                 success: false,
-                message: "Missing required query parameters (subjectName, standard, chapterName, topicName)."
+                message: "Missing required query parameters (subjectName, standard, chapterId, topicId)."
             });
         }
 
-        const chapterNameArray = chapterName.split(',').map(name => name.trim());
-        const topicNameArray = topicName.split(',').map(name => name.trim());
+        // Split chapterId and topicId into arrays (in case of multiple IDs)
+        const chapterIdArray = chapterId.split(',').map(id => id.trim());
+        const topicIdArray = topicId.split(',').map(id => id.trim());
 
+        // Find the subject by name and standard, then populate chapters and topics based on IDs
         const subject = await Subject.findOne({
             name: subjectName,
             standard,
         }).populate({
             path: 'chapters',
-            match: { name: { $in: chapterNameArray } },
+            match: { _id: { $in: chapterIdArray } }, // Filter by chapterId
             populate: {
                 path: 'topics',
-                match: { name: { $in: topicNameArray } },
-                populate: 'subtopics'
+                match: { _id: { $in: topicIdArray } }, // Filter by topicId
+                populate: 'subtopics', // Populate subtopics
             }
         });
 
+        // If no subject is found, return an error
         if (!subject) {
             return res.status(400).json({ success: false, message: "Subject not found" });
         }
 
         let subtopics = [];
 
+        // Collect all subtopics from the found topics
         subject.chapters.forEach(chapter => {
             chapter.topics.forEach(topic => {
                 subtopics.push(...topic.subtopics);
             });
         });
 
+        // If any subtopic has nested subtopics, populate them as well
         for (let i = 0; i < subtopics.length; i++) {
             const subtopic = subtopics[i];
             if (subtopic.subtopics && subtopic.subtopics.length > 0) {
@@ -143,18 +149,20 @@ export const getSubtopics = async (req, res) => {
             }
         }
 
+        // Return the fetched subtopics
         res.status(200).json({
             success: true,
             subtopics,
         });
     } catch (error) {
-        console.error('Error in getSubTopic:', error);
+        console.error('Error in getSubtopics:', error);
         res.status(500).json({
             success: false,
             message: error.message || 'Internal Server Error',
         });
     }
 };
+
 
 
 

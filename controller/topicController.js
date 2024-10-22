@@ -135,13 +135,13 @@ export const deleteTopic = async (req, res) => {
 
 export const getTopic = async (req, res) => {
   try {
-    const { subjectName, standard, chapterName } = req.query;
+    const { subjectName, standard, chapterId } = req.query;
 
     let filter = {};
 
     if (subjectName) filter.subjectName = subjectName;
     if (standard) filter.standard = standard;
-    if (chapterName) filter.chapterName = chapterName;
+    if (chapterId) filter.chapterId = chapterId;  // Chapter ID filtering
 
     const topics = await Topic.find(filter);
 
@@ -155,6 +155,7 @@ export const getTopic = async (req, res) => {
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
   }
 };
+
 
 export const getTopicById = async (req, res) => {
   try {
