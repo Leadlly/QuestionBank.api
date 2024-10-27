@@ -7,7 +7,6 @@ import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
 import deleteImages from "../helper/deleteImages.js";
 import mongoose from 'mongoose';
-
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
   body("options.all.*").notEmpty().trim().escape(),
@@ -167,8 +166,11 @@ export const getAllQuestion = async (req, res) => {
     // Apply filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+
+    if (req.query.chapterId) {
+      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+    }
+    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
@@ -194,14 +196,14 @@ export const getAllQuestion = async (req, res) => {
       }
     }
 
-    console.log(queryObject);
+    console.log("Query Object:", queryObject);
 
     let formattedQuestions = [];
 
     if (req.user.role === "admin") {
       // Setup pagination
-      let page = req.query.page || 1;
-      let limit = req.query.limit || 50;
+      let page = parseInt(req.query.page) || 1;
+      let limit = parseInt(req.query.limit) || 50;
       let skip = (page - 1) * limit;
 
       // Fetch questions based on the queryObject
@@ -225,11 +227,10 @@ export const getAllQuestion = async (req, res) => {
       let totalUntagged = 0;
 
       if (req.query.isTagged === 'tagged') {
-        totalTagged = totalQuestions; // Use the total questions count if filtering for tagged
+        totalTagged = totalQuestions;
       } else if (req.query.isTagged === 'untagged') {
-        totalUntagged = totalQuestions; // Use the total questions count if filtering for untagged
+        totalUntagged = totalQuestions;
       } else {
-        // Get overall counts if no isTagged filter is applied
         totalTagged = await Ques.countDocuments({
           $or: [
             { topics: { $ne: null } },
@@ -247,7 +248,7 @@ export const getAllQuestion = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        totalQuestions, // This now reflects filtered questions
+        totalQuestions,
         totalTagged,
         totalUntagged,
         questions: formattedQuestions,
@@ -265,27 +266,29 @@ export const getAllQuestion = async (req, res) => {
 
 
 
+
+
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
     const userId = req.user._id;
 
-    // Apply filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.chapterId) {
+      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+    }
+
+    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
-    // Search filter
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
       queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
     }
 
-    // My questions search filter (created by the logged-in user)
     if (req.query.mySearch) {
       const searchTerms = req.query.mySearch.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
@@ -295,7 +298,6 @@ export const getTotalQuestions = async (req, res) => {
       ];
     }
 
-    // Handle isTagged query parameter
     if (req.query.isTagged) {
       if (req.query.isTagged === 'tagged') {
         queryObject.$or = [
@@ -388,8 +390,10 @@ export const getMyQuestions = async (req, res) => {
     // Apply additional filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.chapterId) {
+      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+    }
+    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
 
     // Handle search query if provided
