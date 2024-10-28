@@ -161,6 +161,52 @@ export const getChapterById = async (req, res) => {
     }
   }
 };
+
+export const getChaptersByIds = async (req, res) => {
+  try {
+    const {chapterIds} = req.body;
+    if(!chapterIds) return res.status(400).json({success: false, message: "Please provide chapterids"})
+    const chapters = []
+
+    for (let chapterId of chapterIds) {
+      if (!chapterId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Chapter ID is required',
+        });
+      }
+  
+      const chapter = await Chapter.findById(chapterId)
+        .populate('subjectName')
+        .populate('topics');
+  
+      if (!chapter) {
+        return res.status(404).json({
+          success: false,
+          message: 'Chapter not found',
+        });
+      }
+  
+      chapters.push(chapter)
+      
+    }
+
+    return res.status(200).json({
+      success: true,
+      chapters
+    });
+  
+  } catch (error) {
+    console.error('Error in getChapterById:', error);
+
+    if (!res.headersSent) {
+      return res.status(500).json({
+        success: false,
+        message: 'Internal Server Error',
+      });
+    }
+  }
+};
 export const updateChapterExamTags = async (req, res) => {
   
   try {

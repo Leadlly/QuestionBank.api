@@ -15,7 +15,7 @@ config({
 });
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4005;
 
 connectedToDb();
 
@@ -24,7 +24,6 @@ app.use(cookieParser());
 app.use(
   cors({
       origin: (origin, callback) => {
-          console.log('Request from origin:', origin);
           if (origin === undefined || origin === null) {
                callback(null, true);
           } else if (

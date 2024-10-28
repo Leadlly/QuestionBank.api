@@ -6,7 +6,7 @@ import { body, validationResult } from "express-validator";
 import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
 import deleteImages from "../helper/deleteImages.js";
-
+import mongoose from 'mongoose';
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
   body("options.all.*").notEmpty().trim().escape(),
@@ -17,6 +17,7 @@ const validateAndSanitizeData = [
   body("topic").notEmpty().trim().escape(),
   body("level").notEmpty().trim().escape(),
 ];
+
 
 
 export const createQuestion = async (req, res) => {
@@ -41,25 +42,35 @@ export const createQuestion = async (req, res) => {
       });
     }
 
+    // Process images if needed
     const imageUrls = await processImages(data.images);
 
-   
-    const options = await Promise.all(data.options.map(async (option) => {
-   
-      let optionImageUrls = [];
-      if (option.image && Array.isArray(option.image) && option.image.length > 0) {
-        optionImageUrls = await processImages(option.image);
-      }
+    // Process options with image handling
+    const options = await Promise.all(
+      data.options.map(async (option) => {
+        let optionImageUrls = [];
+        if (option.image && Array.isArray(option.image) && option.image.length > 0) {
+          optionImageUrls = await processImages(option.image);
+        }
 
-      return {
-      image: optionImageUrls,
-       optionDb: { name: option.name,
-        tag: option.isCorrect === true ? "Correct" : "Incorrect", 
-        images: optionImageUrls.length > 0 ? optionImageUrls.map(image => ({ url: image?.getUrl, key: image?.key })) : null,}
-      };
-    }));
-    const optionsSignedUrls = options.flatMap(option => (option.image ? option.image.map(image => image.putUrl) : []));
-  
+        return {
+          image: optionImageUrls,
+          optionDb: {
+            name: option.name,
+            tag: option.isCorrect === true ? "Correct" : "Incorrect",
+            images: optionImageUrls.length > 0 
+              ? optionImageUrls.map((image) => ({ url: image?.getUrl, key: image?.key })) 
+              : null,
+          },
+        };
+      })
+    );
+
+    const optionsSignedUrls = options.flatMap(option =>
+      option.image ? option.image.map(image => image.putUrl) : []
+    );
+
+    // Ensure at least one correct option exists
     const hasCorrectOption = options.some(
       (option) => option.optionDb.tag === 'Correct'
     );
@@ -69,15 +80,23 @@ export const createQuestion = async (req, res) => {
         message: 'At least one option must be correct',
       });
     }
-    
+
+    // Convert chapterId, topicsId, subtopicsId to ObjectId
+    const chaptersId = data.chapter?.map(el => new mongoose.Types.ObjectId(el._id));
+    const topicsId = data.topics?.map(el => new mongoose.Types.ObjectId(el._id));
+    const subtopicsId = data.subtopics?.map(el => new mongoose.Types.ObjectId(el._id));
+
     const newQuestion = new Ques({
       question: data.question,
       options: options.map((option) => option.optionDb),
       standard: data.standard,
       subject: data.subject,
-      chapter: data.chapter,
-      topics: data.topics,
-      subtopics: data.subtopics,
+      chapter: data.chapter?.map(el => el.name),
+      topics: data.topics?.map(el => el.name),
+      subtopics: data.subtopics?.map(el => el.name),
+      chaptersId: chaptersId,
+      topicsId: topicsId,
+      subtopicsId: subtopicsId,
       nestedSubTopic: data.nestedSubTopic,
       level: data.level,
       images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
@@ -102,6 +121,7 @@ export const createQuestion = async (req, res) => {
     });
   }
 };
+
 
 export const deleteQuestion = async (req, res) => {
   try {
@@ -146,8 +166,11 @@ export const getAllQuestion = async (req, res) => {
     // Apply filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+
+    if (req.query.chapterId) {
+      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+    }
+    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
@@ -173,14 +196,14 @@ export const getAllQuestion = async (req, res) => {
       }
     }
 
-    console.log(queryObject);
+    console.log("Query Object:", queryObject);
 
     let formattedQuestions = [];
 
     if (req.user.role === "admin") {
       // Setup pagination
-      let page = req.query.page || 1;
-      let limit = req.query.limit || 50;
+      let page = parseInt(req.query.page) || 1;
+      let limit = parseInt(req.query.limit) || 50;
       let skip = (page - 1) * limit;
 
       // Fetch questions based on the queryObject
@@ -204,11 +227,10 @@ export const getAllQuestion = async (req, res) => {
       let totalUntagged = 0;
 
       if (req.query.isTagged === 'tagged') {
-        totalTagged = totalQuestions; // Use the total questions count if filtering for tagged
+        totalTagged = totalQuestions;
       } else if (req.query.isTagged === 'untagged') {
-        totalUntagged = totalQuestions; // Use the total questions count if filtering for untagged
+        totalUntagged = totalQuestions;
       } else {
-        // Get overall counts if no isTagged filter is applied
         totalTagged = await Ques.countDocuments({
           $or: [
             { topics: { $ne: null } },
@@ -226,7 +248,7 @@ export const getAllQuestion = async (req, res) => {
 
       return res.status(200).json({
         success: true,
-        totalQuestions, // This now reflects filtered questions
+        totalQuestions,
         totalTagged,
         totalUntagged,
         questions: formattedQuestions,
@@ -244,27 +266,29 @@ export const getAllQuestion = async (req, res) => {
 
 
 
+
+
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
     const userId = req.user._id;
 
-    // Apply filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.chapterId) {
+      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+    }
+
+    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
-    // Search filter
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
       queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
     }
 
-    // My questions search filter (created by the logged-in user)
     if (req.query.mySearch) {
       const searchTerms = req.query.mySearch.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
@@ -274,7 +298,6 @@ export const getTotalQuestions = async (req, res) => {
       ];
     }
 
-    // Handle isTagged query parameter
     if (req.query.isTagged) {
       if (req.query.isTagged === 'tagged') {
         queryObject.$or = [
@@ -367,8 +390,10 @@ export const getMyQuestions = async (req, res) => {
     // Apply additional filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-    if (req.query.chapter) queryObject.chapter = req.query.chapter;
-    if (req.query.topic) queryObject.topics = req.query.topic;
+    if (req.query.chapterId) {
+      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+    }
+    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
 
     // Handle search query if provided
@@ -597,9 +622,18 @@ export const updateQuestionDetails = async (req, res) => {
       }
     } else {
       if (standard) question.standard = standard;
-      if (chapter) question.chapter = chapter;
-      if (topics) question.topics = topics;
-      if (subtopics) question.subtopics = subtopics;
+      if (chapter) {
+        question.chapter = chapter?.map(el => el.name);
+        question.chaptersId = chapter?.map(el => el._id);
+      }
+      if (topics) {
+        question.topics = topics?.map(el => el.name);
+        question.topicsId = topics?.map(el => el._id);
+      }
+      if (subtopics){
+         question.subtopics = subtopics?.map(el => el.name);
+         question.subtopicsId = subtopics?.map(el => el._id);
+        }
       if (level) question.level = level;
     }
 

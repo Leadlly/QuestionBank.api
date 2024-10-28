@@ -7,70 +7,82 @@ import {Subtopic} from "../model/subtopicModel.js"
 
 export const createTopic = async (req, res) => {
   try {
+    const { subjectName, standard, chapterName, chapterId, topics } = req.body;
 
-
-    console.log(req.body)
-    const { subjectName, standard, chapterName, topics } = req.body;
-
-    if (!subjectName || !chapterName || !Array.isArray(topics) || topics.length === 0) {
-      return res.status(400).json({ success: false, message: 'Subject name, chapter name, and topics (array) must be provided' });
+    // Validate that required fields are provided
+    if (!subjectName || !chapterName || !chapterId || !Array.isArray(topics) || topics.length === 0) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Subject name, chapter name, chapterId, and topics (array) must be provided' 
+      });
     }
 
+    // Fetch the existing subject with populated chapters and topics
     const existingSubject = await Subject.findOne({ name: subjectName, standard })
       .populate({
         path: 'chapters',
         populate: { path: 'topics' }
       });
 
-    console.log(existingSubject)
-
     if (!existingSubject) {
       return res.status(404).json({ success: false, message: 'Subject not found' });
     }
 
-    const existingChapter = existingSubject.chapters.find(chapter => chapter.name === chapterName);
+    // Find the specific chapter by name or ID
+    const existingChapter = existingSubject.chapters.find(chapter => chapter._id.toString() === chapterId);
+
     if (!existingChapter) {
       return res.status(404).json({ success: false, message: 'Chapter not found' });
     }
 
+    // Set of existing topic names to prevent duplicates
     const existingTopicNames = new Set(existingChapter.topics.map(topic => topic.name));
 
-
+    // Validate and add new topics
+    const newTopics = [];
     for (const topic of topics) {
-
       if (!topic.name || typeof topic.name !== 'string') {
         return res.status(400).json({ success: false, message: 'Invalid topic name' });
       }
 
       const topicName = topic.name.trim();
 
+      // Check for duplicate topic names in the same chapter
       if (existingTopicNames.has(topicName)) {
         return res.status(400).json({ success: false, message: `Topic "${topicName}" already exists in the chapter` });
       }
 
-      existingTopicNames.add(topicName);
-    }
-
-    const newTopics = [];
-    for (const topic of topics) {
-      const newTopic = new Topic({ name: topic.name, chapterName, subjectName, standard });
+      // Create and save new topic
+      const newTopic = new Topic({ 
+        name: topicName, 
+        chapterName, 
+        chapterId, 
+        subjectName, 
+        standard 
+      });
 
       await newTopic.save();
 
+      // Add new topic ID to chapter
       existingChapter.topics.push(newTopic._id);
-
       newTopics.push(newTopic);
     }
 
+    // Save the updated chapter with new topics
     await existingChapter.save();
 
-    res.status(200).json({ success: true, message: 'Topics created and added to chapter successfully', newTopics });
+    res.status(200).json({ 
+      success: true, 
+      message: 'Topics created and added to chapter successfully', 
+      newTopics 
+    });
 
   } catch (error) {
     console.error('Error in createTopic:', error);
     res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
+
 
 
 export const editTopic = async (req, res) => {
@@ -135,13 +147,13 @@ export const deleteTopic = async (req, res) => {
 
 export const getTopic = async (req, res) => {
   try {
-    const { subjectName, standard, chapterName } = req.query;
+    const { subjectName, standard, chapterId } = req.query;
 
     let filter = {};
 
     if (subjectName) filter.subjectName = subjectName;
     if (standard) filter.standard = standard;
-    if (chapterName) filter.chapterName = chapterName;
+    if (chapterId) filter.chapterId = chapterId;  // Chapter ID filtering
 
     const topics = await Topic.find(filter);
 
@@ -155,6 +167,7 @@ export const getTopic = async (req, res) => {
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
   }
 };
+
 
 export const getTopicById = async (req, res) => {
   try {
@@ -174,6 +187,37 @@ export const getTopicById = async (req, res) => {
     }
 
     return res.status(200).json({ success: true, topic });
+  } catch (error) {
+    console.error('Error in getTopicById:', error);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
+export const getTopicByIds = async (req, res) => {
+  try {
+    const { topicIds } = req.body;
+
+    const topics = []
+
+    for ( let id of topicIds) {
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Topic ID must be provided' });
+      }
+  
+      const topic = await Topic.findById(id)
+        .populate({
+          path: 'subtopics', // Populate subtopics for the topic
+        });
+  
+      if (!topic) {
+        return res.status(404).json({ success: false, message: 'Topic not found' });
+      }
+
+      topics.push(topic)
+
+    }
+
+    return res.status(200).json({ success: true, topics });
   } catch (error) {
     console.error('Error in getTopicById:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });

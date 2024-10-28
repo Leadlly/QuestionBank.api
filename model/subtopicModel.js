@@ -14,14 +14,24 @@ const subtopicSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    topicId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Topic",
+        required: true,
+    },
+    chapterId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chapter",
+        required: true,
+    },
     subjectName: {
-      type: String,
-      required: true,
+    type: String,
+    required: true,
   },
-  standard: {
-      type: Number,
-      required: true,
-  },
+    standard: {
+        type: Number,
+        required: true,
+    },
     subtopics: [
         {
             type: mongoose.Schema.Types.ObjectId,
