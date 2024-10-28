@@ -193,6 +193,37 @@ export const getTopicById = async (req, res) => {
   }
 };
 
+export const getTopicByIds = async (req, res) => {
+  try {
+    const { topicIds } = req.body;
+
+    const topics = []
+
+    for ( let id of topicIds) {
+      if (!id) {
+        return res.status(400).json({ success: false, message: 'Topic ID must be provided' });
+      }
+  
+      const topic = await Topic.findById(id)
+        .populate({
+          path: 'subtopics', // Populate subtopics for the topic
+        });
+  
+      if (!topic) {
+        return res.status(404).json({ success: false, message: 'Topic not found' });
+      }
+
+      topics.push(topic)
+
+    }
+
+    return res.status(200).json({ success: true, topics });
+  } catch (error) {
+    console.error('Error in getTopicById:', error);
+    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
 
 export const updateTopicExamTags = async (req, res) => {
   try {

@@ -300,4 +300,30 @@ export const updateSubtopic = async (req, res) => {
   
   
   
+  export const getSubTopicByIds = async (req, res) => {
+    try {
+      const { subtopicIds } = req.body;
   
+      const subtopics = []
+  
+      for ( let id of subtopicIds) {
+        if (!id) {
+          return res.status(400).json({ success: false, message: 'Subtopic ID must be provided' });
+        }
+    
+        const subtopic = await Subtopic.findById(id)
+    
+        if (!subtopic) {
+          return res.status(404).json({ success: false, message: 'Subtopic not found' });
+        }
+  
+        subtopics.push(subtopic)
+  
+      }
+  
+      return res.status(200).json({ success: true, subtopics });
+    } catch (error) {
+      console.error('Error in getTopicById:', error);
+      return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+    }
+  };
