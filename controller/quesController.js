@@ -624,15 +624,15 @@ export const updateQuestionDetails = async (req, res) => {
       if (standard) question.standard = standard;
       if (chapter) {
         question.chapter = chapter?.map(el => el.name);
-        question.chaptersId = chapter?.map(el => el._id);
+        question.chaptersId = chapter?.map(el => new mongoose.Types.ObjectId(el._id));
       }
       if (topics) {
         question.topics = topics?.map(el => el.name);
-        question.topicsId = topics?.map(el => el._id);
+        question.topicsId = topics?.map(el => new mongoose.Types.ObjectId(el._id));
       }
       if (subtopics){
          question.subtopics = subtopics?.map(el => el.name);
-         question.subtopicsId = subtopics?.map(el => el._id);
+         question.subtopicsId = subtopics?.map(el => new mongoose.Types.ObjectId(el._id));
         }
       if (level) question.level = level;
     }
