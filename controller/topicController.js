@@ -153,7 +153,10 @@ export const getTopic = async (req, res) => {
 
     if (subjectName) filter.subjectName = subjectName;
     if (standard) filter.standard = standard;
-    if (chapterId) filter.chapterId = chapterId;  // Chapter ID filtering
+    if (chapterId) {
+      const chapterIds = chapterId.includes(',') ? chapterId.split(',') : [chapterId];
+      filter.chapterId = { $in: chapterIds };
+    }
 
     const topics = await Topic.find(filter);
 
@@ -169,6 +172,7 @@ export const getTopic = async (req, res) => {
 };
 
 
+
 export const getTopicById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -179,7 +183,7 @@ export const getTopicById = async (req, res) => {
 
     const topic = await Topic.findById(id)
       .populate({
-        path: 'subtopics', // Populate subtopics for the topic
+        path: 'subtopics',
       });
 
     if (!topic) {
@@ -206,7 +210,7 @@ export const getTopicByIds = async (req, res) => {
   
       const topic = await Topic.findById(id)
         .populate({
-          path: 'subtopics', // Populate subtopics for the topic
+          path: 'subtopics', 
         });
   
       if (!topic) {
