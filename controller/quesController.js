@@ -163,51 +163,49 @@ export const getAllQuestion = async (req, res) => {
   try {
     const queryObject = {};
 
-    // Apply filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
-
     if (req.query.chapterId) {
       queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
     }
-    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
+    if (req.query.topicId) queryObject.topicsId = { $in: [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
-    // Handle search query if provided
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
       queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
     }
 
-    // Handle the isTagged filter
     if (req.query.isTagged) {
       if (req.query.isTagged === 'tagged') {
         queryObject.$or = [
-          { topics: { $ne: null } },
-          { subtopics: { $ne: null } }
+          { topics: { $exists: true, $ne: [] } },  
+          { subtopics: { $exists: true, $ne: [] } }
         ];
       } else if (req.query.isTagged === 'untagged') {
-        queryObject.$or = [
-          { topics: null },
-          { subtopics: null }
+        queryObject.$and = [
+          { $or: [{ topics: { $size: 0 } }, { topics: { $exists: false } }] },  
+          { $or: [{ subtopics: { $size: 0 } }, { subtopics: { $exists: false } }] } 
         ];
       }
     }
+
 
     console.log("Query Object:", queryObject);
 
     let formattedQuestions = [];
 
     if (req.user.role === "admin") {
-      // Setup pagination
-      let page = parseInt(req.query.page) || 1;
-      let limit = parseInt(req.query.limit) || 50;
-      let skip = (page - 1) * limit;
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 50;
+      const skip = (page - 1) * limit;
 
-      // Fetch questions based on the queryObject
-      let questionsData = Ques.find(queryObject).sort({ createdAt: 1 }).skip(skip).limit(limit);
+      const questionsData = Ques.find(queryObject)
+        .sort({ createdAt: 1 })
+        .skip(skip)
+        .limit(limit);
       const questions = await questionsData;
 
       if (!questions || questions.length === 0) {
@@ -219,13 +217,10 @@ export const getAllQuestion = async (req, res) => {
         nestedSubTopic: question.nestedSubTopic || ""
       }));
 
-      // Get the count of total questions based on the current queryObject
       const totalQuestions = await Ques.countDocuments(queryObject);
-
-      // Get counts based on the isTagged parameter
       let totalTagged = 0;
       let totalUntagged = 0;
-
+      // Get counts based on the isTagged parameter
       if (req.query.isTagged === 'tagged') {
         totalTagged = totalQuestions;
       } else if (req.query.isTagged === 'untagged') {
@@ -233,15 +228,15 @@ export const getAllQuestion = async (req, res) => {
       } else {
         totalTagged = await Ques.countDocuments({
           $or: [
-            { topics: { $ne: null } },
-            { subtopics: { $ne: null } }
+            { topics: { $exists: true, $ne: [] } },
+            { subtopics: { $exists: true, $ne: [] } }
           ]
         });
 
         totalUntagged = await Ques.countDocuments({
-          $or: [
-            { topics: null },
-            { subtopics: null }
+          $and: [
+            { $or: [{ topics: { $size: 0 } }, { topics: { $exists: false } }] },
+            { $or: [{ subtopics: { $size: 0 } }, { subtopics: { $exists: false } }] }
           ]
         });
       }
@@ -265,9 +260,6 @@ export const getAllQuestion = async (req, res) => {
 };
 
 
-
-
-
 export const getTotalQuestions = async (req, res) => {
   try {
     const queryObject = {};
@@ -278,8 +270,7 @@ export const getTotalQuestions = async (req, res) => {
     if (req.query.chapterId) {
       queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
     }
-
-    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
+    if (req.query.topicId) queryObject.topicsId = { $in: [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
@@ -294,83 +285,69 @@ export const getTotalQuestions = async (req, res) => {
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
       queryObject.$and = [
         { $or: searchRegex.map(regex => ({ question: regex })) },
-        { createdBy: userId },
+        { createdBy: userId }
       ];
     }
+    const taggedQuery = {
+      ...queryObject,
+      $or: [
+        { topics: { $exists: true, $ne: [] } },
+        { subtopics: { $exists: true, $ne: [] } },
+      ],
+    };
+    const untaggedQuery = {
+      ...queryObject,
+      topics: { $exists: true, $size: 0 },
+      subtopics: { $exists: true, $size: 0 },
+    };
 
-    if (req.query.isTagged) {
-      if (req.query.isTagged === 'tagged') {
-        queryObject.$or = [
-          { topics: { $ne: null } },  // Topic exists
-          { subtopics: { $ne: null } }  // Subtopic exists
-        ];
-      } else if (req.query.isTagged === 'untagged') {
-        queryObject.$or = [
-          { topics: null },
-          { subtopics: null },
-          {
-            $and: [
-              { topics: { $exists: true } },
-              { subtopics: { $exists: true } },
-              { topics: { $type: "array" } },
-              { subtopics: { $type: "array" } },
-              { $expr: { $and: [{ $eq: [{ $size: "$topics" }, 0] }, { $eq: [{ $size: "$subtopics" }, 0] }] } }
-            ]
-          }
-        ];
-      }
-    }
-
-    // Fetch total questions based on the constructed query
-    const totalQuestions = await Ques.countDocuments(queryObject);
-
-    // Calculate total tagged and untagged questions (separate logic)
-    const taggedQueryObject = { $or: [
-      { topics: { $exists: true, $ne: [] } },
-      { subtopics: { $exists: true, $ne: [] } }
-    ]};
-
-    const untaggedQueryObject = { $and: [
-      { topics: { $size: 0 } },
-      { subtopics: { $size: 0 } }
-    ]};
-
-    // Calculate total tagged and untagged questions
-    const totalTagged = await Ques.countDocuments(taggedQueryObject);
-    const totalUntagged = await Ques.countDocuments(untaggedQueryObject);
-
-    // If `isTagged` is present, set total questions to the respective count
-    let total = totalQuestions;
+    let totalQuestions = await Ques.countDocuments(queryObject);
     if (req.query.isTagged === 'tagged') {
-      total = totalTagged;
+      totalQuestions = await Ques.countDocuments(taggedQuery);
     } else if (req.query.isTagged === 'untagged') {
-      total = totalUntagged;
+      totalQuestions = await Ques.countDocuments(untaggedQuery);
     }
 
-    // Fetch the logged-in user's questions (if applicable)
-    const queryObjects = { ...queryObject, createdBy: userId };
-    const myQuestions = await Ques.find(queryObjects);
-    const questionsLength = myQuestions.length;
-    const totalMyQuestions = await Ques.countDocuments({ createdBy: userId });
+    const userQuery = { ...queryObject, createdBy: userId };
+    let totalMyQuestions = await Ques.countDocuments(userQuery);
+    
+    const myTaggedQuery = {
+      ...userQuery,
+      $or: [
+        { topics: { $exists: true, $ne: [] } },
+        { subtopics: { $exists: true, $ne: [] } },
+      ],
+    };
+    const myUntaggedQuery = {
+      ...userQuery,
+      topics: { $exists: true, $size: 0 },
+      subtopics: { $exists: true, $size: 0 },
+    };
+
+    const totalMyTagged = await Ques.countDocuments(myTaggedQuery);
+    const totalMyUntagged = await Ques.countDocuments(myUntaggedQuery);
+    if (req.query.isTagged === 'tagged') {
+      totalMyQuestions = await Ques.countDocuments(myTaggedQuery);
+    } else if (req.query.isTagged === 'untagged') {
+      totalMyQuestions = await Ques.countDocuments(myUntaggedQuery);
+    }
+
+    const fixedTotalQuestions = await Ques.countDocuments();
+
+    const totalPages = Math.ceil(totalQuestions / req.query.questionsPerPage);
     const totalMyPages = Math.ceil(totalMyQuestions / req.query.questionsPerPage);
 
-    // Fetch fixed total questions (all questions, no filters)
-    const fixedTotalQuestions = await Ques.countDocuments({});
-
-    // Calculate total pages based on questions per page
-    const totalPages = Math.ceil(total / req.query.questionsPerPage);
-
-    // Send the response
     return res.status(200).json({
       success: true,
-      totalQuestions: total,  // Adjusted to reflect either tagged or untagged
-      totalTagged: totalTagged,
-      totalUntagged: totalUntagged,
-      questionsLength: questionsLength,
-      fixedTotalQuestions: fixedTotalQuestions,
-      totalMyQuestions: totalMyQuestions,
-      totalPages: totalPages,
-      totalMyPages: totalMyPages
+      totalQuestions,
+      totalTagged: await Ques.countDocuments(taggedQuery),
+      totalUntagged: await Ques.countDocuments(untaggedQuery),
+      fixedTotalQuestions,
+      totalMyQuestions,
+      totalMyTagged,
+      totalMyUntagged,
+      totalPages,
+      totalMyPages,
     });
   } catch (error) {
     return res.status(500).json({
@@ -380,14 +357,13 @@ export const getTotalQuestions = async (req, res) => {
   }
 };
 
+
 export const getMyQuestions = async (req, res) => {
   try {
     const queryObject = {};
 
-    // Only fetch questions created by the current user
     queryObject.createdBy = req.user._id;
 
-    // Apply additional filters from query parameters
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapterId) {
@@ -396,14 +372,12 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
 
-    // Handle search query if provided
     if (req.query.search) {
       const searchTerms = req.query.search.split(' ').filter(term => term !== '');
       const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
       queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
     }
 
-    // Handle the isTagged filter
     if (req.query.isTagged) {
       if (req.query.isTagged === 'tagged') {
         queryObject.$or = [
@@ -426,12 +400,10 @@ export const getMyQuestions = async (req, res) => {
       }
     }
 
-    // Pagination setup
     let page = req.query.page || 1;
     let limit = req.query.limit || 50;
     let skip = (page - 1) * limit;
 
-    // Fetch questions created by the current user based on the queryObject
     let questionsData = Ques.find(queryObject).sort({ createdAt: 1 }).skip(skip).limit(limit);
     const questions = await questionsData;
 
@@ -444,20 +416,18 @@ export const getMyQuestions = async (req, res) => {
       nestedSubTopic: question.nestedSubTopic || ""
     }));
 
-    // Get the count of total questions for the current user
     const totalQuestions = await Ques.countDocuments(queryObject);
 
-    // Get counts for tagged and untagged questions
-    let totalTagged = 0;
-    let totalUntagged = 0;
+    let totalMyTagged = 0;
+    let totalMyUntagged = 0;
 
     if (req.query.isTagged === 'tagged') {
-      totalTagged = totalQuestions; // Use the total questions count if filtering for tagged
+      totalMyTagged = totalQuestions; // Use the total questions count if filtering for tagged
     } else if (req.query.isTagged === 'untagged') {
-      totalUntagged = totalQuestions; // Use the total questions count if filtering for untagged
+      totalMyUntagged = totalQuestions; // Use the total questions count if filtering for untagged
     } else {
       // Get overall counts for the current user's questions
-      totalTagged = await Ques.countDocuments({
+      totalMyTagged = await Ques.countDocuments({
         createdBy: req.user._id,
         $or: [
           { topics: { $exists: true, $ne: [] } },
@@ -465,7 +435,7 @@ export const getMyQuestions = async (req, res) => {
         ]
       });
 
-      totalUntagged = await Ques.countDocuments({
+      totalMyUntagged = await Ques.countDocuments({
         createdBy: req.user._id,
         $and: [
           { $or: [
@@ -484,9 +454,9 @@ export const getMyQuestions = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      totalQuestions, // This reflects the filtered questions created by the current user
-      totalTagged,
-      totalUntagged,
+      totalQuestions, 
+      totalMyTagged,
+      totalMyUntagged,
       questions: formattedQuestions,
     });
   } catch (error) {
