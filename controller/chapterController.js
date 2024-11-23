@@ -15,45 +15,65 @@ export const createChapter = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Subject name and chapters (array) must be provided.' });
     }
 
-    const existingSubject = await Subject.findOne({ name, standard }).populate('chapters'); // Ensure to populate the chapters
+    const existingSubject = await Subject.findOne({ name, standard });
 
-    if (existingSubject) {
-      for (const chapterData of chapters) {
-        const { name: chapterName, topics } = chapterData;
-
-        const existingChapter = existingSubject.chapters.find(
-          chapter => chapter.name === chapterName
-        );
-
-        if (existingChapter) {
-          return res.status(400).json({ success: false, message: `Chapter "${chapterName}" already exists.` });
-        }
-
-        const newChapter = new Chapter({ name: chapterName, subjectName: name, standard });
-
-        if (Array.isArray(topics)) {
-          for (const topicName of topics) {
-            const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
-            await newTopic.save();
-            newChapter.topics.push(newTopic._id);
-          }
-        }
-
-        await newChapter.save();
-        existingSubject.chapters.push(newChapter._id);
-      }
-
-      await existingSubject.save();
-
-      return res.status(201).json({ success: true, message: 'Chapters added successfully.', chapters });
-    } else {
+    if (!existingSubject) {
       return res.status(404).json({ success: false, message: 'Subject not found.' });
     }
+
+    for (const chapterData of chapters) {
+      const { name: chapterName, chapterNumber, topics } = chapterData;
+
+      const existingChapterByName = await Chapter.findOne({
+        name: chapterName,
+        standard,
+        subjectName: name,
+      });
+
+      if (existingChapterByName) {
+        return res.status(400).json({ success: false, message: `Chapter with name "${chapterName}" already exists.` });
+      }
+
+      const existingChapterByNumber = await Chapter.findOne({
+        chapterNumber,
+        standard,
+        subjectName: name,
+      });
+
+      if (existingChapterByNumber) {
+        return res.status(400).json({ success: false, message: `Chapter number "${chapterNumber}" already exists.` });
+      }
+
+      const newChapter = new Chapter({
+        name: chapterName,
+        subjectName: name,
+        standard,
+        chapterNumber,
+      });
+
+      if (Array.isArray(topics)) {
+        for (const topicName of topics) {
+          const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
+          await newTopic.save();
+          newChapter.topics.push(newTopic._id);
+        }
+      }
+
+      await newChapter.save();
+      existingSubject.chapters.push(newChapter._id);
+    }
+
+    await existingSubject.save();
+
+    return res.status(201).json({ success: true, message: 'Chapters added successfully.' });
   } catch (error) {
     console.error('Error creating chapter:', error);
     res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
+
+
+
 
 export const getChapter = async (req, res) => {
   try {

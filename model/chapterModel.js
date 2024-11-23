@@ -9,6 +9,10 @@ const chapterSchema = new mongoose.Schema({
       type: String,
       required: true,
   },
+    chapterNumber: {
+      type: Number,
+      default: undefined,
+  },
   standard: {
       type: Number,
       required: true,
