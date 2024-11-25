@@ -10,6 +10,10 @@ const topicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  topicNumber: {  
+    type: Number,
+    default: undefined,
+  },
   chapterId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Chapter",
