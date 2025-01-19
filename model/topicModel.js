@@ -23,6 +23,10 @@ standard: {
     type: Number,
     required: true,
 },
+topicNumber: {
+  type: Number,
+  default: null
+},
   subtopics: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Subtopic",

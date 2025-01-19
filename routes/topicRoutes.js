@@ -1,6 +1,6 @@
 
 import express from "express";
-import { createTopic, deleteTopic, deleteTopicnullquestion, editTopic, getTopic, getTopicById, getTopicByIds, updateTopic, updateTopicExamTags } from "../controller/topicController.js";
+import { createTopic, deleteTopic, deleteTopicnullquestion, editTopic, getTopic, getTopicById, getTopicByIds, updateTopic, updateTopicExamTags, updateTopicNumber } from "../controller/topicController.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import isAuthenticated from "../middlewares/auth.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
@@ -21,6 +21,7 @@ router.put("/edit/topic/:id", convertToLowercase, editTopic);
 router.delete("/delete/topic/:id", deleteTopic)
 router.put("/update/topic/:id", convertToLowercase, updateTopic)
 router.delete("/delete/null/topic/:id", deleteTopicnullquestion)
+router.post("/update/topicnumber", updateTopicNumber)
 
 
 
