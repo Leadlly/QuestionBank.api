@@ -13,6 +13,10 @@ const chapterSchema = new mongoose.Schema({
       type: Number,
       required: true,
   },
+  chapterNumber:{
+    type: Number,
+    default: null
+  },
     topics: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Topic"

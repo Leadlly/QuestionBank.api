@@ -101,6 +101,7 @@ export const getChapter = async (req, res) => {
       chapters: chapters.map(chapter => ({
         _id: chapter._id,
         name: chapter.name,
+        chapterNumber: chapter.chapterNumber, // Include chapterNumber
         topics: chapter.topics,
         exam: chapter.exam,
       })),
@@ -116,6 +117,7 @@ export const getChapter = async (req, res) => {
     }
   }
 };
+
 
 export const getChapterById = async (req, res) => {
   try {
@@ -345,3 +347,47 @@ export const deleteChapter = async (req, res) => {
 };
 
 
+export const chapterNumberUpdate = async (req, res) => {
+  try {
+    const { chapterId, subjectName, chapterNumber } = req.body;
+
+    // Validate input
+    if (!chapterId || !subjectName || chapterNumber === undefined) {
+      return res.status(400).json({ message: "chapterId, subjectName, and chapterNumber are required." });
+    }
+
+    // Check if the chapterNumber is already used in the given subject
+    const existingChapter = await Chapter.findOne({
+      subjectName,
+      chapterNumber,
+    });
+
+    if (existingChapter) {
+      return res.status(400).json({
+        message: `Chapter number ${chapterNumber} is already assigned to chapter in the subject "${subjectName}".`,
+      });
+    }
+
+    // Update the chapter with the new chapter number
+    const updatedChapter = await Chapter.findByIdAndUpdate(
+      chapterId,
+      { chapterNumber: chapterNumber || null },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedChapter) {
+      return res.status(404).json({ message: "Chapter not found." });
+    }
+
+    res.status(200).json({
+      message: "Chapter number updated successfully.",
+      chapter: updatedChapter,
+    });
+  } catch (error) {
+    console.error("Error updating chapter number:", error);
+    res.status(500).json({
+      message: "An error occurred while updating the chapter number.",
+      error: error.message,
+    });
+  }
+};

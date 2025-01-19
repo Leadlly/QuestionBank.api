@@ -163,8 +163,19 @@ export const getTopic = async (req, res) => {
     if (topics.length === 0) {
       return res.status(404).json({ success: false, message: 'No topics found' });
     }
+    const topicsWithTopicNumber = topics.map(topic => ({
+      _id: topic._id,
+      name: topic.name,
+      chapterName: topic.chapterName,
+      subjectName: topic.subjectName,
+      standard: topic.standard,
+      topicNumber: topic.topicNumber,  // Include the topicNumber field
+      subtopics: topic.subtopics,
+      chapterId: topic.chapterId,
+      exam: topic.exam,
+    }));
 
-    return res.status(200).json({ success: true, topics });
+    return res.status(200).json({ success: true, topics: topicsWithTopicNumber });
   } catch (error) {
     console.error('Error in getTopic:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
@@ -360,6 +371,70 @@ export const deleteTopicnullquestion = async (req, res) => {
   } catch (error) {
     console.error('Error in deleteTopicnullquestion:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+  }
+};
+
+// Backend controller for updating topic numbers
+export const updateTopicNumber = async (req, res) => {
+  try {
+    const { topicId, newTopicNumber, chapterId } = req.body;
+
+    // Step 1: Validate the input data
+    if (!topicId || !chapterId) {
+      return res.status(400).json({
+        success: false,
+        message: "Topic ID and Chapter ID must be provided.",
+      });
+    }
+
+    if (newTopicNumber !== null && isNaN(newTopicNumber)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid topic number provided.",
+      });
+    }
+
+    // Step 2: Check if the new topic number already exists in the same chapter (if not null)
+    if (newTopicNumber !== null) {
+      const existingTopic = await Topic.findOne({ chapterId, topicNumber: newTopicNumber });
+      if (existingTopic) {
+        return res.status(400).json({
+          success: false,
+          message: `Topic number ${newTopicNumber} already exists in this chapter.`,
+        });
+      }
+    }
+
+    // Step 3: Find the topic by ID
+    const topic = await Topic.findById(topicId);
+    if (!topic) {
+      return res.status(404).json({
+        success: false,
+        message: "Topic not found.",
+      });
+    }
+
+    // Step 4: Update the topicNumber (allow setting it to null)
+    topic.topicNumber = newTopicNumber === null ? null : newTopicNumber;
+    await topic.save();
+
+    // Step 5: Fetch and sort topics by topicNumber (null values last)
+    const topics = await Topic.find({ chapterId })
+      .sort({ topicNumber: 1 }) // Sort by topicNumber in ascending order
+      .exec();
+
+    // Step 6: Return a success response with sorted topics
+    return res.status(200).json({
+      success: true,
+      message: "Topic number updated successfully.",
+      topics, // Send the sorted topics back
+    });
+  } catch (error) {
+    console.error("Error in updating topic number:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update topic number.",
+    });
   }
 };
 
