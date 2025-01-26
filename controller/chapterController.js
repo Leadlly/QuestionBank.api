@@ -15,45 +15,65 @@ export const createChapter = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Subject name and chapters (array) must be provided.' });
     }
 
-    const existingSubject = await Subject.findOne({ name, standard }).populate('chapters'); // Ensure to populate the chapters
+    const existingSubject = await Subject.findOne({ name, standard });
 
-    if (existingSubject) {
-      for (const chapterData of chapters) {
-        const { name: chapterName, topics } = chapterData;
-
-        const existingChapter = existingSubject.chapters.find(
-          chapter => chapter.name === chapterName
-        );
-
-        if (existingChapter) {
-          return res.status(400).json({ success: false, message: `Chapter "${chapterName}" already exists.` });
-        }
-
-        const newChapter = new Chapter({ name: chapterName, subjectName: name, standard });
-
-        if (Array.isArray(topics)) {
-          for (const topicName of topics) {
-            const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
-            await newTopic.save();
-            newChapter.topics.push(newTopic._id);
-          }
-        }
-
-        await newChapter.save();
-        existingSubject.chapters.push(newChapter._id);
-      }
-
-      await existingSubject.save();
-
-      return res.status(201).json({ success: true, message: 'Chapters added successfully.', chapters });
-    } else {
+    if (!existingSubject) {
       return res.status(404).json({ success: false, message: 'Subject not found.' });
     }
+
+    for (const chapterData of chapters) {
+      const { name: chapterName, chapterNumber, topics } = chapterData;
+
+      const existingChapterByName = await Chapter.findOne({
+        name: chapterName,
+        standard,
+        subjectName: name,
+      });
+
+      if (existingChapterByName) {
+        return res.status(400).json({ success: false, message: `Chapter with name "${chapterName}" already exists.` });
+      }
+
+      const existingChapterByNumber = await Chapter.findOne({
+        chapterNumber,
+        standard,
+        subjectName: name,
+      });
+
+      if (existingChapterByNumber) {
+        return res.status(400).json({ success: false, message: `Chapter number "${chapterNumber}" already exists.` });
+      }
+
+      const newChapter = new Chapter({
+        name: chapterName,
+        subjectName: name,
+        standard,
+        chapterNumber,
+      });
+
+      if (Array.isArray(topics)) {
+        for (const topicName of topics) {
+          const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
+          await newTopic.save();
+          newChapter.topics.push(newTopic._id);
+        }
+      }
+
+      await newChapter.save();
+      existingSubject.chapters.push(newChapter._id);
+    }
+
+    await existingSubject.save();
+
+    return res.status(201).json({ success: true, message: 'Chapters added successfully.' });
   } catch (error) {
     console.error('Error creating chapter:', error);
     res.status(500).json({ success: false, message: error.message || 'Internal Server Error' });
   }
 };
+
+
+
 
 export const getChapter = async (req, res) => {
   try {
@@ -252,51 +272,80 @@ export const updateChapterExamTags = async (req, res) => {
 export const updateChapter = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, chapterNumber } = req.body;
 
-    if (!id || !name) {
-      return res.status(400).json({ success: false, message: 'Chapter ID and new name must be provided' });
+    if (!id || !name || chapterNumber === undefined) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Chapter ID, new name, and chapter number must be provided.' 
+      });
     }
 
     const chapter = await Chapter.findById(id);
 
     if (!chapter) {
-      return res.status(404).json({ success: false, message: 'Chapter not found' });
+      return res.status(404).json({ success: false, message: 'Chapter not found.' });
     }
 
+    const { subjectName, standard } = chapter; // Use current chapter's subject and standard for validation
+
+    // Check for duplicate chapter name in the same subject and standard
+    const existingChapterByName = await Chapter.findOne({
+      name,
+      standard,
+      subjectName,
+      _id: { $ne: id }, // Exclude the current chapter from the check
+    });
+
+    if (existingChapterByName) {
+      return res.status(400).json({ success: false, message: `Chapter with name "${name}" already exists.` });
+    }
+
+    // Check for duplicate chapter number in the same subject and standard
+    const existingChapterByNumber = await Chapter.findOne({
+      chapterNumber,
+      standard,
+      subjectName,
+      _id: { $ne: id }, // Exclude the current chapter from the check
+    });
+
+    if (existingChapterByNumber) {
+      return res.status(400).json({ success: false, message: `Chapter number "${chapterNumber}" already exists.` });
+    }
+
+    // Update Chapter details
     const oldName = chapter.name;
     chapter.name = name;
+    chapter.chapterNumber = chapterNumber;
     await chapter.save();
 
-    // Update the chapter ID in the Subject collection where the chapter ID matches
-    await Subject.updateOne(
-      { chapters: id },
-      { $set: { "chapters.$": id } }
-    );
-
-    await Ques.updateMany(
-      { chapter: oldName },
-      { $set: { "chapter.$[elem]": name } },
-      { arrayFilters: [{ "elem": oldName }] }
-    );
-    // Update chapter name in the Topic collection
+    // Update related collections
     await Topic.updateMany(
-      { chapterName: oldName,},
-      { $set: { chapterName: name } }
+      { chapterName: oldName, subjectName, standard },
+      { $set: { chapterName: name, chapterNumber } }
     );
 
-    // Update chapter name in the Subtopic collection
     await Subtopic.updateMany(
-      { chapterName: oldName, },
-      { $set: { chapterName: name } }
+      { chapterName: oldName, subjectName, standard },
+      { $set: { chapterName: name, chapterNumber } }
     );
 
-    return res.status(200).json({ success: true, message: 'Chapter name updated successfully in all relevant collections' });
+    return res.status(200).json({
+      success: true,
+      message: 'Chapter name and chapter number updated successfully in all relevant collections.',
+    });
   } catch (error) {
     console.error('Error in updateChapter:', error);
-    return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'An unexpected error occurred. Please try again later.',
+    });
   }
 };
+
+
+
+
 
 
 export const deleteChapter = async (req, res) => {
