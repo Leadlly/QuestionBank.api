@@ -24,18 +24,18 @@ const quesSchema = new mongoose.Schema({
 
   standard: {
     type: Number,
-    required: true,
+    // required: true,
   },
   subject: {
     type: String,
-    required: true,
+    // required: true,
   },
   chaptersId: Array,
   topicsId: Array,
   subtopicsId: Array,
   chapter: {
     type: Array,
-    required: true
+    // required: true
   },
   topics: Array,
   subtopics: Array,

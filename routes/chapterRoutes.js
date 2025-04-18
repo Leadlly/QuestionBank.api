@@ -2,7 +2,7 @@ import express from "express";
 
 import isAuthenticated from "../middlewares/auth.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
-import { chapterNumberUpdate, createChapter, deleteChapter, getChapter, getChapterById, getChaptersByIds, updateChapter, updateChapterExamTags } from "../controller/chapterController.js";
+import { chapterNumberUpdate, createChapter, deleteChapter, getChapter, getChapterById, getChaptersByIds, updateChapter, updateChapterExamTags } from "../controllers/chapterController.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 const router = express.Router();
 

@@ -6,7 +6,7 @@ import {
   logout,
   register,
   verification,
-} from "../controller/userController.js";
+} from "../controllers/userController.js";
 import isAuthenticated from "../middlewares/auth.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
 

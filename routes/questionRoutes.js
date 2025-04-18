@@ -2,6 +2,7 @@ import express from "express";
 import {
   allUser,
   checkIfTagged,
+  createMultipleQuestions,
   createQuestion,
   deleteQuestion,
   editQuestion,
@@ -11,7 +12,7 @@ import {
   updateOption,
   updateQuestionDetails,
   // toggleOptionTag,
-} from "../controller/quesController.js";
+} from "../controllers/quesController.js";
 import isAuthenticated from "../middlewares/auth.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
@@ -23,6 +24,8 @@ router.post(
   isAuthenticated,
   createQuestion
 );
+router.post('/multiple/question', isAuthenticated, createMultipleQuestions);
+
 router.put("/edit/question/:id", isAuthenticated, convertToLowercase, editQuestion)
 router.put("/edit/question/:id/option/:optionId", isAuthenticated, convertToLowercase, updateOption)
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);
