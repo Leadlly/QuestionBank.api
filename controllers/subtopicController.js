@@ -152,19 +152,47 @@ export const getSubtopics = async (req, res) => {
         });
 
         // If any subtopic has nested subtopics, populate them as well
-        for (let i = 0; i < subtopics.length; i++) {
-            const subtopic = subtopics[i];
+        // Also add question count for each subtopic
+        const subtopicsWithQuestionCount = await Promise.all(subtopics.map(async (subtopic) => {
+            // Count questions that have this subtopic's ID in their subtopicsId array
+            const questionCount = await Ques.countDocuments({
+                subtopicsId: subtopic._id,
+                subject: subjectName,
+                standard: standard
+            });
+
+            // Create a new object with all subtopic properties plus the question count
+            const subtopicWithCount = subtopic.toObject ? subtopic.toObject() : { ...subtopic };
+            subtopicWithCount.questionCount = questionCount;
+
+            // Handle nested subtopics if they exist
             if (subtopic.subtopics && subtopic.subtopics.length > 0) {
                 const nestedSubtopicIds = subtopic.subtopics;
                 const nestedSubtopics = await Subtopic.find({ _id: { $in: nestedSubtopicIds } });
-                subtopics[i].subtopics = nestedSubtopics;
+                
+                // Get question counts for nested subtopics
+                const nestedSubtopicsWithCount = await Promise.all(nestedSubtopics.map(async (nestedSubtopic) => {
+                    const nestedQuestionCount = await Ques.countDocuments({
+                        subtopicsId: nestedSubtopic._id,
+                        subject: subjectName,
+                        standard: standard
+                    });
+                    
+                    const nestedWithCount = nestedSubtopic.toObject ? nestedSubtopic.toObject() : { ...nestedSubtopic };
+                    nestedWithCount.questionCount = nestedQuestionCount;
+                    return nestedWithCount;
+                }));
+                
+                subtopicWithCount.subtopics = nestedSubtopicsWithCount;
             }
-        }
+            
+            return subtopicWithCount;
+        }));
 
-        // Return the fetched subtopics
+        // Return the fetched subtopics with question counts
         res.status(200).json({
             success: true,
-            subtopics,
+            subtopics: subtopicsWithQuestionCount,
         });
     } catch (error) {
         console.error('Error in getSubtopics:', error);

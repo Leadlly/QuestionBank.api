@@ -96,15 +96,29 @@ export const getChapter = async (req, res) => {
       },
     ]);
 
-    return res.status(200).json({
-      success: true,
-      chapters: chapters.map(chapter => ({
+    // Get question counts for each chapter
+    const chaptersWithQuestionCount = await Promise.all(chapters.map(async (chapter) => {
+      // Count questions that have this chapter's ID in their chaptersId array
+      const questionCount = await Ques.countDocuments({ 
+        chaptersId: chapter._id,
+        // If you want to filter by subject and standard as well:
+        subject: chapter.subjectName,
+        standard: chapter.standard
+      });
+
+      return {
         _id: chapter._id,
         name: chapter.name,
-        chapterNumber: chapter.chapterNumber, // Include chapterNumber
+        chapterNumber: chapter.chapterNumber,
         topics: chapter.topics,
         exam: chapter.exam,
-      })),
+        questionCount: questionCount // Add the question count
+      };
+    }));
+
+    return res.status(200).json({
+      success: true,
+      chapters: chaptersWithQuestionCount,
     });
   } catch (error) {
     console.error('Error in getChapters:', error);

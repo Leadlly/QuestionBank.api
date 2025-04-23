@@ -6,6 +6,8 @@ import {
   createQuestion,
   deleteQuestion,
   editQuestion,
+  finalizeQuestions,
+  generateUploadUrls,
   getAllQuestion,
   getMyQuestions,
   getTotalQuestions,
@@ -24,7 +26,8 @@ router.post(
   isAuthenticated,
   createQuestion
 );
-router.post('/multiple/question', isAuthenticated, createMultipleQuestions);
+router.post('/questions/preupload', isAuthenticated, generateUploadUrls);
+router.post('/questions/finalize', isAuthenticated, finalizeQuestions);
 
 router.put("/edit/question/:id", isAuthenticated, convertToLowercase, editQuestion)
 router.put("/edit/question/:id/option/:optionId", isAuthenticated, convertToLowercase, updateOption)
