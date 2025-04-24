@@ -5,13 +5,15 @@ import {
   createQuestion,
   deleteQuestion,
   editQuestion,
+  finalizeQuestions,
+  generateUploadUrls,
   getAllQuestion,
   getMyQuestions,
   getTotalQuestions,
   updateOption,
   updateQuestionDetails,
   // toggleOptionTag,
-} from "../controller/quesController.js";
+} from "../controllers/quesController.js";
 import isAuthenticated from "../middlewares/auth.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
@@ -23,6 +25,9 @@ router.post(
   isAuthenticated,
   createQuestion
 );
+router.post('/questions/preupload', isAuthenticated, generateUploadUrls);
+router.post('/questions/finalize', isAuthenticated, finalizeQuestions);
+
 router.put("/edit/question/:id", isAuthenticated, convertToLowercase, editQuestion)
 router.put("/edit/question/:id/option/:optionId", isAuthenticated, convertToLowercase, updateOption)
 router.delete("/delete/:id", isAuthenticated, deleteQuestion);

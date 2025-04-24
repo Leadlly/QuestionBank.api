@@ -9,6 +9,7 @@ import TopicRouter from "./routes/topicRoutes.js";
 import ChapterRouter from "./routes/chapterRoutes.js"
 import SubTopicRouter from "./routes/subtopicRoutes.js";
 import SubjectRouter from "./routes/subjectRoutes.js"
+import ExtractRouter from "./routes/extractionRoutes.js";
 
 config({
   path: "./.env",
@@ -41,7 +42,7 @@ app.use(
   })
 );
 
-app.use("/api", QuestionRouter, TopicRouter, SubjectRouter, ChapterRouter, SubTopicRouter);
+app.use("/api", QuestionRouter, TopicRouter, SubjectRouter, ChapterRouter, SubTopicRouter, ExtractRouter);
 app.use("/api/user", UserRouter);
 app.get("/", (req, res) => {
   res.send("Server is working fine");

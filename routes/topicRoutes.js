@@ -1,6 +1,6 @@
 
 import express from "express";
-import { createTopic, deleteTopic, deleteTopicnullquestion, editTopic, getTopic, getTopicById, getTopicByIds, updateTopic, updateTopicExamTags, updateTopicNumber } from "../controller/topicController.js";
+import { createTopic, deleteTopic, deleteTopicnullquestion, editTopic, getTopic, getTopicById, getTopicByIds, updateTopic, updateTopicExamTags, updateTopicNumber } from "../controllers/topicController.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import isAuthenticated from "../middlewares/auth.js";
 import checkAdmin from "../middlewares/checkAdmin.js";

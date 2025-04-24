@@ -2,7 +2,7 @@ import express from "express";
 import {
   createSubject,
   getAllSubject,
-} from "../controller/subjectController.js";
+} from "../controllers/subjectController.js";
 import isAuthenticated from "../middlewares/auth.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import checkAdmin from "../middlewares/checkAdmin.js";

@@ -163,19 +163,29 @@ export const getTopic = async (req, res) => {
     if (topics.length === 0) {
       return res.status(404).json({ success: false, message: 'No topics found' });
     }
-    const topicsWithTopicNumber = topics.map(topic => ({
-      _id: topic._id,
-      name: topic.name,
-      chapterName: topic.chapterName,
-      subjectName: topic.subjectName,
-      standard: topic.standard,
-      topicNumber: topic.topicNumber,  // Include the topicNumber field
-      subtopics: topic.subtopics,
-      chapterId: topic.chapterId,
-      exam: topic.exam,
+
+    // Get question counts for each topic
+    const topicsWithData = await Promise.all(topics.map(async (topic) => {
+      // Count questions that have this topic's ID in their topicsId array
+      const questionCount = await Ques.countDocuments({ 
+        topicsId: topic._id,
+      });
+
+      return {
+        _id: topic._id,
+        name: topic.name,
+        chapterName: topic.chapterName,
+        subjectName: topic.subjectName,
+        standard: topic.standard,
+        topicNumber: topic.topicNumber,
+        subtopics: topic.subtopics,
+        chapterId: topic.chapterId,
+        exam: topic.exam,
+        questionCount: questionCount 
+      };
     }));
 
-    return res.status(200).json({ success: true, topics: topicsWithTopicNumber });
+    return res.status(200).json({ success: true, topics: topicsWithData });
   } catch (error) {
     console.error('Error in getTopic:', error);
     return res.status(500).json({ success: false, message: 'An unexpected error occurred. Please try again later.' });

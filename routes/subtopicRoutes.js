@@ -1,5 +1,5 @@
 import express from "express";
-import { createSubtopic, deleteSubtopic, getNestedSubtopicsByName, getSubTopicByIds, getSubtopics, updateSubtopic } from "../controller/subtopicController.js";
+import { createSubtopic, deleteSubtopic, getNestedSubtopicsByName, getSubTopicByIds, getSubtopics, updateSubtopic } from "../controllers/subtopicController.js";
 import convertToLowercase from "../middlewares/lowercase.js";
 import isAuthenticated from "../middlewares/auth.js";
 import checkAdmin from "../middlewares/checkAdmin.js";
