@@ -925,135 +925,135 @@ export const finalizeQuestions = async (req, res) => {
 };
 
 // Keep the original function for backward compatibility or remove it if not needed
-export const createMultipleQuestions = async (req, res) => {
-  try {
-    const questionsData = req.body.questions;
+// export const createMultipleQuestions = async (req, res) => {
+//   try {
+//     const questionsData = req.body.questions;
 
-    if (!Array.isArray(questionsData) || questionsData.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide an array of questions'
-      });
-    }
+//     if (!Array.isArray(questionsData) || questionsData.length === 0) {
+//       return res.status(400).json({
+//         success: false,
+//         message: 'Please provide an array of questions'
+//       });
+//     }
 
-    const savedQuestions = [];
-    const errors = [];
-    const unprocessedQuestions = [];
+//     const savedQuestions = [];
+//     const errors = [];
+//     const unprocessedQuestions = [];
 
-    // Process each question
-    for (const [index, data] of questionsData.entries()) {
+//     // Process each question
+//     for (const [index, data] of questionsData.entries()) {
 
-      console.log(data, "question");
-      try {
-        // Check for existing question
-        const existingQuestion = await Ques.findOne({
-          question: data.question,
-          subject: data.subject,
-          standard: data.standard,
-        });
+//       console.log(data, "question");
+//       try {
+//         // Check for existing question
+//         const existingQuestion = await Ques.findOne({
+//           question: data.question,
+//           subject: data.subject,
+//           standard: data.standard,
+//         });
 
-        if (existingQuestion) {
-          errors.push({
-            index,
-            question: data.question,
-            error: 'Question already exists'
-          });
-          continue;
-        }
+//         if (existingQuestion) {
+//           errors.push({
+//             index,
+//             question: data.question,
+//             error: 'Question already exists'
+//           });
+//           continue;
+//         }
 
-        // Process images and options
-        const imageUrls = await processImages(data.images || []);
-        const options = await Promise.all(
-          data.options.map(async (option) => {
-            let optionImageUrls = [];
-            if (option.image && Array.isArray(option.image) && option.image.length > 0) {
-              optionImageUrls = await processImages(option.image);
-            }
+//         // Process images and options
+//         const imageUrls = await processImages(data.images || []);
+//         const options = await Promise.all(
+//           data.options.map(async (option) => {
+//             let optionImageUrls = [];
+//             if (option.image && Array.isArray(option.image) && option.image.length > 0) {
+//               optionImageUrls = await processImages(option.image);
+//             }
 
-            return {
-              image: optionImageUrls,
-              optionDb: {
-                name: option.name,
-                tag: option.isCorrect === true ? "Correct" : "Incorrect",
-                images: optionImageUrls.length > 0 
-                  ? optionImageUrls.map((image) => ({ url: image?.getUrl, key: image?.key })) 
-                  : null,
-              },
-            };
-          })
-        );
+//             return {
+//               image: optionImageUrls,
+//               optionDb: {
+//                 name: option.name,
+//                 tag: option.isCorrect === true ? "Correct" : "Incorrect",
+//                 images: optionImageUrls.length > 0 
+//                   ? optionImageUrls.map((image) => ({ url: image?.getUrl, key: image?.key })) 
+//                   : null,
+//               },
+//             };
+//           })
+//         );
 
-        // Validate correct option exists
-        const hasCorrectOption = options.some(
-          (option) => option.optionDb.tag === 'Correct'
-        );
-        if (!hasCorrectOption) {
-          errors.push({
-            index,
-            question: data.question,
-            error: 'At least one option must be correct'
-          });
-          continue;
-        }
+//         // Validate correct option exists
+//         const hasCorrectOption = options.some(
+//           (option) => option.optionDb.tag === 'Correct'
+//         );
+//         if (!hasCorrectOption) {
+//           errors.push({
+//             index,
+//             question: data.question,
+//             error: 'At least one option must be correct'
+//           });
+//           continue;
+//         }
 
-        // Create and save question
-        const newQuestion = new Ques({
-          question: data.question,
-          options: options.map((option) => option.optionDb),
-          standard: data.standard,
-          subject: data.subject,
-          chapter: data.chapter?.map(el => el.name),
-          topics: data.topics?.map(el => el.name),
-          subtopics: data.subtopics?.map(el => el.name),
-          chaptersId: data.chapter?.map(el => new mongoose.Types.ObjectId(el._id)),
-          topicsId: data.topics?.map(el => new mongoose.Types.ObjectId(el._id)),
-          subtopicsId: data.subtopics?.map(el => new mongoose.Types.ObjectId(el._id)),
-          nestedSubTopic: data.nestedSubTopic,
-          level: data.level,
-          images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
-          createdBy: req.user._id
-        });
+//         // Create and save question
+//         const newQuestion = new Ques({
+//           question: data.question,
+//           options: options.map((option) => option.optionDb),
+//           standard: data.standard,
+//           subject: data.subject,
+//           chapter: data.chapter?.map(el => el.name),
+//           topics: data.topics?.map(el => el.name),
+//           subtopics: data.subtopics?.map(el => el.name),
+//           chaptersId: data.chapter?.map(el => new mongoose.Types.ObjectId(el._id)),
+//           topicsId: data.topics?.map(el => new mongoose.Types.ObjectId(el._id)),
+//           subtopicsId: data.subtopics?.map(el => new mongoose.Types.ObjectId(el._id)),
+//           nestedSubTopic: data.nestedSubTopic,
+//           level: data.level,
+//           images: imageUrls.map(image => ({ url: image.getUrl, key: image.key })),
+//           createdBy: req.user._id
+//         });
 
-        await newQuestion.save();
-        req.user.questions.push(newQuestion._id);
-        savedQuestions.push(newQuestion);
+//         await newQuestion.save();
+//         req.user.questions.push(newQuestion._id);
+//         savedQuestions.push(newQuestion);
 
-      } catch (error) {
-        // If there's an error processing this question, add to errors and unprocessed
-        errors.push({
-          index,
-          question: data.question,
-          error: error.message
-        });
-        unprocessedQuestions.push({
-          index,
-          questionData: data
-        });
-      }
-    }
+//       } catch (error) {
+//         // If there's an error processing this question, add to errors and unprocessed
+//         errors.push({
+//           index,
+//           question: data.question,
+//           error: error.message
+//         });
+//         unprocessedQuestions.push({
+//           index,
+//           questionData: data
+//         });
+//       }
+//     }
 
-    // Save user after all successful questions are processed
-    await req.user.save();
+//     // Save user after all successful questions are processed
+//     await req.user.save();
 
-    // Return detailed response
-    res.status(201).json({
-      success: true,
-      message: `Processed ${questionsData.length} questions with ${savedQuestions.length} successful saves`,
-      stats: {
-        totalQuestions: questionsData.length,
-        successfulSaves: savedQuestions.length,
-        failedSaves: errors.length,
-        unprocessedCount: unprocessedQuestions.length
-      },
-      savedQuestions,
-      errors: errors.length > 0 ? errors : undefined,
-      unprocessedQuestions: unprocessedQuestions.length > 0 ? unprocessedQuestions : undefined
-    });
+//     // Return detailed response
+//     res.status(201).json({
+//       success: true,
+//       message: `Processed ${questionsData.length} questions with ${savedQuestions.length} successful saves`,
+//       stats: {
+//         totalQuestions: questionsData.length,
+//         successfulSaves: savedQuestions.length,
+//         failedSaves: errors.length,
+//         unprocessedCount: unprocessedQuestions.length
+//       },
+//       savedQuestions,
+//       errors: errors.length > 0 ? errors : undefined,
+//       unprocessedQuestions: unprocessedQuestions.length > 0 ? unprocessedQuestions : undefined
+//     });
 
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'Internal Server Error'
-    });
-  }
-};
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || 'Internal Server Error'
+//     });
+//   }
+// };

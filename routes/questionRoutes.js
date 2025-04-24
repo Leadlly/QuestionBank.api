@@ -2,7 +2,6 @@ import express from "express";
 import {
   allUser,
   checkIfTagged,
-  createMultipleQuestions,
   createQuestion,
   deleteQuestion,
   editQuestion,
