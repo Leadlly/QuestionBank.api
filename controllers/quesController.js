@@ -166,32 +166,54 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapterId) {
-      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+      queryObject.chaptersId = {
+        $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())],
+      };
     }
-    if (req.query.topicId) queryObject.topicsId = { $in: [new mongoose.Types.ObjectId(req.query.topicId)] };
+    if (req.query.topicId) {
+      queryObject.topicsId = {
+        $in: [new mongoose.Types.ObjectId(req.query.topicId)],
+      };
+    }
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
     if (req.query.search) {
-      const searchTerms = req.query.search.split(' ').filter(term => term !== '');
-      const searchRegex = searchTerms.map(term => new RegExp(term, 'i'));
-      queryObject.$and = [{ $or: searchRegex.map(regex => ({ question: regex })) }];
+      const searchTerms = req.query.search
+        .split(" ")
+        .filter((term) => term !== "");
+      const searchRegex = searchTerms.map((term) => new RegExp(term, "i"));
+      queryObject.$and = [
+        { $or: searchRegex.map((regex) => ({ question: regex })) },
+      ];
     }
 
+    // Handle tagged, untagged, and new (live)
     if (req.query.isTagged) {
-      if (req.query.isTagged === 'tagged') {
+      if (req.query.isTagged === "tagged") {
         queryObject.$or = [
-          { topics: { $exists: true, $ne: [] } },  
-          { subtopics: { $exists: true, $ne: [] } }
+          { topics: { $exists: true, $ne: [] } },
+          { subtopics: { $exists: true, $ne: [] } },
         ];
-      } else if (req.query.isTagged === 'untagged') {
+      } else if (req.query.isTagged === "untagged") {
         queryObject.$and = [
-          { $or: [{ topics: { $size: 0 } }, { topics: { $exists: false } }] },  
-          { $or: [{ subtopics: { $size: 0 } }, { subtopics: { $exists: false } }] } 
+          {
+            $or: [
+              { topics: { $size: 0 } },
+              { topics: { $exists: false } },
+            ],
+          },
+          {
+            $or: [
+              { subtopics: { $size: 0 } },
+              { subtopics: { $exists: false } },
+            ],
+          },
         ];
+      } else if (req.query.isTagged === "new") {
+        queryObject.mode = "live";
       }
     }
-
 
     console.log("Query Object:", queryObject);
 
@@ -202,43 +224,60 @@ export const getAllQuestion = async (req, res) => {
       const limit = parseInt(req.query.limit) || 50;
       const skip = (page - 1) * limit;
 
-      const questionsData = Ques.find(queryObject)
+      const questions = await Ques.find(queryObject)
         .sort({ createdAt: 1 })
         .skip(skip)
         .limit(limit);
-      const questions = await questionsData;
 
       if (!questions || questions.length === 0) {
-        return res.status(404).json({ success: false, message: "Questions not found" });
+        return res
+          .status(404)
+          .json({ success: false, message: "Questions not found" });
       }
 
-      formattedQuestions = questions.map(question => ({
+      formattedQuestions = questions.map((question) => ({
         ...question.toObject(),
-        nestedSubTopic: question.nestedSubTopic || ""
+        nestedSubTopic: question.nestedSubTopic || "",
       }));
 
       const totalQuestions = await Ques.countDocuments(queryObject);
       let totalTagged = 0;
       let totalUntagged = 0;
-      // Get counts based on the isTagged parameter
-      if (req.query.isTagged === 'tagged') {
+      let totalNew = 0;
+
+      if (req.query.isTagged === "tagged") {
         totalTagged = totalQuestions;
-      } else if (req.query.isTagged === 'untagged') {
+      } else if (req.query.isTagged === "untagged") {
         totalUntagged = totalQuestions;
+      } else if (req.query.isTagged === "new") {
+        totalNew = totalQuestions;
       } else {
+        // Count all types separately when not filtering
         totalTagged = await Ques.countDocuments({
           $or: [
             { topics: { $exists: true, $ne: [] } },
-            { subtopics: { $exists: true, $ne: [] } }
-          ]
+            { subtopics: { $exists: true, $ne: [] } },
+          ],
         });
 
         totalUntagged = await Ques.countDocuments({
           $and: [
-            { $or: [{ topics: { $size: 0 } }, { topics: { $exists: false } }] },
-            { $or: [{ subtopics: { $size: 0 } }, { subtopics: { $exists: false } }] }
-          ]
+            {
+              $or: [
+                { topics: { $size: 0 } },
+                { topics: { $exists: false } },
+              ],
+            },
+            {
+              $or: [
+                { subtopics: { $size: 0 } },
+                { subtopics: { $exists: false } },
+              ],
+            },
+          ],
         });
+
+        totalNew = await Ques.countDocuments({ mode: "live" });
       }
 
       return res.status(200).json({
@@ -246,11 +285,14 @@ export const getAllQuestion = async (req, res) => {
         totalQuestions,
         totalTagged,
         totalUntagged,
+        totalNew,
         questions: formattedQuestions,
       });
     }
 
-    return res.status(403).json({ success: false, message: "Unauthorized" });
+    return res
+      .status(403)
+      .json({ success: false, message: "Unauthorized" });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -258,6 +300,7 @@ export const getAllQuestion = async (req, res) => {
     });
   }
 };
+
 
 
 export const getTotalQuestions = async (req, res) => {
@@ -398,6 +441,9 @@ export const getMyQuestions = async (req, res) => {
           }
         ];
       }
+      else if (req.query.isTagged === "new") {
+        queryObject.mode = "live";
+      }
     }
 
     let page = req.query.page || 1;
@@ -420,12 +466,16 @@ export const getMyQuestions = async (req, res) => {
 
     let totalMyTagged = 0;
     let totalMyUntagged = 0;
+    let totalMyNew = 0;
 
     if (req.query.isTagged === 'tagged') {
       totalMyTagged = totalQuestions; // Use the total questions count if filtering for tagged
     } else if (req.query.isTagged === 'untagged') {
       totalMyUntagged = totalQuestions; // Use the total questions count if filtering for untagged
-    } else {
+    } else if (req.query.isTagged === "new") {
+      totalMyNew = totalQuestions;
+    } 
+    else {
       // Get overall counts for the current user's questions
       totalMyTagged = await Ques.countDocuments({
         createdBy: req.user._id,
@@ -450,6 +500,9 @@ export const getMyQuestions = async (req, res) => {
           }
         ]
       });
+
+      totalMyNew = await Ques.countDocuments({ mode: "live" });
+
     }
 
     return res.status(200).json({
@@ -457,6 +510,7 @@ export const getMyQuestions = async (req, res) => {
       totalQuestions, 
       totalMyTagged,
       totalMyUntagged,
+      totalMyNew,
       questions: formattedQuestions,
     });
   } catch (error) {

@@ -48,6 +48,10 @@ const quesSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  mode: {
+    type: String,
+    required: false,
+  },
   images: [{
     url: String,
     key: String
