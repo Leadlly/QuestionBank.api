@@ -188,7 +188,7 @@ export const getAllQuestion = async (req, res) => {
       ];
     }
 
-    // Handle tagged, untagged, and new (live)
+    // Handle tagged and untagged
     if (req.query.isTagged) {
       if (req.query.isTagged === "tagged") {
         queryObject.$or = [
@@ -210,9 +210,12 @@ export const getAllQuestion = async (req, res) => {
             ],
           },
         ];
-      } else if (req.query.isTagged === "new") {
-        queryObject.mode = "live";
       }
+    }
+    
+    // Handle new (live) separately
+    if (req.query.isNew === "true") {
+      queryObject.mode = "live";
     }
 
     console.log("Query Object:", queryObject);
@@ -249,7 +252,7 @@ export const getAllQuestion = async (req, res) => {
         totalTagged = totalQuestions;
       } else if (req.query.isTagged === "untagged") {
         totalUntagged = totalQuestions;
-      } else if (req.query.isTagged === "new") {
+      } else if (req.query.isNew === "true") {
         totalNew = totalQuestions;
       } else {
         // Count all types separately when not filtering
@@ -343,12 +346,18 @@ export const getTotalQuestions = async (req, res) => {
       topics: { $exists: true, $size: 0 },
       subtopics: { $exists: true, $size: 0 },
     };
+    const newQuery = { ...queryObject, mode: 'live' };
 
     let totalQuestions = await Ques.countDocuments(queryObject);
     if (req.query.isTagged === 'tagged') {
       totalQuestions = await Ques.countDocuments(taggedQuery);
     } else if (req.query.isTagged === 'untagged') {
       totalQuestions = await Ques.countDocuments(untaggedQuery);
+    }
+    
+    // Handle new (live) separately
+    if (req.query.isNew === 'true') {
+      totalQuestions = await Ques.countDocuments(newQuery);
     }
 
     const userQuery = { ...queryObject, createdBy: userId };
@@ -385,6 +394,7 @@ export const getTotalQuestions = async (req, res) => {
       totalQuestions,
       totalTagged: await Ques.countDocuments(taggedQuery),
       totalUntagged: await Ques.countDocuments(untaggedQuery),
+      totalNew: await Ques.countDocuments(newQuery),
       fixedTotalQuestions,
       totalMyQuestions,
       totalMyTagged,
@@ -441,9 +451,11 @@ export const getMyQuestions = async (req, res) => {
           }
         ];
       }
-      else if (req.query.isTagged === "new") {
-        queryObject.mode = "live";
-      }
+    }
+    
+    // Handle new (live) separately
+    if (req.query.isNew === "true") {
+      queryObject.mode = "live";
     }
 
     let page = req.query.page || 1;
@@ -472,7 +484,7 @@ export const getMyQuestions = async (req, res) => {
       totalMyTagged = totalQuestions; // Use the total questions count if filtering for tagged
     } else if (req.query.isTagged === 'untagged') {
       totalMyUntagged = totalQuestions; // Use the total questions count if filtering for untagged
-    } else if (req.query.isTagged === "new") {
+    } else if (req.query.isNew === "true") {
       totalMyNew = totalQuestions;
     } 
     else {
@@ -500,8 +512,11 @@ export const getMyQuestions = async (req, res) => {
           }
         ]
       });
-
-      totalMyNew = await Ques.countDocuments({ mode: "live" });
+      
+      totalMyNew = await Ques.countDocuments({
+        createdBy: req.user._id,
+        mode: "live"
+      });
 
     }
 
