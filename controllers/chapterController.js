@@ -31,12 +31,16 @@ export const createChapter = async (req, res) => {
 
         const newChapter = new Chapter({ name: chapterName, subjectName: name, standard });
 
-        if (Array.isArray(topics)) {
-          for (const topicName of topics) {
-            const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
-            await newTopic.save();
-            newChapter.topics.push(newTopic._id);
-          }
+if (Array.isArray(topics)) {
+for (const topicName of topics) {
+let existingTopic = await Topic.findOne({ name: topicName, subjectName: name, chapterName, standard });
+if (!existingTopic) {
+const newTopic = new Topic({ name: topicName, subjectName: name, chapterName, standard });
+await newTopic.save();
+existingTopic = newTopic;
+}
+newChapter.topics.push(existingTopic._id);
+}
         }
 
         await newChapter.save();
