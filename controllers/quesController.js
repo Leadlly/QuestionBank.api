@@ -214,9 +214,9 @@ export const getAllQuestion = async (req, res) => {
     }
     
     // Handle new (live) separately
-    if (req.query.isNew === "true") {
+    // if (req.query.isNew === "true") {
       queryObject.mode = "live";
-    }
+    // }
 
     console.log("Query Object:", queryObject);
 
