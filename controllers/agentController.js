@@ -24,7 +24,8 @@ const VALID_AGENT_TYPES = ["supervisor", "segregation", "question"];
  *   topic               Topic name            e.g. "Projectile Motion" (optional)
  *   subtopic            Subtopic name         (optional)
  *   level               Difficulty level      e.g. "neet" | "jeemains" (optional)
- *   provider            AI provider: "gemini" (default) | "bedrock" (optional)
+ *   includeSolutions    Boolean — if true, model also generates a worked solution per question
+ *   provider            AI provider: "bedrock" (default) | "gemini" (optional)
  */
 
 export const runAgent = async (req, res) => {
@@ -40,6 +41,8 @@ export const runAgent = async (req, res) => {
       topic,
       subtopic,
       level,
+      // Whether to generate a worked solution for each question
+      includeSolutions = false,
       // AI provider: "bedrock" (default) | "gemini"
       provider = "bedrock",
     } = req.body;
@@ -96,7 +99,43 @@ export const runAgent = async (req, res) => {
           : "- Use default difficulty distribution: 40% Easy, 40% Medium, 20% Hard.",
         "- Do NOT generate questions outside the above scope, even if asked.",
         "- Do NOT save anything to a database. Return ONLY the JSON array.",
+        includeSolutions
+          ? "- For EVERY question, include a detailed `solution` object (see schema below)."
+          : "- Do NOT include a solution field in any question.",
       ].filter((l) => l !== null).join("\n");
+
+      // Solution schema supplement — injected only when includeSolutions is requested
+      const solutionSchemaBlock = includeSolutions
+        ? `
+SOLUTION REQUIREMENT (apply to every question):
+
+Each question object MUST include a "solution" key whose value is a single Markdown string
+containing a complete, human-quality worked solution — exactly as a top student or teacher
+would write it on paper. Store the entire solution in ONE string field called "content".
+
+"solution": {
+  "content": "<full markdown solution here>"
+}
+
+RULES for writing the solution content:
+
+1. Write the solution as continuous prose + math, NOT as a JSON sub-object or bullet dump.
+2. Start with a one-line conceptual statement: what principle / formula / law applies.
+3. For NUMERICAL questions:
+   - Show every substitution and algebraic step.
+   - Write equations inline using plain text math (e.g. F = ma = 5 × 2 = 10 N).
+   - Derive intermediate values explicitly; do not skip steps.
+   - End with a clearly labelled final answer with correct SI/CGS units.
+4. For THEORY / CONCEPTUAL questions:
+   - Explain the underlying concept in 2–4 sentences.
+   - Reason through why each wrong option is incorrect (process of elimination).
+   - Conclude with a statement of the correct answer and why it is right.
+5. Use Markdown formatting freely: **bold** for key terms, headings (##), code blocks for
+   equations if needed, and horizontal rules to separate sections.
+6. Minimum length: 80 words. The solution must be self-contained and fully understandable
+   without referring back to the question.
+`.trim()
+        : null;
 
       // Attach the exam-level specific prompt (PYQ examples + style guide)
       const levelPromptBlock = getLevelPrompt(level);
@@ -104,6 +143,7 @@ export const runAgent = async (req, res) => {
       // Merge: session context + level block take top priority over any caller customSystemPrompt
       const priorityBlock = [
         sessionContext,
+        solutionSchemaBlock,
         levelPromptBlock,
         customSystemPrompt.trim() || null,
       ].filter(Boolean).join("\n\n");

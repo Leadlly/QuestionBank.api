@@ -11,6 +11,7 @@ import SubTopicRouter from "./routes/subtopicRoutes.js";
 import SubjectRouter from "./routes/subjectRoutes.js"
 import ExtractRouter from "./routes/extractionRoutes.js";
 import AgentRouter from "./routes/agentRoutes.js";
+import SolutionRouter from "./routes/solutionRoutes.js";
 
 config({
   path: "./.env",
@@ -43,7 +44,7 @@ app.use(
   })
 );
 
-app.use("/api", QuestionRouter, TopicRouter, SubjectRouter, ChapterRouter, SubTopicRouter, ExtractRouter, AgentRouter);
+app.use("/api", QuestionRouter, TopicRouter, SubjectRouter, ChapterRouter, SubTopicRouter, ExtractRouter, AgentRouter, SolutionRouter);
 app.use("/api/user", UserRouter);
 app.get("/", (req, res) => {
   res.send("Server is working fine");
