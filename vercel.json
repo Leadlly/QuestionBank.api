@@ -1,7 +1,11 @@
 {
-    "version": 2,
-    "name": "native-server",
-    "builds": [{ "src": "app.js", "use": "@vercel/node" }],
-    "routes": [{ "src": "/(.*)", "dest": "app.js" }]
+  "version": 2,
+  "name": "native-server",
+  "builds": [{ "src": "app.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "app.js" }],
+  "functions": {
+    "app.js": {
+      "maxDuration": 300
+    }
+  }
 }
-
