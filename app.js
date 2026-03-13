@@ -51,4 +51,8 @@ app.get("/", (req, res) => {
 });
 
 // export const handler = serverless(app);
-app.listen(port, () => console.log(`Server is listening at port ${port}`));
+if (!process.env.VERCEL) {
+  app.listen(port, () => console.log(`Server is listening at port ${port}`));
+}
+
+export default app;
