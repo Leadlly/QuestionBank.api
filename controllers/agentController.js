@@ -1,9 +1,83 @@
 import { runSupervisor } from "../ai/agents/supervisorAgent.js";
 import { runSegregationAgent } from "../ai/agents/segregationAgent.js";
-import { runQuestionAgent } from "../ai/agents/questionAgent.js";
+import { runQuestionAgent, streamQuestionAgent } from "../ai/agents/questionAgent.js";
 import { getLevelPrompt } from "../ai/prompts/index.js";
 
 const VALID_AGENT_TYPES = ["supervisor", "segregation", "question"];
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Shared helper — builds the merged system-prompt for the question agent.
+//  Used by both runAgent and streamAgent so the logic stays DRY.
+// ─────────────────────────────────────────────────────────────────────────────
+function buildQuestionSystemPrompt({ standard, subject, chapter, topic, subtopic, level, includeSolutions, callerPrompt }) {
+  const contextLines = [
+    `Standard / Class : ${standard}`,
+    `Subject          : ${subject}`,
+    `Chapter          : ${chapter}`,
+    topic    ? `Topic            : ${topic}`    : null,
+    subtopic ? `Subtopic         : ${subtopic}` : null,
+    level    ? `Level            : ${level}`    : null,
+  ].filter(Boolean);
+
+  const sessionContext = [
+    "SESSION CONTEXT — generate questions ONLY within this scope:",
+    contextLines.join("\n"),
+    "",
+    "Rules enforced for this session:",
+    `- Every question MUST belong to Standard ${standard}, Subject "${subject}", Chapter "${chapter}".`,
+    topic    ? `- Questions must be under Topic "${topic}".`    : "- Topic is not specified; cover the chapter broadly.",
+    subtopic ? `- Narrow down further to Subtopic "${subtopic}".` : null,
+    level
+      ? `- ALL questions MUST be at difficulty level "${level}". Do NOT mix difficulty levels.`
+      : "- Use default difficulty distribution: 40% Easy, 40% Medium, 20% Hard.",
+    "- Do NOT generate questions outside the above scope, even if asked.",
+    "- Do NOT save anything to a database. Return ONLY the JSON array.",
+    includeSolutions
+      ? "- For EVERY question, include a detailed `solution` object (see schema below)."
+      : "- Do NOT include a solution field in any question.",
+  ].filter((l) => l !== null).join("\n");
+
+  const solutionSchemaBlock = includeSolutions
+    ? `
+SOLUTION REQUIREMENT (apply to every question):
+
+Each question object MUST include a "solution" key whose value is a single Markdown string
+containing a complete, human-quality worked solution — exactly as a top student or teacher
+would write it on paper. Store the entire solution in ONE string field called "content".
+
+"solution": {
+  "content": "<full markdown solution here>"
+}
+
+RULES for writing the solution content:
+
+1. Write the solution as continuous prose + math, NOT as a JSON sub-object or bullet dump.
+2. Start with a one-line conceptual statement: what principle / formula / law applies.
+3. For NUMERICAL questions:
+   - Show every substitution and algebraic step.
+   - Write equations inline using plain text math (e.g. F = ma = 5 × 2 = 10 N).
+   - Derive intermediate values explicitly; do not skip steps.
+   - End with a clearly labelled final answer with correct SI/CGS units.
+4. For THEORY / CONCEPTUAL questions:
+   - Explain the underlying concept in 2–4 sentences.
+   - Reason through why each wrong option is incorrect (process of elimination).
+   - Conclude with a statement of the correct answer and why it is right.
+5. Use Markdown formatting freely: **bold** for key terms, headings (##), code blocks for
+   equations if needed, and horizontal rules to separate sections.
+6. Minimum length: 80 words. The solution must be self-contained and fully understandable
+   without referring back to the question.
+`.trim()
+    : null;
+
+  const levelPromptBlock = getLevelPrompt(level);
+
+  return [
+    sessionContext,
+    solutionSchemaBlock,
+    levelPromptBlock,
+    callerPrompt?.trim() || null,
+  ].filter(Boolean).join("\n\n");
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  runAgent  →  POST /api/agent/run
@@ -74,81 +148,11 @@ export const runAgent = async (req, res) => {
         });
       }
 
-      // Build a SESSION CONTEXT block so the LLM is scoped to exactly
-      // the requested curriculum node — standard, subject, chapter are
-      // mandatory; topic and subtopic narrow the scope further if provided.
-      const contextLines = [
-        `Standard / Class : ${standard}`,
-        `Subject          : ${subject}`,
-        `Chapter          : ${chapter}`,
-        topic    ? `Topic            : ${topic}`    : null,
-        subtopic ? `Subtopic         : ${subtopic}` : null,
-        level    ? `Level            : ${level}`    : null,
-      ].filter(Boolean);
-
-      const sessionContext = [
-        "SESSION CONTEXT — generate questions ONLY within this scope:",
-        contextLines.join("\n"),
-        "",
-        "Rules enforced for this session:",
-        `- Every question MUST belong to Standard ${standard}, Subject "${subject}", Chapter "${chapter}".`,
-        topic    ? `- Questions must be under Topic "${topic}".`    : "- Topic is not specified; cover the chapter broadly.",
-        subtopic ? `- Narrow down further to Subtopic "${subtopic}".` : null,
-        level
-          ? `- ALL questions MUST be at difficulty level "${level}". Do NOT mix difficulty levels.`
-          : "- Use default difficulty distribution: 40% Easy, 40% Medium, 20% Hard.",
-        "- Do NOT generate questions outside the above scope, even if asked.",
-        "- Do NOT save anything to a database. Return ONLY the JSON array.",
-        includeSolutions
-          ? "- For EVERY question, include a detailed `solution` object (see schema below)."
-          : "- Do NOT include a solution field in any question.",
-      ].filter((l) => l !== null).join("\n");
-
-      // Solution schema supplement — injected only when includeSolutions is requested
-      const solutionSchemaBlock = includeSolutions
-        ? `
-SOLUTION REQUIREMENT (apply to every question):
-
-Each question object MUST include a "solution" key whose value is a single Markdown string
-containing a complete, human-quality worked solution — exactly as a top student or teacher
-would write it on paper. Store the entire solution in ONE string field called "content".
-
-"solution": {
-  "content": "<full markdown solution here>"
-}
-
-RULES for writing the solution content:
-
-1. Write the solution as continuous prose + math, NOT as a JSON sub-object or bullet dump.
-2. Start with a one-line conceptual statement: what principle / formula / law applies.
-3. For NUMERICAL questions:
-   - Show every substitution and algebraic step.
-   - Write equations inline using plain text math (e.g. F = ma = 5 × 2 = 10 N).
-   - Derive intermediate values explicitly; do not skip steps.
-   - End with a clearly labelled final answer with correct SI/CGS units.
-4. For THEORY / CONCEPTUAL questions:
-   - Explain the underlying concept in 2–4 sentences.
-   - Reason through why each wrong option is incorrect (process of elimination).
-   - Conclude with a statement of the correct answer and why it is right.
-5. Use Markdown formatting freely: **bold** for key terms, headings (##), code blocks for
-   equations if needed, and horizontal rules to separate sections.
-6. Minimum length: 80 words. The solution must be self-contained and fully understandable
-   without referring back to the question.
-`.trim()
-        : null;
-
-      // Attach the exam-level specific prompt (PYQ examples + style guide)
-      const levelPromptBlock = getLevelPrompt(level);
-
-      // Merge: session context + level block take top priority over any caller customSystemPrompt
-      const priorityBlock = [
-        sessionContext,
-        solutionSchemaBlock,
-        levelPromptBlock,
-        customSystemPrompt.trim() || null,
-      ].filter(Boolean).join("\n\n");
-
-      customSystemPrompt = priorityBlock;
+      customSystemPrompt = buildQuestionSystemPrompt({
+        standard, subject, chapter, topic, subtopic, level,
+        includeSolutions,
+        callerPrompt: customSystemPrompt,
+      });
     }
 
     console.log(`[AgentController] type=${agentType} | provider=${provider} | customPrompt=${!!customSystemPrompt}`);
@@ -239,5 +243,62 @@ export const generateQuestions = async (req, res) => {
   } catch (error) {
     console.error("[AgentController] generateQuestions error:", error);
     return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  streamAgent  →  POST /api/agent/stream
+//  Same params as /api/agent/run (agentType must be "question").
+//  Responds with Server-Sent Events — keeps connection alive while Bedrock
+//  streams tokens, then emits a final `done` event with the parsed questions.
+// ─────────────────────────────────────────────────────────────────────────────
+export const streamAgent = async (req, res) => {
+  try {
+    const {
+      message,
+      standard,
+      subject,
+      chapter,
+      topic,
+      subtopic,
+      level,
+      includeSolutions = false,
+      customSystemPrompt: callerPrompt = "",
+    } = req.body;
+
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({ success: false, message: "message (string) is required." });
+    }
+
+    const missing = [];
+    if (!standard) missing.push("standard");
+    if (!subject)  missing.push("subject");
+    if (!chapter)  missing.push("chapter");
+    if (missing.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Fields required: ${missing.join(", ")}.`,
+      });
+    }
+
+    const systemPrompt = buildQuestionSystemPrompt({
+      standard, subject, chapter, topic, subtopic, level,
+      includeSolutions,
+      callerPrompt,
+    });
+
+    console.log(`[AgentController:Stream] standard=${standard} subject=${subject} chapter=${chapter}`);
+
+    // Delegates SSE setup + streaming + final `done` event to the agent
+    await streamQuestionAgent(message, systemPrompt, res);
+  } catch (error) {
+    console.error("[AgentController] streamAgent error:", error);
+    // Headers may already be sent; try to emit an error SSE event
+    if (!res.headersSent) {
+      res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+    } else {
+      res.write(`event: error\ndata: ${JSON.stringify({ message: error.message })}\n\n`);
+      res.end();
+    }
   }
 };
