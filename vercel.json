@@ -4,7 +4,7 @@
   "rewrites": [{ "source": "/(.*)", "destination": "/app.js" }],
   "functions": {
     "app.js": {
-      "maxDuration": 300
+      "maxDuration": 60
     }
   }
 }
