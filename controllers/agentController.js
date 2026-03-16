@@ -1,7 +1,7 @@
 import { runSupervisor } from "../ai/agents/supervisorAgent.js";
 import { runSegregationAgent } from "../ai/agents/segregationAgent.js";
 import { runQuestionAgent, streamQuestionAgent } from "../ai/agents/questionAgent.js";
-import { getLevelPrompt } from "../ai/prompts/index.js";
+import { getLevelPrompt, solutionPrompt } from "../ai/prompts/index.js";
 
 const VALID_AGENT_TYPES = ["supervisor", "segregation", "question"];
 
@@ -37,37 +37,7 @@ function buildQuestionSystemPrompt({ standard, subject, chapter, topic, subtopic
       : "- Do NOT include a solution field in any question.",
   ].filter((l) => l !== null).join("\n");
 
-  const solutionSchemaBlock = includeSolutions
-    ? `
-SOLUTION REQUIREMENT (apply to every question):
-
-Each question object MUST include a "solution" key whose value is a single Markdown string
-containing a complete, human-quality worked solution — exactly as a top student or teacher
-would write it on paper. Store the entire solution in ONE string field called "content".
-
-"solution": {
-  "content": "<full markdown solution here>"
-}
-
-RULES for writing the solution content:
-
-1. Write the solution as continuous prose + math, NOT as a JSON sub-object or bullet dump.
-2. Start with a one-line conceptual statement: what principle / formula / law applies.
-3. For NUMERICAL questions:
-   - Show every substitution and algebraic step.
-   - Write equations inline using plain text math (e.g. F = ma = 5 × 2 = 10 N).
-   - Derive intermediate values explicitly; do not skip steps.
-   - End with a clearly labelled final answer with correct SI/CGS units.
-4. For THEORY / CONCEPTUAL questions:
-   - Explain the underlying concept in 2–4 sentences.
-   - Reason through why each wrong option is incorrect (process of elimination).
-   - Conclude with a statement of the correct answer and why it is right.
-5. Use Markdown formatting freely: **bold** for key terms, headings (##), code blocks for
-   equations if needed, and horizontal rules to separate sections.
-6. Minimum length: 80 words. The solution must be self-contained and fully understandable
-   without referring back to the question.
-`.trim()
-    : null;
+  const solutionSchemaBlock = includeSolutions ? solutionPrompt : null;
 
   const levelPromptBlock = getLevelPrompt(level);
 

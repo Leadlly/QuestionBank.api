@@ -5,6 +5,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { streamAgent } from "../../controllers/agentController.js";
+import isAuthenticated from "../../middlewares/auth.js";
+import checkAiAccess from "../../middlewares/checkAiAccess.js";
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -23,7 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.post("*", streamAgent);
+app.post("*", isAuthenticated, checkAiAccess, streamAgent);
 
 export default app;
 

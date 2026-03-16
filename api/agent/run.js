@@ -5,6 +5,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { runAgent } from "../../controllers/agentController.js";
+import isAuthenticated from "../../middlewares/auth.js";
+import checkAiAccess from "../../middlewares/checkAiAccess.js";
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -23,6 +25,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-app.post("*", runAgent);
+app.post("*", isAuthenticated, checkAiAccess, runAgent);
 
 export default app;
