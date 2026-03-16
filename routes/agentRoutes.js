@@ -1,12 +1,14 @@
 import express from "express";
 import { runAgent, streamAgent, chat, segregate, generateQuestions } from "../controllers/agentController.js";
+import isAuthenticated from "../middlewares/auth.js";
+import checkAiAccess from "../middlewares/checkAiAccess.js";
 
 const AgentRouter = express.Router();
 
-AgentRouter.post("/agent/run",       runAgent);          // standard JSON response
-AgentRouter.post("/agent/stream",    streamAgent);       // SSE streaming response
-AgentRouter.post("/agent/chat",      chat);              // legacy — supervisor only
-AgentRouter.post("/agent/segregate", segregate);         // legacy — segregation agent only
-AgentRouter.post("/agent/questions", generateQuestions); // legacy — question agent only
+AgentRouter.post("/agent/run",       isAuthenticated, checkAiAccess, runAgent);
+AgentRouter.post("/agent/stream",    isAuthenticated, checkAiAccess, streamAgent);
+AgentRouter.post("/agent/chat",      isAuthenticated, checkAiAccess, chat);
+AgentRouter.post("/agent/segregate", isAuthenticated, checkAiAccess, segregate);
+AgentRouter.post("/agent/questions", isAuthenticated, checkAiAccess, generateQuestions);
 
 export default AgentRouter;

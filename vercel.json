@@ -4,7 +4,7 @@
     { "source": "/(.*)", "destination": "/api/index" }
   ],
   "functions": {
-    "api/index.js":        { "maxDuration": 60  },
+    "api/index.js":        { "maxDuration": 60 },
     "api/agent/run.js":    { "maxDuration": 60 },
     "api/agent/stream.js": { "maxDuration": 60 }
   }

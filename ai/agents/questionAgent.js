@@ -155,13 +155,93 @@ export async function runQuestionAgent(
 }
 
 /**
+ * Scan `buffer` for complete JSON objects at the top level of a JSON array.
+ * Yields each complete object string one at a time.
+ *
+ * The LLM streams a JSON array like:
+ *   [ {...}, {...}, {...} ]
+ *
+ * We track brace depth so we can extract each `{...}` the moment it closes,
+ * without waiting for the closing `]`.
+ *
+ * Returns { emitted: parsedQuestion[], remaining: string (unparsed tail) }
+ */
+function extractCompletedQuestions(buffer) {
+  const emitted = [];
+  let i = 0;
+  const len = buffer.length;
+
+  while (i < len) {
+    // Skip whitespace, commas, and the outer array brackets
+    if (buffer[i] === " " || buffer[i] === "\n" || buffer[i] === "\r" ||
+        buffer[i] === "\t" || buffer[i] === "," ||
+        buffer[i] === "[" || buffer[i] === "]") {
+      i++;
+      continue;
+    }
+
+    if (buffer[i] !== "{") {
+      i++;
+      continue;
+    }
+
+    // Found start of a JSON object — scan forward to find its matching `}`
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    let j = i;
+
+    while (j < len) {
+      const ch = buffer[j];
+
+      if (escape) {
+        escape = false;
+      } else if (ch === "\\" && inString) {
+        escape = true;
+      } else if (ch === '"') {
+        inString = !inString;
+      } else if (!inString) {
+        if (ch === "{") depth++;
+        else if (ch === "}") {
+          depth--;
+          if (depth === 0) break;
+        }
+      }
+      j++;
+    }
+
+    if (depth !== 0) {
+      // Object is not complete yet — stop and return the remainder
+      break;
+    }
+
+    const objectStr = buffer.slice(i, j + 1);
+    try {
+      const parsed = JSON.parse(objectStr);
+      emitted.push(parsed);
+    } catch {
+      // malformed partial — skip ahead one char and retry
+      i++;
+      continue;
+    }
+
+    i = j + 1;
+  }
+
+  return { emitted, remaining: buffer.slice(i) };
+}
+
+/**
  * Run the Question Generator Agent with SSE streaming (Bedrock only).
- * Writes Server-Sent Events to `res` as tokens arrive, then sends a final
- * `event: done` with the parsed questions array.
+ *
+ * SSE event contract (frontend):
+ *   event: question  → data: { index: number, question: {...} }   (one per question, as soon as it's parsed)
+ *   event: done      → data: { total: number }                     (no payload — saves bandwidth)
+ *   event: error     → data: { message: string }
  *
  * @param {string}        userMessage
- * @param {string}        customSystemPrompt
- * @param {import('express').Response} res - Express response (SSE mode)
+ * @param {string}        customSystemPrompt  Already-merged prompt from the controller
+ * @param {import('express').Response} res
  */
 export async function streamQuestionAgent(userMessage, customSystemPrompt, res) {
   console.log("[QuestionAgent:Stream] Starting SSE stream...");
@@ -172,26 +252,46 @@ export async function streamQuestionAgent(userMessage, customSystemPrompt, res) 
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
+  // Tell Vercel / proxies not to buffer this response
+  res.setHeader("X-Accel-Buffering", "no");
   res.flushHeaders();
 
   const sendEvent = (event, data) => {
     res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+    // res.flush is available when compression middleware is present
+    if (typeof res.flush === "function") res.flush();
   };
 
   try {
-    let fullText = "";
+    let buffer = "";
+    let questionIndex = 0;
 
     await streamWithBedrock(userMessage, systemPrompt, (delta) => {
-      fullText += delta;
-      // Send each token chunk to the client
-      sendEvent("token", { delta });
+      buffer += delta;
+
+      // Try to extract any fully-formed question objects from the running buffer
+      const { emitted, remaining } = extractCompletedQuestions(buffer);
+      buffer = remaining;
+
+      for (const question of emitted) {
+        sendEvent("question", { index: questionIndex, question });
+        questionIndex++;
+      }
     });
 
-    const questions = parseQuestionsFromText(fullText);
-    console.log(`[QuestionAgent:Stream] Done — ${questions.length} questions.`);
+    // Drain any leftover in buffer (handles edge cases like no trailing comma)
+    if (buffer.trim()) {
+      const { emitted } = extractCompletedQuestions(buffer + "]");
+      for (const question of emitted) {
+        sendEvent("question", { index: questionIndex, question });
+        questionIndex++;
+      }
+    }
 
-    // Final event carries the complete parsed questions array
-    sendEvent("done", { questions, reply: fullText });
+    console.log(`[QuestionAgent:Stream] Done — ${questionIndex} questions emitted.`);
+
+    // Final event: just the total count, no payload to blow up response size
+    sendEvent("done", { total: questionIndex });
   } catch (err) {
     console.error("[QuestionAgent:Stream] Error:", err);
     sendEvent("error", { message: err.message || "Stream failed" });

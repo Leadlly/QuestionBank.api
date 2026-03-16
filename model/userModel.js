@@ -37,6 +37,10 @@ const userSchema = mongoose.Schema({
       ref: "User",
     },
   ],
+  aiAccess: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

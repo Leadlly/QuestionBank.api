@@ -1,5 +1,5 @@
-import { config } from "dotenv";
-config({ path: "./.env" });
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig({ path: "./.env" });
 
 import express from "express";
 import cors from "cors";
@@ -26,3 +26,12 @@ app.use(cookieParser());
 app.post("*", streamAgent);
 
 export default app;
+
+// Tell Vercel not to buffer the streaming response body.
+// Without this, the platform waits for the function to finish before
+// forwarding bytes to the client, defeating the purpose of SSE.
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
