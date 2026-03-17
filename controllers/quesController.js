@@ -1,4 +1,5 @@
 import { Ques } from "../model/quesModel.js";
+import { Solution } from "../model/solutionModel.js";
 import { Chapter } from "../model/chapterModel.js";
 import { Topic } from "../model/topicModel.js";
 import { Subtopic } from "../model/subtopicModel.js";
@@ -218,6 +219,15 @@ export const getAllQuestion = async (req, res) => {
       queryObject.mode = "live";
     // }
 
+    // Filter by whether a solution exists for each question
+    if (req.query.hasSolution === "true") {
+      const questionIdsWithSolution = await Solution.distinct("questionId");
+      queryObject._id = { $in: questionIdsWithSolution };
+    } else if (req.query.hasSolution === "false") {
+      const questionIdsWithSolution = await Solution.distinct("questionId");
+      queryObject._id = { $nin: questionIdsWithSolution };
+    }
+
     console.log("Query Object:", queryObject);
 
     let formattedQuestions = [];
@@ -360,6 +370,18 @@ export const getTotalQuestions = async (req, res) => {
       totalQuestions = await Ques.countDocuments(newQuery);
     }
 
+    // Filter by whether a solution exists
+    if (req.query.hasSolution === "true" || req.query.hasSolution === "false") {
+      const questionIdsWithSolution = await Solution.distinct("questionId");
+      const hasSolQuery = {
+        ...queryObject,
+        _id: req.query.hasSolution === "true"
+          ? { $in: questionIdsWithSolution }
+          : { $nin: questionIdsWithSolution },
+      };
+      totalQuestions = await Ques.countDocuments(hasSolQuery);
+    }
+
     const userQuery = { ...queryObject, createdBy: userId };
     let totalMyQuestions = await Ques.countDocuments(userQuery);
     
@@ -456,6 +478,15 @@ export const getMyQuestions = async (req, res) => {
     // Handle new (live) separately
     if (req.query.isNew === "true") {
       queryObject.mode = "live";
+    }
+
+    // Filter by whether a solution exists for each question
+    if (req.query.hasSolution === "true") {
+      const questionIdsWithSolution = await Solution.distinct("questionId");
+      queryObject._id = { $in: questionIdsWithSolution };
+    } else if (req.query.hasSolution === "false") {
+      const questionIdsWithSolution = await Solution.distinct("questionId");
+      queryObject._id = { $nin: questionIdsWithSolution };
     }
 
     let page = req.query.page || 1;
