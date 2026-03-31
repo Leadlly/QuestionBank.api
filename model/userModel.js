@@ -49,13 +49,11 @@ const userSchema = mongoose.Schema({
 
 
 userSchema.methods.getQuestionsByStandard = async function (standard) {
-  console.log('Standard:', standard); // Log the standard value
-  const filteredQuestions = await mongoose.model('QuestionBank').find({
-    _id: { $in: this.questions },
-    standard: standard,
-  });
-  console.log('Filtered Questions:', filteredQuestions); // Log the filtered questions
-  return filteredQuestions;
+const filteredQuestions = await mongoose.model('QuestionBank').find({
+_id: { $in: this.questions },
+standard: standard,
+});
+return filteredQuestions;
 };
 
 
