@@ -1,0 +1,2020 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-24T17:33:44.457Z",
+    "standard": 11,
+    "subject": "maths",
+    "subjectId": "66658e490c6892eddbe3fa46",
+    "instructions": [
+      "Each node has: _id (DB ObjectId), oldName (current DB value), newName (desired value), _action.",
+      "_action values:",
+      "  'none'   → no change (still recurse into children)",
+      "  'rename' → set newName to the desired name, keep oldName as-is",
+      "  'add'    → new entry; omit _id; set newName; add children as needed",
+      "Do NOT change _id or oldName — the apply script uses them for lookups."
+    ]
+  },
+  "standard": 11,
+  "subject": {
+    "_id": "66658e490c6892eddbe3fa46",
+    "oldName": "maths",
+    "newName": "maths",
+    "_action": "none"
+  },
+  "chapters": [
+    {
+      "_id": "666944274af25b5ec573fa0a",
+      "oldName": "binomial theorem",
+      "newName": "binomial theorem", 
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6669493d24eab9a69500bdcb",
+          "oldName": "applications of binomial theorem",
+          "newName": "applications of binomial theorem", 
+          "_action": "none"
+        },
+        {
+          "newName": "Binomial Expansion",
+          "_action": "add",
+          "subtopics": [
+            {
+              "_id": "666949e884fbb3b31090bed0",
+              "oldName": "binomial theorem for positive integral index",   
+              "newName": "binomial theorem for positive integral index", 
+              "_action": "add"                           //<=====================MOVED FROM "Binomial Theorem for Any index" topic to "Binomial Expansion" topic 
+            },
+            {
+              "_id": "6669493d24eab9a69500bdce",
+              "oldName": "pascal’s triangle", 
+              "newName": "pascal’s triangle",
+              "_action": "add"                             //<==========================MOVED FROM Main topic to a subtopic of "Binomial Expansion"
+            },
+            {
+              "_id": "6669493c24eab9a69500bdc2",
+              "oldName": "general term and terms of binomial expansion",
+              "newName": "General term T(r + 1)",           //<==========================MOVED FROM Main topic to a subtopic of "Binomial Expansion" and RENAMED
+              "_action": "rename"
+            },
+            {
+              "newName": "Finding a specific term",
+              "_action": "add"                            //<==================ADD
+            }
+          ]
+        },
+        {
+          "_id": "6669493d24eab9a69500bdc8",
+          "oldName": "binomial theorem for any index",
+          "newName": "binomial Theorem for any index", 
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666949e884fbb3b31090becc",
+              "oldName": "binomial theorem for positive integral index",
+              "newName": "binomial theorem for positive integral index",
+              "_action": "delete"                           //<============DELETED A DUPLICATE TOPIC
+            },
+            {
+              "newName": "Expansion for negative and rational index",
+              "_action": "add"                                          //<==========ADD
+            },
+            {
+              "_id": "666949e884fbb3b31090bed4",
+              "oldName": "convergence of binomial series",
+              "newName": "Convergence condition |x| < 1", //<============RENAME
+              "_action": "rename"
+            },
+            {
+              "newName": "Approximations using binomial theorem", //<========ADD
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6669493c24eab9a69500bdc5",
+          "oldName": "properties of binomial expansion",
+          "newName": "Properties of Binomial Coefficients", //<==========RENAME
+          "_action": "rename", 
+          "subtopics": [
+            {
+              "newName" : "Sum of coefficients",
+              "_action" : "add"                               //<============ADD (very few questions in the category of properties of binomial coefficients found. Same for the one below)
+            },
+            {
+              "newName" : "Sum of odd/even position terms",
+              "_action" : "add"                               //<====================ADD
+            },
+            {
+              "_id": "6669493d24eab9a69500bdd1",
+              "oldName": "important binomial identities", 
+              "newName": "important binomial identities",  //<==============MOVED FROM TOPIC TO SUBTOPIC OF properties of binomial coefficients (couldnt find any questions)
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Middle Term and Term Independent of x",
+          "_action": "add",                               //<==========ADD
+          "subtopics": [
+            {
+              "newName": "Middle term for even and odd n",
+              "_action": "add"                          //<==========ADD
+            },
+            {
+              "newName": "Term Independent of x",
+              "_action": "add"                          //<==========ADD
+            }
+          ]
+        },
+        {
+          "_id": "6669493e24eab9a69500bdda",
+          "oldName": "miscellaneous problems",
+          "newName": "miscellaneous problems",         //KEEP AS IT IS
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "66694a1984fbb3b31090bedc",
+              "oldName": "higher order problems",
+              "newName": "higher order problems",
+              "_action": "none"
+            },
+            {
+              "_id": "66694a1984fbb3b31090bee0",
+              "oldName": "mixed problems for comprehensive understanding",
+              "newName": "mixed problems for comprehensive understanding",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6669493d24eab9a69500bdd4",
+          "oldName": "multinomial theorem",
+          "newName": "multinomial theorem",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Expansion and general term",
+              "_action": "add"                        //<===============ADD
+            },
+            {
+              "newName": "Finding coefficient of a specific term",
+              "_action": "add"                        //<===============ADD
+            }
+          ]
+        },
+        {
+          "_id": "6669493e24eab9a69500bdd7",
+          "oldName": "sum of series",
+          "newName": "Summation of series in Binomial Expansion",     //<============RENAMED THE TITLE AND ADDED 2 SUBTOPICS AS BELOW.
+          "_action": "rename",
+          "subtopics" : [
+            {
+              "newName" : "Series involving binomial coefficients",
+              "_action" : "add"
+            },
+            {
+              "newName" : "Mixed summation problems",
+              "_action"  : "add"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "66f82e9e1434c4da16dc7078",
+      "oldName": "circles",
+      "newName": "circles",     //<=============DELETE NO TOPICS FOUND / DUPLICATES ???
+      "_action": "delete",
+      "exam": []
+    },
+    {
+      "_id": "666bf70121ea3ae35dec6b76",
+      "oldName": "complex number",
+      "newName": "complex number",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "666bf87f7c0af9c94602d460",
+          "oldName": "algebra of complex numbers",
+          "newName": "algebra of complex numbers",           //<=========ADDED THE FOLLOWING SUBTOPICS
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName" : "Addition, subtraction, multiplication, division",
+              "_action" : "add"
+            },
+            {
+              "newName" : "Powers of iota (i)",
+              "_action" : "add"
+            },
+            {
+              "newName" : "Square root of a complex number",
+              "_action" : "add"
+            }
+          ]
+        },
+        {
+          "_id": "666bf87f7c0af9c94602d463",
+          "oldName": "complex conjugates",
+          "newName": "Conjugate, Modulus and Argument",
+          "_action": "rename",
+          "subtopics": [
+            {
+              "_id": "666bf8e7e0752a7510517644",
+              "oldName": "properties of conjugates",
+              "newName": "properties of conjugates",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf8e8e0752a7510517648",
+              "oldName": "geometric interpretation",
+              "newName": "geometric interpretation",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf8807c0af9c94602d466",
+              "oldName": "modulus and argument of complex numbers",
+              "newName": "modulus and argument of complex numbers",       //<=========MOVED FROM A TOPIC TO SUBTOPIC OF Conjugate, Modulus and Argument
+              "_action": "add"
+            },
+            {
+              "_id": "666bf8807c0af9c94602d469",
+              "oldName": "properties of modulus and argument",
+              "newName": "properties of modulus and argument",            //<=========MOVED FROM A TOPIC TO SUBTOPIC OF Conjugate, Modulus and Argument
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "666bf8807c0af9c94602d46c",
+          "oldName": "complex plane (argand plane)",
+          "newName": "complex plane (argand plane)",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666bf87f7c0af9c94602d45d",
+              "oldName": "representation of complex numbers",
+              "newName": "representation of complex numbers",      
+              "_action": "add",                                           //<===========MOVED FROM A MAIN TOPIC TO SUBTOPIC OF complex plane (argand plane) and also added the subtopic with it (except for polar).
+              "subtopics": [
+                 {
+                  "_id": "666bf8bfe0752a751051763c",
+                  "oldName": "cartesian form",                              //<======Create a new subtopic ?????
+                  "newName": "cartesian form",
+                  "_action": "add"
+                 }
+              ]
+            },
+            {
+              "newName": "Distance and section formula in the complex plane",
+              "_action" : "add"                                       //<=================ADD
+            },
+            {
+              "newName" : "Rotation theorem",
+              "_action": "add"                                          //<=======ADD(doubt????)
+            }
+          ]
+        },
+        {
+          "_id": "666bf8807c0af9c94602d46f",
+          "oldName": "de moivre's theorem",
+          "newName": "Polar Form and De Moivre's Theorem",    //<==============RENAME
+          "_action": "rename",
+          "subtopic": [
+            {
+              "_id": "666bf8bee0752a7510517638",
+              "oldName": "polar form",
+              "newName": "polar/trigonometric form r(cosx + isinx)",                           //<============MOVED FROM A SUBTOPIC OF Representation of complex number to a subtopic of Polar form and De Moivre's theorem.
+              "_action": "add"
+            },
+            {
+              "newName": "De Moivre's theorem",              //<===============ADD
+              "_action" : "add" 
+            },
+            {
+              "newName": "Applications of De Moivre's theorem",
+              "_action" : "add"                             //<================ADD
+            }
+          ]
+        },
+        {
+          "_id": "666bf8817c0af9c94602d475",
+          "oldName": "cube root of unity", 
+          "newName": "Roots of unity",                                  //<==============ADD the 2 subtopics below (?????)
+          "_action": "rename",
+          "subtopics": [
+            {
+              "newName": "Cube roots of unity and properties",
+              "_action": "add"
+            },
+            {
+              "newName": "nth roots of unity and properties",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "666bf8807c0af9c94602d472",
+          "oldName": "quadratic equations in complex numbers",
+          "newName": "quadratic equations in complex numbers",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666bf941e0752a7510517650",
+              "oldName": "roots of quadratic equations",
+              "newName": "roots of quadratic equations",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf941e0752a7510517654",
+              "oldName": "nature of roots",
+              "newName": "nature of roots",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf942e0752a7510517658",
+              "oldName": "sum and product of roots",
+              "newName": "sum and product of roots",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f612711200463",
+      "oldName": "conic section",
+      "newName": "conic section",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a79a01ed0dfbbaf477d89",
+          "oldName": "circle",
+          "newName": "circle",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Standard and general equations",
+              "_action": "add"                                          //<====ADD
+            },
+            {
+              "newName": "Parametric equation of circle",
+              "_action": "add"                                          //<====ADD
+            },
+            {
+              "_id": "669bd7833efd41e585333c58",
+              "oldName": "position of a point line and circle",
+              "newName": "position of a point line wr.t circle",
+              "_action": "rename"                                       //<====RENAME
+            },
+            {
+              "newName": "Tangent and normal to circle",
+              "_action": "add"                                              //<========ADD
+            },
+            {
+              "newName": "Pair of tangents and chord of contact",
+              "_action": "add"
+            },
+            {
+              "newName": "Director circle and midpoint of chord",
+              "_action": "add"
+            },
+            {
+              "newName": "Position of two circles (internal / external contact)",
+              "_action": "add"
+            },
+            {
+              "newName": "Orthogonality and radical axis",
+              "_action": "add"
+            },
+            {
+              "_id": "669bd7843efd41e585333c68",
+              "oldName": "family of circles , locus, miscellaneous",
+              "newName": "family of circles , locus, miscellaneous",
+              "_action": "none"                                       //<===MIGHT CAUSE PROBLEM IN FUTURE DUE TO miscellaneous
+            },
+            {
+              "_id": "669bd7823efd41e585333c54",
+              "oldName": "equation of circle, parametric equation,",
+              "newName": "equation of circle, parametric equation,",
+              "_action": "delete"                                          //<======DELETE
+            },
+            {
+              "_id": "669bd7833efd41e585333c5c",
+              "oldName": "tangent, normal & pair of tangent",
+              "newName": "tangent, normal & pair of tangent",                 //<======DELETE
+              "_action": "delete"                 
+            },
+            {
+              "_id": "669bd7843efd41e585333c60",
+              "oldName": "director circle, chord of contact, chord with mid point",
+              "newName": "director circle, chord of contact, chord with mid point",
+              "_action": "delete"                                           //<======DELETE
+            },  
+            {
+              "_id": "669bd7843efd41e585333c64",
+              "oldName": "position of two circle, orthogonality, radical axis and radical centre",
+              "newName": "position of two circle, orthogonality, radical axis and radical centre",
+              "_action": "delete"                                         //<======DELETE
+            },
+          ]
+        },
+        {
+          "_id": "669a79a01ed0dfbbaf477d8c",
+          "oldName": "parabola",
+          "newName": "parabola",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "669bda08142e1a179362597e",
+              "oldName": "elementary concepts of parabola",
+              "newName": "elementary concepts of parabola (focus, directrix, axis, vertex, latus rectum)",
+              "_action": "rename"                                 //<=======RENAME
+            },
+            {
+              "newName": "Parametric form",
+              "_action": "add"                                  //<====ADD
+            },
+            {
+              "_id": "669bda08142e1a1793625982",
+              "oldName": "position of line, equation of chord",
+              "newName": "position of point and line, equation of chord",
+              "_action": "rename"                               //<===========RENAME
+            },
+            {
+              "_id": "669bda09142e1a1793625986",
+              "oldName": "various forms of tangents & pair of tangents",
+              "newName": "various forms of tangents & pair of tangents",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda09142e1a179362598a",
+              "oldName": "director circle, chord of contact and chord with given  middle point of parabola",
+              "newName": "director circle, chord of contact and chord with given  middle point of parabola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda9c142e1a17936259b4",
+              "oldName": "• equation of normal, co-normal points of parabola",
+              "newName": "• equation of normal, co-normal points of parabola",
+              "_action": "none"
+            },
+            {
+              "newName": "Properties and locus problems",
+              "_action": "add"                    //<=====ADD
+            }
+          ]
+        },
+        {
+          "newName": "Ellipse", 
+          "_action": "add",                         //<=====NEW TOPIC AND SUBTOPICS ADDED
+          "subtopics": [
+            {
+              "newName": "Elementary concepts (foci, vertices, axes, eccentricity, latus rectum)",
+              "_action": "add"
+            },
+            {
+              "newName": "Parametric form",
+              "_action": "add"
+            },
+            {
+              "newName": "Position of a point and line, equation of chord",
+              "_action": "add"
+            },
+            {
+              "newName": "Tangent (various forms) and pair of tangents",
+              "_action": "add"
+            },
+            {
+              "newName": "Chord of contact, director circle, and midpoint of chord",
+              "_action": "add"
+            },
+            {
+              "newName": "Normal and co-normal points",
+              "_action": "add"
+            },
+            {
+              "newName": "Properties and locus problems",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Hyperbola",
+          "_action": "add",
+          "subtopics": [
+            {
+              "newName": "Elementary concepts (foci, vertices, axes, eccentricity, asymptotes)",
+              "_action": "add"
+            },
+            {
+              "newName": "Parametric form",
+              "_action": "add"
+            },
+            {
+              "newName": "Position of a point and line, equation of chord",
+              "_action": "add"
+            },
+            {
+              "newName": "Tangent (various forms) and pair of tangents",
+              "_Action": "add"
+            },
+            {
+              "newName": "Chord of contact, director circle, and midpoint of chord",
+              "_action": "add"
+            },
+            {
+              "newName": "Normal and co-normal points",
+              "_action": "add"
+            },
+            {
+              "newName": "Rectangular Hyperbola",
+              "_action": "add"
+            },
+            {
+              "newName": "Properties and locus problems",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a79a11ed0dfbbaf477d8f",
+          "oldName": "elipse & Hyperbola ",
+          "newName": "elipse & Hyperbola ",
+          "_action": "delete",                                                //<===========DELETION(?? BECAUSE ITS MIXED)
+          "subtopics": [
+            {
+              "_id": "669bda89142e1a179362599b",
+              "oldName": "• elementary concepts of ellipse & hyperbola",
+              "newName": "• elementary concepts of ellipse & hyperbola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8a142e1a179362599f",
+              "oldName": "• position of line, equation of chord",
+              "newName": "• position of line, equation of chord",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8a142e1a17936259a3",
+              "oldName": "• various forms of tangents of ellipse & hyperbola",
+              "newName": "• various forms of tangents of ellipse & hyperbola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8b142e1a17936259a7",
+              "oldName": "• pair of tangents, director circle, chord of contact and chord with given middle point of ellipse & hyperbola",
+              "newName": "• pair of tangents, director circle, chord of contact and chord with given middle point of ellipse & hyperbola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8b142e1a17936259ab",
+              "oldName": "• equation of normal, co-normal points of ellipse & hyperbola",
+              "newName": "• equation of normal, co-normal points of ellipse & hyperbola",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669a79a11ed0dfbbaf477d95",
+          "oldName": "miscellaneous problems",
+          "newName": "miscellaneous problems",
+          "_action": "none"                             //<====KEEP AS IT IS
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f612711200466",
+      "oldName": "limits",
+      "newName": "limits",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "newName": "Concept of Limits",
+          "_action": "add",                                 //<=========ADD
+          "subtopics": [
+            {
+              "_id": "669a7aa4c0312274276b0c52",
+              "oldName": "definition of lhl/rhl",
+              "newName": "lhl/rhl, and existence of limit",         //<====RENAME
+              "_action": "rename"         
+            },
+            {
+              "newName": "Indeterminate forms",
+              "_action": "add"                            //<========ADD
+            }
+          ]
+        },
+        {
+          "_id": "669a7aa5c0312274276b0c55",
+          "oldName": "evaluation of limits of indeterminate forms",    
+          "newName": "evaluation of limits",
+          "_action": "rename",                                 //<==============RENAME
+          "subtopics": [
+            {
+              "newName": "By factorisation",                //<=======ADD
+              "_action": "add"
+            },
+            {
+              "newName": "By rationalisation",
+              "_action": "add"                            //<=======ADD
+            },
+            {
+              "newName": "By substitution",
+              "_action": "add"                            //<=======ADD
+            },
+            {
+              "_id": "669a7aa5c0312274276b0c58",
+              "oldName": "rule & expansion",
+              "newName": "using standard expansions (Taylor / Maclaurin series)", //<=======MOVED FROM TOPIC TO SUBTOPIC OF evaluation of limits and renamed.
+              "_action": "rename"
+            },
+            {
+              "_id": "669a7aa5c0312274276b0c5b",
+              "oldName": "sandwitch theorem",
+              "newName": "sandwitch theorem",
+              "_action": "add"                                    //<==========MOVED FROM TOPIC TO SUBTOPIC OF evaluation of limits.
+            }
+          ]
+        },
+        {
+          "newName": "Standard Limit Formulas",                   //<===========ADDED NEW TOPIC AND SUBTOPICS
+          "_action": "add",
+          "subtopics": [
+            {
+              "newName": "Algebraic: lim(x->a) (x^n - a^n)/(x-a) = na^(n-1)",
+              "_action": "add"
+            },
+            {
+              "newName": "Trigonometric: sinx/x, tanx/x -> 1 as x->0",
+              "_action": "add"
+            },
+            {
+              "newName": "Exponential and logarithmic standard limits",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Limits of Composite Functions",
+          "_action": "add",                                   //<=========================ADDED TWO NEW TOPICS AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Substitution method for composite limits",
+              "_action": "add"
+            },
+            {
+              "newName": "LHL/RHL for composite functions",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Limits at Infinity",
+          "_action": "add",                                  //<===========================ADDED NEW TOPICS AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Dominant term method",
+              "_action": "add"
+            },
+            {
+              "newName": "Limits of rational functions at infinity",
+              "_action": "add"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03bd23f61271120045d",
+      "oldName": "linear inequalities",
+      "newName": "linear inequalities",
+      "_action": "delete",                  //<====================DELETE (NO PRESENCE)
+      "exam": [ 
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a764001c6ddb81a15b72e",
+          "oldName": "Logarithmic inequations",
+          "newName": "Logarithmic inequations",
+          "_action": "none"
+        },
+        {
+          "_id": "669a764001c6ddb81a15b728",
+          "oldName": "linear inequalities",
+          "newName": "linear inequalities",
+          "_action": "none"
+        },
+        {
+          "_id": "669a764001c6ddb81a15b72b",
+          "oldName": "modulus inequalities",
+          "newName": "modulus inequalities",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "666c036927646b2158f7d7e6",
+      "oldName": "permutation and combination",
+      "newName": "permutation and combination",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "666c0be176b0fd6cb4009dc0",
+          "oldName": "fundamental principles of counting",
+          "newName": "fundamental principles of counting",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Multiplication principle",
+              "_action": "add"                          //<==========ADD
+            },
+            {
+              "newName": "Addition principle",
+              "_action": "add"                        //<==========ADD
+            }
+          ]
+        },
+        {
+          "_id": "666c0be176b0fd6cb4009dc3",
+          "oldName": "permutations",
+          "newName": "permutations",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Definition and nPr formula",
+              "_action": "add"                      //<===========ADD
+            },
+            {
+              "_id": "666c0be276b0fd6cb4009dc9",
+              "oldName": "circular permutations",
+              "newName": "circular permutations",
+              "_action": "add"                    //<==========MOVED FROM TOPIC TO SUBTOPIC OF PERMUTATIONS
+            },
+            {
+              "_id": "666c0be276b0fd6cb4009dc6",
+              "oldName": "permutations of objects with repetition",
+              "newName": "permutations of objects with repetition",
+              "_action": "add"                             //<============MOVED FROM TOPIC TO SUBTOPIC OF PERMUTATIONS
+            },
+            {
+              "newName": "Permutations with identical objects",
+              "_action" : "add"                               //<========ADD
+            }
+          ]
+        },
+        {
+          "_id": "666c0be276b0fd6cb4009dd2",
+          "oldName": "combinations",
+          "newName": "combinations",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Definition and nCr formula",
+              "_action": "add"                        //<=========ADD
+            },
+            {
+              "_id": "666c0be276b0fd6cb4009dcf",
+              "oldName": "properties of binomial coefficients",
+              "newName": "properties of binomial coefficients",
+              "_action": "add"                            //<============MOVED FROM MAIN TOPIC TO SUBTOPIC OF COMBINATIONS
+            },
+            {
+              "_id": "666c0be376b0fd6cb4009dd5",
+              "oldName": "combination with restrictions",
+              "newName": "grouping problems",
+              "_action": "rename",                             //<==================MOVED FROM MAIN TOPIC TO SUBTOPIC OF COMBINATIONS AND RENAMED
+              "subtopics": [
+                {
+                  "_id": "666c0c75786d9436df12e0a7",
+                  "oldName": "objects not to be together",
+                  "newName": "objects not to be together",                    //<=============KEEP SUBTOPICS ???
+                  "_action": "none"
+                },
+                {
+                  "_id": "666c0c75786d9436df12e0ab",
+                  "oldName": "specific selections fixed",
+                  "newName": "specific selections fixed",
+                  "_action": "none"
+                }
+              ]
+            },
+            {
+              "newName": "Number of divisors",
+              "_action": "add"                            //<===================ADD
+            }
+          ]
+        },
+        {
+          "_id": "666c0be376b0fd6cb4009dde",
+          "oldName": "pnc for identical object",
+          "newName": "pnc for identical object",
+          "_action": "none",                              //<==========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Distribution of identical objects into distinct groups",
+              "_action": "add"
+            },
+            {
+              "newName": "Arrangements involving identical objects",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Rearrangement and Derangement",
+          "_action": "add",
+          "subtopics": [                              //<============ADDED NEW TOPIC AND SUBTOPICS
+            {
+              "newName": "Derangement formula",
+              "_action": "add"
+            },
+            {
+              "newName": "Applications of derangement",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "666c0be376b0fd6cb4009dd8",
+          "oldName": "relation between permutations and combinations",
+          "newName": "relation between permutations and combinations",
+          "_action": "none",                    //<===============ADDED NEW SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "nPr = r! x nCr",
+              "_action": "add"
+            },
+            {
+              "newName": "Mixed P and C problems",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "666c0be276b0fd6cb4009dcc",
+          "oldName": "permutations with restrictions",
+          "newName": "permutations with restrictions",
+          "_action": "delete",                                      //<===================DELETE DUE TO NO PRESENCE ???
+          "subtopics": [
+            {
+              "_id": "666c0c47786d9436df12e09b",
+              "oldName": "specific positions fixed",
+              "newName": "specific positions fixed",
+              "_action": "none"
+            },
+            {
+              "_id": "666c0c48786d9436df12e09f",
+              "oldName": "objects not to be together",
+              "newName": "objects not to be together",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f61271120046c",
+      "oldName": "probability",
+      "newName": "probability",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "newName": "Random Experiment, Sample Space and Events",
+          "_action": "add",                                           //<===========ADD NEW TOPIC AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Types of events (simple, compound, sure, impossible)",
+              "_action": "add"
+            },
+            {
+              "newName": "Algebra of events",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a9e77e195762ac5b16665",
+          "oldName": "Classical definition of Probability ",
+          "newName": "Classical definition of Probability ",      //<=======ADDED NEW SUBTOPICS
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Equally likely outcomes",
+              "_action": "add"
+            },
+            {
+              "_id": "666c0be376b0fd6cb4009ddb",
+              "oldName": "permutation and combination problems in probability",
+              "newName": "permutation and combination problems in probability",
+              "_action": "add"                                 //<==================MOVED FROM TOPIC IN P&C TO SUBTOPIC OF PROBABILITY
+            },
+            {
+              "newName": "Geometric probability",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Odds and Probability",                  //<=======ADDED A TOPIC AND SUBTOPIC
+          "_action": "add",
+          "subtopics": [                                  
+            {
+              "newName": "Odds in favour and against",
+              "_action": "add"
+            },
+            {
+              "newName": "Conversion between odds and probability",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a9e78e195762ac5b16668",
+          "oldName": " based on venn diagram & set theory ",
+          "newName": " Venn Diagram Based Probability ",          //<============ADDED SUBTOPICS
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Two events",
+              "_action": "add"
+            },
+            {
+              "newName": "Three events",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Conditional Probability",
+          "_action": "add",
+          "subtopics": [
+            {
+              "newName": "Definition and computation",
+              "_action": "add"
+            },
+            {
+              "newName": "Multiplication Theorem",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Law of Total Probabliity and Bayes' Theorem",
+          "_action": "add",
+          "subtopics": [
+            {
+              "newName": "Total probability theorem",
+              "_action": "add"
+            },
+            {
+              "newName": "Bayes' theorem and its applications",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Probablity Distribution",
+          "_action": "add",
+          "subtopics": [
+            {
+              "newName": "Random variable",
+              "_action": "add"
+            },
+            {
+              "newName": "Mean and variance of a random variable",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Binomial Probability Distribution",
+          "_action": "add",
+          "subtopics": [
+            {
+              "newName": "Conditions for binomial distribution",
+              "_action": "add"
+            },
+            {
+              "newName": "Mean and variance of binomial distribution",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a9e78e195762ac5b1666b",
+          "oldName": "Conditional Probability / Total probability & Bayes' theorem ",
+          "newName": "Conditional Probability / Total probability & Bayes' theorem ",
+          "_action": "delete"         //<=======DELETE
+        },
+        {
+          "_id": "669a9e78e195762ac5b1666e",
+          "oldName": " based on Binomial Distribution / Expectation / mean & Variance ",
+          "newName": " based on Binomial Distribution / Expectation / mean & Variance ",
+          "_action": "none"             //<======DELETE
+        },
+        {
+          "newName": "Special Probability Problems",
+          "_action": "add"            //<===========ADD
+        }
+      ]
+    },
+    {
+      "_id": "6666a91c047316ba7486d9cf",
+      "oldName": "quadratic equation",
+      "newName": "quadratic equation",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance"
+      ],
+      "topics": [
+        {
+          "_id": "6666a9893a31ccf765aff3d6",
+          "oldName": "method of solving quadratic equation",
+          "newName": "method of solving quadratic equation",              
+          "_action": "none",                              //<========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Factorisation",
+              "_action": "add"
+            },
+            {
+              "newName": "Completing the square",
+              "_action": "add"
+            },
+            {
+              "newName": "Quadratic formula",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3d3",
+          "oldName": "nature of roots",
+          "newName": "nature of roots",
+          "_action": "none",                                  //<========ADDED SUBTOPICS  
+          "subtopics": [
+            {
+              "newName": "Discriminant analysis",
+              "_action": "add"
+            },
+            {
+              "newName": "Real, equal, and complex roots",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3d9",
+          "oldName": "relations between roots and its coefficients",
+          "newName": "relations between roots and its coefficients",    //<===========ADDED SUBTOPICS
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Sum and Product of roots",
+              "_action": "add"
+            },
+            {
+              "newName": "Forming equation from given roots",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3dc",
+          "oldName": "common root",
+          "newName": "common root",
+          "_action": "none",                                            //<===========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "One common root condition",
+              "_action": "add"
+            },
+            {
+              "newName": "Both common roots condition",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3df",
+          "oldName": "graphical representation of quadratic functions",
+          "newName": "graphical representation of quadratic functions",
+          "_action": "none",                                          //<===========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Graph of quadratic function",
+              "_action": "add"
+            },
+            {
+              "newName": "Sign of quadratic expression in different regions",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3e2",
+          "oldName": "range of quadratic function",
+          "newName": "range of quadratic function",
+          "_action": "none",                                          //<===========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Maximum and minimum values",
+              "_action": "add"
+            },
+            {
+              "newName": "Range for restricted domains",
+              "_action": "add"
+            },
+            {
+              "_id": "6666a98a3a31ccf765aff3eb",
+              "oldName": "function based questions",
+              "newName": "function based questions",                    //<=========MOVED FROM TOPIC TO SUBTOPIC
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3e5",
+          "oldName": "location of roots",
+          "newName": "location of roots",
+          "_action": "none",                                        //<===========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Both roots greater/less than a value",
+              "_action": "add"
+            },
+            {
+              "newName": "One root in a given interval",
+              "_action": "add"
+            },
+            {
+              "newName": "Roots on opposites side of a value",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3ee",
+          "oldName": "special types of quadratic equations",
+          "newName": "transformations of equations",
+          "_action": "rename",                            //<==========RENAME
+          "subtopics": [
+            {
+              "newName": "Roots in AP, GP, HP",
+              "_action": "add"                            //<===========ADD
+            },
+            {
+              "newName": "Symmetric functions of roots",
+              "_action": "add"                            //<===========ADD
+            },
+            {
+              "_id": "6666a9bd3a31ccf765aff400",
+              "oldName": "reciprocal quadratic equations",
+              "newName": "reciprocal quadratic equations",
+              "_action": "delete"                                     //<=========DELETE NO PRESENCE??
+            },
+            {
+              "_id": "6666a9bd3a31ccf765aff404",
+              "oldName": "equations reducible to quadratic form",
+              "newName": "equations reducible to quadratic form",
+              "_action": "delete"                                                     //<=========DELETE NO PRESENCE??
+            }     
+          ]
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3e8",
+          "oldName": "n degree equation",
+          "newName": "n degree equation",
+          "_action": "delete"                                 //<=========DELETE NO PRESENCE??
+        }
+      ]
+    },
+    {
+      "_id": "6666a42a047316ba7486d8fe",
+      "oldName": "sequence and series",
+      "newName": "sequence and series",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6666a829047316ba7486d94c",
+          "oldName": "arithmetic progressions",
+          "newName": "arithmetic progressions",
+          "_action": "none",                                            //<==============ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "General term and sum of n terms",
+              "_action": "add"
+            },
+            {
+              "newName": "Properties of AP",
+              "_action": "add"
+            },
+            {
+              "newName": "Insertion of arithmetic means",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a829047316ba7486d94f",
+          "oldName": "geometric progressions",                              //<==============ADDED SUBTOPICS
+          "newName": "geometric progressions",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "General term and sum of n terms (finite)",
+              "_action": "add"
+            },
+            {
+              "newName": "Sum of infinite GP",
+              "_action": "add"
+            },
+            {
+              "newName": "Properties of GP",
+              "_action": "add"
+            },
+            {
+              "newName": "Insertion of geometric means",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "6666a829047316ba7486d958",
+          "oldName": "harmonic progressions",
+          "newName": "harmonic progressions",                           //<==============ADDED SUBTOPICS
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "General term and nth term of HP",
+              "_action": "add"
+            },
+            {
+              "newName": "Harmonic mean and insertion of means",
+              "_action": "add"                                  //<==============ADDED SUBTOPICS
+            },
+            {
+              "_id": "6666a82a047316ba7486d95e",
+              "oldName": "harmonic conjugate",
+              "newName": "harmonic conjugate",
+              "_action": "add"                                      //<===================MOVED FROM TOPIC TO SUBTOPIC OF harmonic progressions (doubt ???)
+            }
+          ]
+        },
+        {
+          "_id": "6666a82b047316ba7486d96d",
+          "oldName": "means",
+          "newName": "means",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6666aaa03a31ccf765aff42e",
+              "oldName": "harmonic mean",
+              "newName": "harmonic mean",
+              "_action": "none"
+            },
+            {
+              "_id": "6666aaa03a31ccf765aff432",
+              "oldName": "arithmetic mean",
+              "newName": "arithmetic mean",
+              "_action": "none"
+            },
+            {
+              "_id": "6666aaa13a31ccf765aff436",
+              "oldName": "geometric mean",
+              "newName": "geometric mean",
+              "_action": "none"
+            },
+            {
+              "_id": "6666a829047316ba7486d952",
+              "oldName": "relationship between am and gm",
+              "newName": "AM >= GM >= HM inequality and applications",  //<=============MOVED FROM TOPIC TO SUBTOPIC OF MEANS
+              "_action": "none"
+            },
+            {
+              "_id": "6666a82a047316ba7486d961",
+              "oldName": "ap-gp inequality",
+              "newName": "ap-gp inequality",                              //<===========ADDED BUT DOUBT FOR DUPLICATE
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Arithmetic-Geometric Progression",
+          "_action": "add",
+          "subtopics": [                                              
+            {
+              "newName": "General term of AGP",
+              "_action": "add"                                        //<==============ADDED TOPIC AND SUBTOPICS
+            },
+            {
+              "newName": "Sum of AGP using standard method",
+              "_action": "add"                                            //<==============ADDED TOPIC AND SUBTOPICS
+            },
+            {
+              "_id": "6666a82a047316ba7486d95b",
+              "oldName": "mixed questions of ap and gp",
+              "newName": "mixed questions of ap and gp",
+              "_action": "add"                                   //<==============MOVED FROM TOPIC TO SUBTOPIC OF AGP(DOUBT????)
+            },
+          ]
+        },
+        {
+          "_id": "6666a829047316ba7486d955",
+          "oldName": "special series",
+          "newName": "special series",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Sum of first n natural numbers",
+              "_action": "add"                                    //<==============ADDED SUBTOPICS
+            },
+            {
+              "_id": "6666aa613a31ccf765aff426",
+              "oldName": "sum of square/cube of first n natural number",
+              "newName": "sum of square/cube of first n natural number",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6666a9fa3a31ccf765aff41a",
+          "oldName": "infinite sequence",
+          "newName": "infinite summation series",                     //<======MOVED FROM SUBTOPIC OF TYPES OF SEQUENCES TO TOPIC AND RENAMED
+          "_action": "rename",
+          "subtopics": [
+            {
+              "newName": "Telescoping series",
+              "_action": "add"
+            },
+            {
+              "_id": "6666a82b047316ba7486d967",
+              "oldName": "method of difference",
+              "newName": "method of difference",                //<==============MOVED FROM TOPIC TO SUBTOPIC OF INFINITE SUMMATION SERIES
+              "_action": "add"
+            },
+            {
+              "newName": "Vn method",
+              "_action": "add"                                //<==============ADDED SUBTOPICS
+            }
+          ]
+        },
+        {
+          "_id": "6666a82b047316ba7486d96a",
+          "oldName": "miscellaneous sequences",
+          "newName": "miscellaneous sequences",
+          "_action": "delete",                              //<===========DELETE(??? NOT PRESENT)
+          "subtopics": [
+            {
+              "_id": "6666aaeb3a31ccf765aff43e",
+              "oldName": "fibonacci series",
+              "newName": "fibonacci series",
+              "_action": "none"
+            },
+            {
+              "_id": "6666aaeb3a31ccf765aff442",
+              "oldName": "recurrence relation",
+              "newName": "recurrence relation",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6666a82a047316ba7486d964",
+          "oldName": "summation of series",
+          "newName": "summation of series",                         //<===========DELETE(??? NOT PRESENT)
+          "_action": "delete"
+        },
+        {
+          "_id": "6666a828047316ba7486d949",
+          "oldName": "types of sequences",
+          "newName": "types of sequences",
+          "_action": "delete",                                        //<===========DELETE(??? NOT PRESENT)
+          "subtopics": [
+            {
+              "_id": "6666a9fa3a31ccf765aff416",
+              "oldName": "finite sequence",
+              "newName": "finite sequence",
+              "_action": "none"
+            },
+            {
+              "_id": "6666a9fb3a31ccf765aff41e",
+              "oldName": "general term of a sequence",
+              "newName": "general term of a sequence",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03bd23f612711200457",
+      "oldName": "sets",
+      "newName": "sets",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a729901c6ddb81a152a50",
+          "oldName": "representation of sets , type of sets",
+          "newName": "representation of sets , type of sets",
+          "_action": "none",                                              //<============ADDED SUBTOPICS
+          "subtopics" : [
+            {
+              "newName": "Roster form and set-builder form", 
+              "_action": "add"
+            },
+            {
+              "newName": "Empty, finite, infinite, equal sets",
+              "_action": "add"
+            },
+            {
+              "_id": "669a729901c6ddb81a152a53",
+              "oldName": "subset and power set",
+              "newName": "Subset, superset, power set, universal set",
+              "_action": "rename"                                     //<=======MOVED FROM TOPIC TO SUBTOPIC OF REPR. oF SETS AND RENAMED
+            }
+          ]
+        },
+        {
+          "_id": "669a729901c6ddb81a152a56",
+          "oldName": "operation on sets and law of algebra",
+          "newName": "operation on sets and law of algebra",
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "Union, intersection, difference, complement",
+              "_action": "add"                                  //<==========ADD
+            },
+            {
+              "newName": "Commutative, associative, distributive laws",
+              "_action": "add"                                      //<==========ADD
+            },
+            {
+              "_id": "669aab5f33bace4c52b60aef",
+              "oldName": "complement of a set & de morgan ' s  law",
+              "newName": "de morgan ' s  law",          //<=========MOVED FROM TOPIC TO SUBTOPIC OF OPERATION OF SETS and RENAMED
+              "_action": "rename"
+            }
+          ]
+        },
+        {
+          "_id": "669a72bfb3011e86e395f226",
+          "oldName": "cardinal number",
+          "newName": "cardinal number",
+          "_action": "none",                      //<==============ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "n(AuB) for two sets",
+              "_action": "add"
+            },
+            {
+              "newName": "n(AuBuC) for three sets",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669aab5f33bace4c52b60af2",
+          "oldName": "Union ,intersection and other operations using Ven Diagram",
+          "newName": "Union ,intersection and other operations using Ven Diagram",            
+          "_action": "none",                                    //<==============ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Representation of sets and operations",
+              "_action": "add"
+            },
+            {
+              "newName": "Problem-solving using Venn diagrams",
+              "_action": "add"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "669a7b149b62d6dfd6a87feb",
+      "oldName": "statistics",
+      "newName": "statistics",
+      "_action": "none",
+      "exam": [
+        "jeeadvance",
+        "jeemains",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a9cdc11c440dcd97ee821",
+          "oldName": "mean, median & mode",
+          "newName": "Measures of Central Tendency",
+          "_action": "rename"                       //<=========RENAME
+        },
+        {
+          "newName": "Measures of Dispersion",
+          "_action": "add",
+          "subtopics": [
+            {
+              "_id": "669a9cdc11c440dcd97ee827",
+              "oldName": "range, coefficient of range",
+              "newName": "range, coefficient of range",   //<======MOVED FROM TOPIC TO SUBTOPIC OF MEASURES OF DISP.
+              "_action": "add"
+            },
+            {
+              "_id": "669a9cdc11c440dcd97ee824",
+              "oldName": "mean deviation and coefficient of mean",
+              "newName": "mean deviation about mean and median",
+              "_action": "rename"                               //<======MOVED FROM TOPIC TO SUBTOPIC OF MEASURES OF DISP. and RENAMED
+            },
+            {
+              "_id": "669a9cdc11c440dcd97ee82a",
+              "oldName": "deviation & standard deviation",
+              "newName": "deviation & standard deviation",
+              "_action": "add"                             //<======MOVED FROM TOPIC TO SUBTOPIC OF MEASURES OF DISP.
+            },
+            {
+              "_id": "669a9cdd11c440dcd97ee82d",
+              "oldName": "variance and coefficient of variation",
+              "newName": "variance and coefficient of variation",
+              "_action": "add"                                //<======MOVED FROM TOPIC TO SUBTOPIC OF MEASURES OF DISP.
+            } 
+          ]
+        },
+        {
+          "_id": "669a9ecc1f54c2964cfedf7e",
+          "oldName": "frequency distribution & mean and variance of the random variable",
+          "newName": "Frequency Distribution",
+          "_action": "rename",                              //<======RENAME
+          "subtopics": [                                
+            {
+              "newName": "Discrete and continuous frequency distributions",
+              "_action": "add"                                    //<==============ADDED SUBTOPICS
+            },
+            {
+              "newName": "Cumulative frequency and its applications",
+              "_action": "add"                                  //<==============ADDED SUBTOPICS
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f612711200460",
+      "oldName": "straight lines",
+      "newName": "straight lines",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a791c1ed0dfbbaf477d50",
+          "oldName": "distance formula, section formula, area of triangle & polygon,",
+          "newName": "Basic Formulae",                                    //<========RENAME
+          "_action": "rename",
+          "subtopics": [
+            {
+              "newName": "Distance formula",                //<==============ADDED SUBTOPICS
+              "_action": "add"
+            },
+            {
+              "newName": "Section formula (internal and external division)",
+              "_action": "add"                          //<==============ADDED SUBTOPICS
+            },
+            {
+              "newName": "Harmonic conjugate",      //<==============ADDED SUBTOPICS
+              "_action": "add"
+            } 
+          ]
+        },
+        {
+          "newName": "Slope and Angle Between Lines",
+          "_action": "add",                   //<==========ADDED TOPIC AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Slope from two points",
+              "_action": "add"
+            },
+            {
+              "newName": "Angle between two lines",
+              "_action": "add"
+            },
+            {
+              "newName": "Conditions for parallel and perpendicular lines",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Different Forms of Equation of a Line",
+          "_action": "add",                               //<==========ADDED TOPIC AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Slope-intercept, point-slope, two-point forms",
+              "_action": "add"
+            },
+            {
+              "newName": "Intercept form, normal form",
+              "_action": "add"
+            },
+            {
+              "newName": "General form Ax+By+C=0 and conversions",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Collinearity, Perpendicularity, Image and Foot",
+          "_action": "add",
+          "subtopics": [                                            //<==========ADDED TOPIC AND SUBTOPICS
+            {
+              "newName": "Condition of collinearity of three points",
+              "_action": "add"
+            },
+            {
+              "newName": "Foot of perpendicular from a point to a line",
+              "_action": "add"
+            },
+            {
+              "newName": "Image of a point in a line",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Distance Formulas",
+          "_action": "add",                                              //<==========ADDED TOPIC AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Distance of a point from a line",
+              "_action": "add"
+            }, 
+            {
+              "newName": "Distance between two parallel lines",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Area of Triangle and Parallelogram",
+          "_action": "add",                                                                //<==========ADDED TOPIC AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Area using coordinates",
+              "_action": "add"
+            },
+            {
+              "newName": "Area of parallelogram using diagonals",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a791d1ed0dfbbaf477d5c",
+          "oldName": "centroid, orthocentre, circumcentre, incentre , excentre & locus problem",
+          "newName": "Triangle Centers and Locus Problems",
+          "_action": "rename",                                                                   //<==========ADD SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Centroid, circumcenter, orthocenter, incenter",
+              "_action": "add"
+            },
+            {
+              "newName": "Standard locus problems",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a791d1ed0dfbbaf477d5f",
+          "oldName": "angle bisector, condition of concurrency, family of straight lines",
+          "newName": "angle bisector, condition of concurrency, family of straight lines",
+          "_action": "none",                                                           //<==========ADD SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Angle bisectors of two lines",
+              "_action": "add"
+            },
+            {
+              "newName": "Concurrency condition of three lines",
+              "_action": "add"
+            },
+            {
+              "newName": "Family of lines through intersection point",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Pair of Straight Lines",
+          "_action": "add",                                                      //<==========ADD TOPICS AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Homogeneous second-degree equation",
+              "_action": "add"
+            },
+            {
+              "newName": "Angle between pair of lines",
+              "_action": "add"
+            },
+            {
+              "newName": "Condition for parallel and perpendicular pair",
+              "_action": "add"
+            },
+            {
+              "newName": "Bisectors of pair of lines",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Homogenization",
+          "_action": "add",                                                            //<==========ADD TOPICS AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Homogenization of a curve with a line",
+              "_action": "add"
+            },
+            {
+              "newName": "Combined equation of lines joining origin to intersection points",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a791c1ed0dfbbaf477d59",
+          "oldName": "area of parallelogram and miscellaneous",
+          "newName": "area of parallelogram and miscellaneous",
+          "_action": "delete"                                                                   //<=====DELETE
+        }, 
+        {
+          "_id": "669a791c1ed0dfbbaf477d53",
+          "oldName": "collinearity, slope , perpendicular distance, image & foot,",
+          "newName": "collinearity, slope , perpendicular distance, image & foot,",
+          "_action": "delete"                                                                             //<=====DELETE
+        },  
+        {
+          "_id": "669a791c1ed0dfbbaf477d56",
+          "oldName": "different forms of straight lines and angle between lines",
+          "newName": "different forms of straight lines and angle between lines",
+          "_action": "delete"                                                                               //<=====DELETE
+        },
+        {
+          "_id": "669a791d1ed0dfbbaf477d62",
+          "oldName": "pair of straight lines, homogenization",
+          "newName": "pair of straight lines, homogenization",
+          "_action": "delete"                                                                           //<=====DELETE
+        } 
+      ]
+    },
+    {
+      "_id": "6699f03bd23f61271120045a",
+      "oldName": "trigonometry functions",
+      "newName": "trigonometry functions",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "newName": "Trigonometric Ratios and Basic Identities",
+          "_action": "add",
+          "subtopics": [                                                              //<========ADDED TOPIC AND SUBTOPICS
+            {
+              "newName": "Definition of sin, cos, tan, cot, sec, cosec",
+              "_action": "add"
+            },
+            {
+              "newName": "Standard angles and values (0, 30, 45, 60, 90 degrees)",
+              "_action": "add"
+            },
+            {
+              "newName": "Pythagorean, reciprocal, and quotient identities",
+              "_action": "add"
+            },
+            {
+              "newName": "Signs in quadrants (ASTC rule)",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Allied Angles and Graphs",
+          "_action": "add",
+          "subtopics": [                                                                            //<========ADDED TOPIC AND SUBTOPICS
+            { 
+              "newName": "Trigonometric ratios of -x, 90+x, 180+x, 270+x, 360+x",
+              "_action": "add"
+            },
+            {
+              "newName": "Graphs of sin x, cos x, tan x",
+              "_action": "add"
+            },
+            {
+              "newName": "Period, amplitude, and transformations of graphs",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6e6",
+          "oldName": "multiple angles",
+          "newName": "multiple angles and sub-multiple angles",
+          "_action": "rename",
+          "subtopic": [                                                                                 //<========RENAME AND ADDED SUBTOPICS
+            {
+              "newName": "Double angle formulas",
+              "_action": "add"
+            },
+            {
+              "newName": "Triple angle formulas",
+              "_action": "add"
+            },
+            {
+              "newName": "Half angle formulas",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Compound Angles and Transformations",
+          "_action": "add",
+          "subtopics": [                                                                //<========RENAME AND ADDED SUBTOPICS
+            {
+              "newName": "sin(A+B), cos(A+B), tan(A+B)",
+              "_action": "add"
+            },
+            {
+              "newName": "Product-to-sum formulas",
+              "_action": "add"
+            },
+            {
+              "newName": "Sum-to-product formulas",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6ec",
+          "oldName": "conditional identities & trigonometric series",
+          "newName": "conditional identities & trigonometric series",
+          "_action": "none",
+          "subtopics": [
+            {                                                                             //<========ADDED SUBTOPICS
+              "newName": "Identities when A+B+C = pi",
+              "_action": "add"
+            },
+            {
+              "newName": "Summation of trigonometric series",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6ef",
+          "oldName": "range of trigonometric expressions",
+          "newName": "range of trigonometric expressions",
+          "_action": "none",                                                                       //<========ADDED SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Range of a.sinx + b.cosx",
+              "_action": "add"
+            },
+            {
+              "newName": "Range of compound trigonometric expressions",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a74da01c6ddb81a15b6f2",
+          "oldName": "trigonometric equations",
+          "newName": "trigonometric equations",                                                //<========ADDED SUBTOPICS
+          "_action": "none",
+          "subtopics": [
+            {
+              "newName": "General solutions: sinx=k, cosx=k, tanx=k",
+              "_action": "add"
+            },
+            {
+              "newName": "Equations reducible to standard form",
+              "_action": "add"
+            },
+            {
+              "newName": "Systems of trigonometric equations",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a74da01c6ddb81a15b6f5",
+          "oldName": "trigonometric inequality",
+          "newName": "trigonometric inequality",
+          "_action": "none",
+          "subtopics": [                                                                 //<========ADDED SUBTOPICS
+            {
+              "newName": "Solving sin/cos/tan based inequalities",
+              "_action": "add"
+            },
+            {
+              "newName": "Graphical interpretation",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Heights and Distances",
+          "_action": "add",                                                      //<========ADDED TOPICS AND SUBTOPICS
+          "subtopics": [
+            {
+              "newName": "Angle of elevation and depression",
+              "_action": "add"
+            },
+            {
+              "newName": "Problems with single and multiple observations",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "newName": "Solutions of Triangle",
+          "_action": "add",
+          "subtopics": [                                                                  //<========ADDED TOPICS AND SUBTOPICS
+            {
+              "newName": "Sine rule, cosine rule, tangent rule",
+              "_action": "add"
+            },
+            {
+              "newName": "Area of triangle formulas",
+              "_action": "add"
+            },
+            {
+              "newName": "m-n theorem",
+              "_action": "add"
+            },
+            {
+              "newName": "Half angle formulas in triangle",
+              "_action": "add"
+            },
+            {
+              "newName": "Circumradius, inradius, and exradii",
+              "_action": "add"
+            }
+          ]
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6e9",
+          "oldName": "allied angles graphs and basic identites",
+          "newName": "allied angles graphs and basic identites",
+          "_action": "delete"                                                 //<========DELETE
+        }
+      ]
+    }
+  ]
+}
