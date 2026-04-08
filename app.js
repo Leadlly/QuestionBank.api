@@ -13,6 +13,7 @@ import ExtractRouter from "./routes/extractionRoutes.js";
 import AgentRouter from "./routes/agentRoutes.js";
 import SolutionRouter from "./routes/solutionRoutes.js";
 import DbModeRouter from "./routes/dbModeRoutes.js";
+import dbModeMiddleware from "./middlewares/dbModeMiddleware.js";
 
 config({
   path: "./.env",
@@ -25,6 +26,7 @@ connectedToDb();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(dbModeMiddleware);
 app.use(
   cors({
       origin: (origin, callback) => {
