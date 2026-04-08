@@ -2,4 +2,3 @@
 .env
 .vercel
 .DS_Store
-db/.db-mode

@@ -1,41 +1,58 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 
 dotenv.config({ path: "./.env" });
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const MODE_FILE = path.join(__dirname, ".db-mode");   // tiny file: "test" or "live"
-
 // ── DB URIs ───────────────────────────────────────────────────────────────────
-const TEST_URI = process.env.MONGO_URI;           // test / dev database
-const LIVE_URI = process.env.MAIN_DATABASE_URL;   // production database
+const TEST_URI = process.env.MONGO_URI;
+const LIVE_URI = process.env.MAIN_DATABASE_URL;
 
-// ── Persist / load mode from disk so server restarts remember the choice ──────
-function loadPersistedMode() {
+// ── Config connection — permanently wired to TEST DB ─────────────────────────
+// This never switches. It is the source-of-truth for the persisted dbMode
+// setting, which survives Vercel cold starts because it lives in MongoDB.
+let _configConn = null;
+
+async function getConfigConn() {
+  if (_configConn && _configConn.readyState === 1) return _configConn;
+  _configConn = mongoose.createConnection(TEST_URI, { dbName: "leadllyQuestions" });
+  await _configConn.asPromise();
+  return _configConn;
+}
+
+async function loadPersistedMode() {
   try {
-    const saved = fs.readFileSync(MODE_FILE, "utf8").trim();
-    if (saved === "live" || saved === "test") return saved;
+    const conn = await getConfigConn();
+    const doc = await conn.collection("configs").findOne({ key: "dbMode" });
+    if (doc && (doc.value === "test" || doc.value === "live")) return doc.value;
   } catch {
-    // file doesn't exist yet → default to "test"
+    // first run or read error — fall through to default
   }
   return "test";
 }
 
-function persistMode(mode) {
-  try { fs.writeFileSync(MODE_FILE, mode, "utf8"); } catch { /* ignore */ }
+async function persistMode(mode) {
+  try {
+    const conn = await getConfigConn();
+    await conn.collection("configs").updateOne(
+      { key: "dbMode" },
+      { $set: { key: "dbMode", value: mode } },
+      { upsert: true }
+    );
+  } catch {
+    // ignore — mode switch still proceeds
+  }
 }
 
-let currentMode = loadPersistedMode();
+// ── Active mode (in-memory, warm within a single Vercel instance) ─────────────
+let currentMode = "test";
 
 export function getDbMode() {
   return currentMode;
 }
 
 /**
- * Switch the active Mongoose connection to the given mode.
+ * Switch the active Mongoose default connection to the given mode.
+ * Persists the choice to MongoDB (TEST DB) so Vercel cold starts remember it.
  * @param {"test"|"live"} mode
  */
 export async function switchDb(mode) {
@@ -52,29 +69,32 @@ export async function switchDb(mode) {
     throw new Error(`URI for mode "${mode}" is not set in .env`);
   }
 
+  // Persist BEFORE disconnecting — critical when switching to "live" because
+  // we are about to leave the test DB and won't be able to write to it after.
+  await persistMode(mode);
+
   console.log(`[DB] Switching from "${currentMode}" → "${mode}" …`);
 
-  // Disconnect current connection gracefully
   if (mongoose.connection.readyState !== 0) {
     await mongoose.disconnect();
   }
 
   await mongoose.connect(uri, { dbName: "leadllyQuestions" });
   currentMode = mode;
-  persistMode(mode);    // save to disk — survives server restarts
   console.log(`[DB] ✅ Connected to ${mode} database`);
 }
 
-// ── Initial connection — uses persisted mode ──────────────────────────────────
+// ── Initial connection — reads persisted mode from MongoDB on every cold start ─
 const connectedToDb = async () => {
-  const mode = loadPersistedMode();
-  const uri  = mode === "live" ? LIVE_URI : TEST_URI;
-
-  if (!uri) {
-    console.error("[DB] DB URI is not set — cannot connect.");
-    return;
-  }
   try {
+    const mode = await loadPersistedMode();
+    const uri  = mode === "live" ? LIVE_URI : TEST_URI;
+
+    if (!uri) {
+      console.error("[DB] DB URI is not set — cannot connect.");
+      return;
+    }
+
     await mongoose.connect(uri, { dbName: "leadllyQuestions" });
     currentMode = mode;
     console.log(`[DB] Connected to ${mode} database`);
