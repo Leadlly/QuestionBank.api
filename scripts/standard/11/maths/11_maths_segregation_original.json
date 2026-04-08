@@ -1,0 +1,1040 @@
+{
+  "_meta": {
+    "generatedAt": "2026-03-24T17:33:44.457Z",
+    "standard": 11,
+    "subject": "maths",
+    "subjectId": "66658e490c6892eddbe3fa46",
+    "instructions": [
+      "Each node has: _id (DB ObjectId), oldName (current DB value), newName (desired value), _action.",
+      "_action values:",
+      "  'none'   → no change (still recurse into children)",
+      "  'rename' → set newName to the desired name, keep oldName as-is",
+      "  'add'    → new entry; omit _id; set newName; add children as needed",
+      "Do NOT change _id or oldName — the apply script uses them for lookups."
+    ]
+  },
+  "standard": 11,
+  "subject": {
+    "_id": "66658e490c6892eddbe3fa46",
+    "oldName": "maths",
+    "newName": "maths",
+    "_action": "none"
+  },
+  "chapters": [
+    {
+      "_id": "666944274af25b5ec573fa0a",
+      "oldName": "binomial theorem",
+      "newName": "binomial theorem",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6669493d24eab9a69500bdcb",
+          "oldName": "applications of binomial theorem",
+          "newName": "applications of binomial theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "6669493d24eab9a69500bdc8",
+          "oldName": "binomial theorem for any index",
+          "newName": "binomial theorem for any index",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666949e884fbb3b31090becc",
+              "oldName": "binomial theorem for positive integral index",
+              "newName": "binomial theorem for positive integral index",
+              "_action": "none"
+            },
+            {
+              "_id": "666949e884fbb3b31090bed0",
+              "oldName": "binomial theorem for positive integral index",
+              "newName": "binomial theorem for positive integral index",
+              "_action": "none"
+            },
+            {
+              "_id": "666949e884fbb3b31090bed4",
+              "oldName": "convergence of binomial series",
+              "newName": "convergence of binomial series",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6669493c24eab9a69500bdc2",
+          "oldName": "general term and terms of binomial expansion",
+          "newName": "general term and terms of binomial expansion",
+          "_action": "none"
+        },
+        {
+          "_id": "6669493d24eab9a69500bdd1",
+          "oldName": "important binomial identities",
+          "newName": "important binomial identities",
+          "_action": "none"
+        },
+        {
+          "_id": "6669493e24eab9a69500bdda",
+          "oldName": "miscellaneous problems",
+          "newName": "miscellaneous problems",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "66694a1984fbb3b31090bedc",
+              "oldName": "higher order problems",
+              "newName": "higher order problems",
+              "_action": "none"
+            },
+            {
+              "_id": "66694a1984fbb3b31090bee0",
+              "oldName": "mixed problems for comprehensive understanding",
+              "newName": "mixed problems for comprehensive understanding",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6669493d24eab9a69500bdd4",
+          "oldName": "multinomial theorem",
+          "newName": "multinomial theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "6669493d24eab9a69500bdce",
+          "oldName": "pascal’s triangle",
+          "newName": "pascal’s triangle",
+          "_action": "none"
+        },
+        {
+          "_id": "6669493c24eab9a69500bdc5",
+          "oldName": "properties of binomial expansion",
+          "newName": "properties of binomial expansion",
+          "_action": "none"
+        },
+        {
+          "_id": "6669493e24eab9a69500bdd7",
+          "oldName": "sum of series",
+          "newName": "sum of series",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "66f82e9e1434c4da16dc7078",
+      "oldName": "circles",
+      "newName": "circles",
+      "_action": "none",
+      "exam": []
+    },
+    {
+      "_id": "666bf70121ea3ae35dec6b76",
+      "oldName": "complex number",
+      "newName": "complex number",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "666bf87f7c0af9c94602d460",
+          "oldName": "algebra of complex numbers",
+          "newName": "algebra of complex numbers",
+          "_action": "none"
+        },
+        {
+          "_id": "666bf87f7c0af9c94602d463",
+          "oldName": "complex conjugates",
+          "newName": "complex conjugates",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666bf8e7e0752a7510517644",
+              "oldName": "properties of conjugates",
+              "newName": "properties of conjugates",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf8e8e0752a7510517648",
+              "oldName": "geometric interpretation",
+              "newName": "geometric interpretation",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "666bf8807c0af9c94602d46c",
+          "oldName": "complex plane (argand plane)",
+          "newName": "complex plane (argand plane)",
+          "_action": "none"
+        },
+        {
+          "_id": "666bf8817c0af9c94602d475",
+          "oldName": "cube root of unity",
+          "newName": "cube root of unity",
+          "_action": "none"
+        },
+        {
+          "_id": "666bf8807c0af9c94602d46f",
+          "oldName": "de moivre's theorem",
+          "newName": "de moivre's theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "666bf8807c0af9c94602d466",
+          "oldName": "modulus and argument of complex numbers",
+          "newName": "modulus and argument of complex numbers",
+          "_action": "none"
+        },
+        {
+          "_id": "666bf8807c0af9c94602d469",
+          "oldName": "properties of modulus and argument",
+          "newName": "properties of modulus and argument",
+          "_action": "none"
+        },
+        {
+          "_id": "666bf8807c0af9c94602d472",
+          "oldName": "quadratic equations in complex numbers",
+          "newName": "quadratic equations in complex numbers",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666bf941e0752a7510517650",
+              "oldName": "roots of quadratic equations",
+              "newName": "roots of quadratic equations",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf941e0752a7510517654",
+              "oldName": "nature of roots",
+              "newName": "nature of roots",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf942e0752a7510517658",
+              "oldName": "sum and product of roots",
+              "newName": "sum and product of roots",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "666bf87f7c0af9c94602d45d",
+          "oldName": "representation of complex numbers",
+          "newName": "representation of complex numbers",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666bf8bee0752a7510517638",
+              "oldName": "polar form",
+              "newName": "polar form",
+              "_action": "none"
+            },
+            {
+              "_id": "666bf8bfe0752a751051763c",
+              "oldName": "cartesian form",
+              "newName": "cartesian form",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f612711200463",
+      "oldName": "conic section",
+      "newName": "conic section",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a79a01ed0dfbbaf477d89",
+          "oldName": "circle",
+          "newName": "circle",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "669bd7823efd41e585333c54",
+              "oldName": "equation of circle, parametric equation,",
+              "newName": "equation of circle, parametric equation,",
+              "_action": "none"
+            },
+            {
+              "_id": "669bd7833efd41e585333c58",
+              "oldName": "position of a point line and circle",
+              "newName": "position of a point line and circle",
+              "_action": "none"
+            },
+            {
+              "_id": "669bd7833efd41e585333c5c",
+              "oldName": "tangent, normal & pair of tangent",
+              "newName": "tangent, normal & pair of tangent",
+              "_action": "none"
+            },
+            {
+              "_id": "669bd7843efd41e585333c60",
+              "oldName": "director circle, chord of contact, chord with mid point",
+              "newName": "director circle, chord of contact, chord with mid point",
+              "_action": "none"
+            },
+            {
+              "_id": "669bd7843efd41e585333c64",
+              "oldName": "position of two circle, orthogonality, radical axis and radical centre",
+              "newName": "position of two circle, orthogonality, radical axis and radical centre",
+              "_action": "none"
+            },
+            {
+              "_id": "669bd7843efd41e585333c68",
+              "oldName": "family of circles , locus, miscellaneous",
+              "newName": "family of circles , locus, miscellaneous",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669a79a11ed0dfbbaf477d8f",
+          "oldName": "elipse & Hyperbola ",
+          "newName": "elipse & Hyperbola ",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "669bda89142e1a179362599b",
+              "oldName": "• elementary concepts of ellipse & hyperbola",
+              "newName": "• elementary concepts of ellipse & hyperbola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8a142e1a179362599f",
+              "oldName": "• position of line, equation of chord",
+              "newName": "• position of line, equation of chord",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8a142e1a17936259a3",
+              "oldName": "• various forms of tangents of ellipse & hyperbola",
+              "newName": "• various forms of tangents of ellipse & hyperbola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8b142e1a17936259a7",
+              "oldName": "• pair of tangents, director circle, chord of contact and chord with given middle point of ellipse & hyperbola",
+              "newName": "• pair of tangents, director circle, chord of contact and chord with given middle point of ellipse & hyperbola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda8b142e1a17936259ab",
+              "oldName": "• equation of normal, co-normal points of ellipse & hyperbola",
+              "newName": "• equation of normal, co-normal points of ellipse & hyperbola",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669a79a11ed0dfbbaf477d95",
+          "oldName": "miscellaneous problems",
+          "newName": "miscellaneous problems",
+          "_action": "none"
+        },
+        {
+          "_id": "669a79a01ed0dfbbaf477d8c",
+          "oldName": "parabola",
+          "newName": "parabola",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "669bda08142e1a179362597e",
+              "oldName": "elementary concepts of parabola",
+              "newName": "elementary concepts of parabola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda08142e1a1793625982",
+              "oldName": "position of line, equation of chord",
+              "newName": "position of line, equation of chord",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda09142e1a1793625986",
+              "oldName": "various forms of tangents & pair of tangents",
+              "newName": "various forms of tangents & pair of tangents",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda09142e1a179362598a",
+              "oldName": "director circle, chord of contact and chord with given  middle point of parabola",
+              "newName": "director circle, chord of contact and chord with given  middle point of parabola",
+              "_action": "none"
+            },
+            {
+              "_id": "669bda9c142e1a17936259b4",
+              "oldName": "• equation of normal, co-normal points of parabola",
+              "newName": "• equation of normal, co-normal points of parabola",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f612711200466",
+      "oldName": "limits",
+      "newName": "limits",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a7aa4c0312274276b0c52",
+          "oldName": "definition of lhl/rhl",
+          "newName": "definition of lhl/rhl",
+          "_action": "none"
+        },
+        {
+          "_id": "669a7aa5c0312274276b0c55",
+          "oldName": "evaluation of limits of indeterminate forms",
+          "newName": "evaluation of limits of indeterminate forms",
+          "_action": "none"
+        },
+        {
+          "_id": "669a7aa5c0312274276b0c58",
+          "oldName": "rule & expansion",
+          "newName": "rule & expansion",
+          "_action": "none"
+        },
+        {
+          "_id": "669a7aa5c0312274276b0c5b",
+          "oldName": "sandwitch theorem",
+          "newName": "sandwitch theorem",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6699f03bd23f61271120045d",
+      "oldName": "linear inequalities",
+      "newName": "linear inequalities",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a764001c6ddb81a15b72e",
+          "oldName": "Logarithmic inequations",
+          "newName": "Logarithmic inequations",
+          "_action": "none"
+        },
+        {
+          "_id": "669a764001c6ddb81a15b728",
+          "oldName": "linear inequalities",
+          "newName": "linear inequalities",
+          "_action": "none"
+        },
+        {
+          "_id": "669a764001c6ddb81a15b72b",
+          "oldName": "modulus inequalities",
+          "newName": "modulus inequalities",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "666c036927646b2158f7d7e6",
+      "oldName": "permutation and combination",
+      "newName": "permutation and combination",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "666c0be276b0fd6cb4009dc9",
+          "oldName": "circular permutations",
+          "newName": "circular permutations",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be376b0fd6cb4009dd5",
+          "oldName": "combination with restrictions",
+          "newName": "combination with restrictions",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666c0c75786d9436df12e0a7",
+              "oldName": "objects not to be together",
+              "newName": "objects not to be together",
+              "_action": "none"
+            },
+            {
+              "_id": "666c0c75786d9436df12e0ab",
+              "oldName": "specific selections fixed",
+              "newName": "specific selections fixed",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "666c0be276b0fd6cb4009dd2",
+          "oldName": "combinations",
+          "newName": "combinations",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be176b0fd6cb4009dc0",
+          "oldName": "fundamental principles of counting",
+          "newName": "fundamental principles of counting",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be376b0fd6cb4009ddb",
+          "oldName": "permutation and combination problems in probability",
+          "newName": "permutation and combination problems in probability",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be176b0fd6cb4009dc3",
+          "oldName": "permutations",
+          "newName": "permutations",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be276b0fd6cb4009dc6",
+          "oldName": "permutations of objects with repetition",
+          "newName": "permutations of objects with repetition",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be276b0fd6cb4009dcc",
+          "oldName": "permutations with restrictions",
+          "newName": "permutations with restrictions",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "666c0c47786d9436df12e09b",
+              "oldName": "specific positions fixed",
+              "newName": "specific positions fixed",
+              "_action": "none"
+            },
+            {
+              "_id": "666c0c48786d9436df12e09f",
+              "oldName": "objects not to be together",
+              "newName": "objects not to be together",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "666c0be376b0fd6cb4009dde",
+          "oldName": "pnc for identical object",
+          "newName": "pnc for identical object",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be276b0fd6cb4009dcf",
+          "oldName": "properties of binomial coefficients",
+          "newName": "properties of binomial coefficients",
+          "_action": "none"
+        },
+        {
+          "_id": "666c0be376b0fd6cb4009dd8",
+          "oldName": "relation between permutations and combinations",
+          "newName": "relation between permutations and combinations",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f61271120046c",
+      "oldName": "probability",
+      "newName": "probability",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a9e78e195762ac5b1666e",
+          "oldName": " based on Binomial Distribution / Expectation / mean & Variance ",
+          "newName": " based on Binomial Distribution / Expectation / mean & Variance ",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9e78e195762ac5b16668",
+          "oldName": " based on venn diagram & set theory ",
+          "newName": " based on venn diagram & set theory ",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9e77e195762ac5b16665",
+          "oldName": "Classical definition of Probability ",
+          "newName": "Classical definition of Probability ",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9e78e195762ac5b1666b",
+          "oldName": "Conditional Probability/ Total probability & Bayes'  theorem ",
+          "newName": "Conditional Probability/ Total probability & Bayes'  theorem ",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6666a91c047316ba7486d9cf",
+      "oldName": "quadratic equation",
+      "newName": "quadratic equation",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance"
+      ],
+      "topics": [
+        {
+          "_id": "6666a9893a31ccf765aff3dc",
+          "oldName": "common root",
+          "newName": "common root",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3eb",
+          "oldName": "function based questions",
+          "newName": "function based questions",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3df",
+          "oldName": "graphical representation of quadratic functions",
+          "newName": "graphical representation of quadratic functions",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3e5",
+          "oldName": "location of roots",
+          "newName": "location of roots",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3d6",
+          "oldName": "method of solving quadratic equation",
+          "newName": "method of solving quadratic equation",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3e8",
+          "oldName": "n degree equation",
+          "newName": "n degree equation",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3d3",
+          "oldName": "nature of roots",
+          "newName": "nature of roots",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3e2",
+          "oldName": "range of quadratic function",
+          "newName": "range of quadratic function",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a9893a31ccf765aff3d9",
+          "oldName": "relations between roots and its coefficients",
+          "newName": "relations between roots and its coefficients",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a98a3a31ccf765aff3ee",
+          "oldName": "special types of quadratic equations",
+          "newName": "special types of quadratic equations",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6666a9bd3a31ccf765aff400",
+              "oldName": "reciprocal quadratic equations",
+              "newName": "reciprocal quadratic equations",
+              "_action": "none"
+            },
+            {
+              "_id": "6666a9bd3a31ccf765aff404",
+              "oldName": "equations reducible to quadratic form",
+              "newName": "equations reducible to quadratic form",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6666a42a047316ba7486d8fe",
+      "oldName": "sequence and series",
+      "newName": "sequence and series",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6666a82a047316ba7486d961",
+          "oldName": "ap-gp inequality",
+          "newName": "ap-gp inequality",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a829047316ba7486d94c",
+          "oldName": "arithmetic progressions",
+          "newName": "arithmetic progressions",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a829047316ba7486d94f",
+          "oldName": "geometric progressions",
+          "newName": "geometric progressions",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a82a047316ba7486d95e",
+          "oldName": "harmonic conjugate",
+          "newName": "harmonic conjugate",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a829047316ba7486d958",
+          "oldName": "harmonic progressions",
+          "newName": "harmonic progressions",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a82b047316ba7486d96d",
+          "oldName": "means",
+          "newName": "means",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6666aaa03a31ccf765aff42e",
+              "oldName": "harmonic mean",
+              "newName": "harmonic mean",
+              "_action": "none"
+            },
+            {
+              "_id": "6666aaa03a31ccf765aff432",
+              "oldName": "arithmetic mean",
+              "newName": "arithmetic mean",
+              "_action": "none"
+            },
+            {
+              "_id": "6666aaa13a31ccf765aff436",
+              "oldName": "geometric mean",
+              "newName": "geometric mean",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6666a82b047316ba7486d967",
+          "oldName": "method of difference",
+          "newName": "method of difference",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a82b047316ba7486d96a",
+          "oldName": "miscellaneous sequences",
+          "newName": "miscellaneous sequences",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6666aaeb3a31ccf765aff43e",
+              "oldName": "fibonacci series",
+              "newName": "fibonacci series",
+              "_action": "none"
+            },
+            {
+              "_id": "6666aaeb3a31ccf765aff442",
+              "oldName": "recurrence relation",
+              "newName": "recurrence relation",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6666a82a047316ba7486d95b",
+          "oldName": "mixed questions of ap and gp",
+          "newName": "mixed questions of ap and gp",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a829047316ba7486d952",
+          "oldName": "relationship between am and gm",
+          "newName": "relationship between am and gm",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a829047316ba7486d955",
+          "oldName": "special series",
+          "newName": "special series",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6666aa613a31ccf765aff426",
+              "oldName": "sum of square/cube of first n natural number",
+              "newName": "sum of square/cube of first n natural number",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6666a82a047316ba7486d964",
+          "oldName": "summation of series",
+          "newName": "summation of series",
+          "_action": "none"
+        },
+        {
+          "_id": "6666a828047316ba7486d949",
+          "oldName": "types of sequences",
+          "newName": "types of sequences",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6666a9fa3a31ccf765aff416",
+              "oldName": "finite sequence",
+              "newName": "finite sequence",
+              "_action": "none"
+            },
+            {
+              "_id": "6666a9fa3a31ccf765aff41a",
+              "oldName": "infinite sequence",
+              "newName": "infinite sequence",
+              "_action": "none"
+            },
+            {
+              "_id": "6666a9fb3a31ccf765aff41e",
+              "oldName": "general term of a sequence",
+              "newName": "general term of a sequence",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6699f03bd23f612711200457",
+      "oldName": "sets",
+      "newName": "sets",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669aab5f33bace4c52b60af2",
+          "oldName": "Union ,intersection and other operations using Ven Diagram",
+          "newName": "Union ,intersection and other operations using Ven Diagram",
+          "_action": "none"
+        },
+        {
+          "_id": "669a72bfb3011e86e395f226",
+          "oldName": "cardinal number",
+          "newName": "cardinal number",
+          "_action": "none"
+        },
+        {
+          "_id": "669aab5f33bace4c52b60aef",
+          "oldName": "complement of a set & de morgan ' s  law",
+          "newName": "complement of a set & de morgan ' s  law",
+          "_action": "none"
+        },
+        {
+          "_id": "669a729901c6ddb81a152a56",
+          "oldName": "operation on sets and law of algebra",
+          "newName": "operation on sets and law of algebra",
+          "_action": "none"
+        },
+        {
+          "_id": "669a729901c6ddb81a152a50",
+          "oldName": "representation of sets , type of sets",
+          "newName": "representation of sets , type of sets",
+          "_action": "none"
+        },
+        {
+          "_id": "669a729901c6ddb81a152a53",
+          "oldName": "subset and power set",
+          "newName": "subset and power set",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "669a7b149b62d6dfd6a87feb",
+      "oldName": "statistics",
+      "newName": "statistics",
+      "_action": "none",
+      "exam": [
+        "jeeadvance",
+        "jeemains",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a9cdc11c440dcd97ee82a",
+          "oldName": "deviation & standard deviation",
+          "newName": "deviation & standard deviation",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9ecc1f54c2964cfedf7e",
+          "oldName": "frequency distribution & mean and variance of the random variable",
+          "newName": "frequency distribution & mean and variance of the random variable",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9cdc11c440dcd97ee824",
+          "oldName": "mean deviation and coefficient of mean",
+          "newName": "mean deviation and coefficient of mean",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9cdc11c440dcd97ee821",
+          "oldName": "mean, median & mode",
+          "newName": "mean, median & mode",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9cdc11c440dcd97ee827",
+          "oldName": "range, coefficient of range",
+          "newName": "range, coefficient of range",
+          "_action": "none"
+        },
+        {
+          "_id": "669a9cdd11c440dcd97ee82d",
+          "oldName": "variance and coefficient of variation",
+          "newName": "variance and coefficient of variation",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6699f03cd23f612711200460",
+      "oldName": "straight lines",
+      "newName": "straight lines",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a791d1ed0dfbbaf477d5f",
+          "oldName": "angle bisector, condition of concurrency, family of straight lines",
+          "newName": "angle bisector, condition of concurrency, family of straight lines",
+          "_action": "none"
+        },
+        {
+          "_id": "669a791c1ed0dfbbaf477d59",
+          "oldName": "area of parallelogram and miscellaneous",
+          "newName": "area of parallelogram and miscellaneous",
+          "_action": "none"
+        },
+        {
+          "_id": "669a791d1ed0dfbbaf477d5c",
+          "oldName": "centroid, orthocentre, circumcentre, incentre , excentre & locus problem",
+          "newName": "centroid, orthocentre, circumcentre, incentre , excentre & locus problem",
+          "_action": "none"
+        },
+        {
+          "_id": "669a791c1ed0dfbbaf477d53",
+          "oldName": "collinearity, slope , perpendicular distance, image & foot,",
+          "newName": "collinearity, slope , perpendicular distance, image & foot,",
+          "_action": "none"
+        },
+        {
+          "_id": "669a791c1ed0dfbbaf477d56",
+          "oldName": "different forms of straight lines and angle between lines",
+          "newName": "different forms of straight lines and angle between lines",
+          "_action": "none"
+        },
+        {
+          "_id": "669a791c1ed0dfbbaf477d50",
+          "oldName": "distance formula, section formula, area of triangle & polygon,",
+          "newName": "distance formula, section formula, area of triangle & polygon,",
+          "_action": "none"
+        },
+        {
+          "_id": "669a791d1ed0dfbbaf477d62",
+          "oldName": "pair of straight lines, homogenization",
+          "newName": "pair of straight lines, homogenization",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6699f03bd23f61271120045a",
+      "oldName": "trigonometry functions",
+      "newName": "trigonometry functions",
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669a74d901c6ddb81a15b6e9",
+          "oldName": "allied angles graphs and basic identites",
+          "newName": "allied angles graphs and basic identites",
+          "_action": "none"
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6ec",
+          "oldName": "conditional identities & trigonometric series",
+          "newName": "conditional identities & trigonometric series",
+          "_action": "none"
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6e6",
+          "oldName": "multiple angles",
+          "newName": "multiple angles",
+          "_action": "none"
+        },
+        {
+          "_id": "669a74d901c6ddb81a15b6ef",
+          "oldName": "range of trigonometric expressions",
+          "newName": "range of trigonometric expressions",
+          "_action": "none"
+        },
+        {
+          "_id": "669a74da01c6ddb81a15b6f2",
+          "oldName": "trigonometric equations",
+          "newName": "trigonometric equations",
+          "_action": "none"
+        },
+        {
+          "_id": "669a74da01c6ddb81a15b6f5",
+          "oldName": "trigonometric inequality",
+          "newName": "trigonometric inequality",
+          "_action": "none"
+        }
+      ]
+    }
+  ]
+}
