@@ -104,10 +104,11 @@ export const editTopic = async (req, res) => {
     topic.name = name;
     await topic.save();
 
-    await Ques.updateMany(
-      { topics: oldName },
-      { $set: { "topics.$": name } }
-    );
+await Ques.updateMany(
+{ topics: oldName },
+{ $set: { "topics.$[element]": name } },
+{ arrayFilters: [ { element: oldName } ] }
+);
 
     await Subtopic.updateMany(
       { topicName: oldName },
