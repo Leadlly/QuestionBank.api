@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-03-24T17:33:36.587Z",
+    "generatedAt": "2026-04-12T10:09:55.432Z",
     "standard": 12,
     "subject": "maths",
     "subjectId": "667fabd0fd429a6e25284f75",
@@ -22,928 +22,65 @@
   },
   "chapters": [
     {
-      "_id": "6690ef5d030bd50c81cffe77",
-      "oldName": "3d coordinate geometry",
-      "newName": "3d coordinate geometry",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "669acda7b3fb8ccfd74ea015",
-          "oldName": "angle between a line and the plane",
-          "newName": "angle between a line and the plane",
-          "_action": "none"
-        },
-        {
-          "_id": "66990351f1ee9f411c376875",
-          "oldName": "angle between two lines",
-          "newName": "angle between two lines",
-          "_action": "none"
-        },
-        {
-          "_id": "66990350f1ee9f411c376866",
-          "oldName": "centroid of a triangle & properties of triangle",
-          "newName": "centroid of a triangle & properties of triangle",
-          "_action": "none"
-        },
-        {
-          "_id": "66990351f1ee9f411c37686f",
-          "oldName": "condition for perpendicularity and parallelism",
-          "newName": "condition for perpendicularity and parallelism",
-          "_action": "none"
-        },
-        {
-          "_id": "669b90151ccc96c40e071fd8",
-          "oldName": "coplanar lines & concurrent lines",
-          "newName": "coplanar lines & concurrent lines",
-          "_action": "none"
-        },
-        {
-          "_id": "66990350f1ee9f411c376869",
-          "oldName": "direction cosine of line and direction ratios",
-          "newName": "direction cosine of line and direction ratios",
-          "_action": "none"
-        },
-        {
-          "_id": "669acda7b3fb8ccfd74ea012",
-          "oldName": "distance of a point from a plane or line",
-          "newName": "distance of a point from a plane or line",
-          "_action": "none"
-        },
-        {
-          "_id": "669acda6b3fb8ccfd74ea00f",
-          "oldName": "equation of a plane",
-          "newName": "equation of a plane",
-          "_action": "none"
-        },
-        {
-          "_id": "66990351f1ee9f411c376872",
-          "oldName": "projection of a line segment on a line",
-          "newName": "projection of a line segment on a line",
-          "_action": "none"
-        },
-        {
-          "_id": "669acda6b3fb8ccfd74ea00c",
-          "oldName": "skew lines & shortest distance between two lines",
-          "newName": "skew lines & shortest distance between two lines",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5d030bd50c81cffe6e",
-      "oldName": "application of derivatives",
-      "newName": "application of derivatives",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "66989647d6ba4fda087e32b5",
-          "oldName": "error & approximation",
-          "newName": "error & approximation",
-          "_action": "none"
-        },
-        {
-          "_id": "669acc580b81add64b406052",
-          "oldName": "geometric interpretation",
-          "newName": "geometric interpretation",
-          "_action": "none"
-        },
-        {
-          "_id": "66989648d6ba4fda087e32be",
-          "oldName": "maxima and minima",
-          "newName": "maxima and minima",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "66989788d476bf804cdb704a",
-              "oldName": "local / relative extrema and globle / absolute extrema",
-              "newName": "local / relative extrema and globle / absolute extrema",
-              "_action": "none"
-            },
-            {
-              "_id": "66989789d476bf804cdb704e",
-              "oldName": "first derivative test",
-              "newName": "first derivative test",
-              "_action": "none"
-            },
-            {
-              "_id": "6698978ad476bf804cdb7052",
-              "oldName": "second derivative test",
-              "newName": "second derivative test",
-              "_action": "none"
-            },
-            {
-              "_id": "6698978bd476bf804cdb7056",
-              "oldName": "real life optimization",
-              "newName": "real life optimization",
-              "_action": "none"
-            },
-            {
-              "_id": "6698978cd476bf804cdb705a",
-              "oldName": "least / greatest distance between two curves",
-              "newName": "least / greatest distance between two curves",
-              "_action": "none"
-            },
-            {
-              "_id": "6698a21f82d547499758b156",
-              "oldName": "maximum and minimum values",
-              "newName": "maximum and minimum values",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "66989647d6ba4fda087e32bb",
-          "oldName": "monotonicity",
-          "newName": "monotonicity",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "66989751d476bf804cdb7029",
-              "oldName": "increasing/ decreasing/ strictly increasing/ strictly decreasing nature of a function at a point",
-              "newName": "increasing/ decreasing/ strictly increasing/ strictly decreasing nature of a function at a point",
-              "_action": "none"
-            },
-            {
-              "_id": "66989751d476bf804cdb702d",
-              "oldName": "increasing/ decreasing/ strictly increasing/ strictly decreasing nature of a function over an interval",
-              "newName": "increasing/ decreasing/ strictly increasing/ strictly decreasing nature of a function over an interval",
-              "_action": "none"
-            },
-            {
-              "_id": "66989752d476bf804cdb7031",
-              "oldName": "greatest and least value of a function",
-              "newName": "greatest and least value of a function",
-              "_action": "none"
-            },
-            {
-              "_id": "66989752d476bf804cdb7035",
-              "oldName": "rolle’s theorem ( properties and geometrical interpretation)",
-              "newName": "rolle’s theorem ( properties and geometrical interpretation)",
-              "_action": "none"
-            },
-            {
-              "_id": "66989752d476bf804cdb7039",
-              "oldName": "lagrange’s mean value theorem (lmvt)(properties and geometrical interpretation)",
-              "newName": "lagrange’s mean value theorem (lmvt)(properties and geometrical interpretation)",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "66989647d6ba4fda087e32b2",
-          "oldName": "rate measurement",
-          "newName": "rate measurement",
-          "_action": "none"
-        },
-        {
-          "_id": "66989647d6ba4fda087e32b8",
-          "oldName": "tangent and normal",
-          "newName": "tangent and normal",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "669896abd476bf804cdb6ee4",
-              "oldName": "equation of tangent and normal ( vertical tangent )",
-              "newName": "equation of tangent and normal ( vertical tangent )",
-              "_action": "none"
-            },
-            {
-              "_id": "669896abd476bf804cdb6ee8",
-              "oldName": "angle of intersection between two curves",
-              "newName": "angle of intersection between two curves",
-              "_action": "none"
-            },
-            {
-              "_id": "669896acd476bf804cdb6eec",
-              "oldName": "length of tangent , sub tangent, normal & sub - normal ( initial ordinate, radius vector or polar redius, vectorial angle)",
-              "newName": "length of tangent , sub tangent, normal & sub - normal ( initial ordinate, radius vector or polar redius, vectorial angle)",
-              "_action": "none"
-            },
-            {
-              "_id": "669896acd476bf804cdb6ef0",
-              "oldName": "shortest distance between two curves",
-              "newName": "shortest distance between two curves",
-              "_action": "none"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "_id": "6699f0f547e0a48480475101",
-      "oldName": "area under the curves",
-      "newName": "area under the curves",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "669aa1711f54c2964cff549f",
-          "oldName": "miscellaneous",
-          "newName": "miscellaneous",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690f7321446399509e6b375",
-      "oldName": "continuity*",
-      "newName": "continuity*",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "66915d6d1da6706f88e00226",
-          "oldName": "continuity in an interval*",
-          "newName": "continuity in an interval*",
-          "_action": "none"
-        },
-        {
-          "_id": "66915d6d1da6706f88e00232",
-          "oldName": "continuity of composite functions*",
-          "newName": "continuity of composite functions*",
-          "_action": "none"
-        },
-        {
-          "_id": "66915d6c1da6706f88e00223",
-          "oldName": "definition of continuity*",
-          "newName": "definition of continuity*",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "670df79af1fc1540b28954e8",
-              "oldName": "mathematical definition",
-              "newName": "mathematical definition",
-              "_action": "none"
-            },
-            {
-              "_id": "670df79af1fc1540b28954ec",
-              "oldName": "graphical definition",
-              "newName": "graphical definition",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "66915d6d1da6706f88e00229",
-          "oldName": "geometrical meaning of continuity*",
-          "newName": "geometrical meaning of continuity*",
-          "_action": "none"
-        },
-        {
-          "_id": "66915d6d1da6706f88e0022f",
-          "oldName": "intermediate value theorem*",
-          "newName": "intermediate value theorem*",
-          "_action": "none"
-        },
-        {
-          "_id": "66915d6d1da6706f88e0022c",
-          "oldName": "types of discontinuity*",
-          "newName": "types of discontinuity*",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "66915dbc1da6706f88e00240",
-              "oldName": "removable type",
-              "newName": "removable type",
-              "_action": "none"
-            },
-            {
-              "_id": "66915dbd1da6706f88e00244",
-              "oldName": "non - removable type",
-              "newName": "non - removable type",
-              "_action": "none"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5c030bd50c81cffe6b",
-      "oldName": "definite integration",
-      "newName": "definite integration",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "6698865a7524e32946603f59",
-          "oldName": "definite integrals as limit of a sum",
-          "newName": "definite integrals as limit of a sum",
-          "_action": "none"
-        },
-        {
-          "_id": "6698865a7524e32946603f56",
-          "oldName": "derivative of antiderivative function ( newton lebnitz rule)",
-          "newName": "derivative of antiderivative function ( newton lebnitz rule)",
-          "_action": "none"
-        },
-        {
-          "_id": "669887d5dc36de29fc953422",
-          "oldName": "estimation of definite integral",
-          "newName": "estimation of definite integral",
-          "_action": "none"
-        },
-        {
-          "_id": "6698865a7524e32946603f53",
-          "oldName": "properties with illustrations",
-          "newName": "properties with illustrations",
-          "_action": "none"
-        },
-        {
-          "_id": "669887d5dc36de29fc953425",
-          "oldName": "walli's formula",
-          "newName": "walli's formula",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5c030bd50c81cffe65",
-      "oldName": "determinant",
-      "newName": "determinant",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "6692307744c260af67c330ec",
-          "oldName": "minors & cofactors",
-          "newName": "minors & cofactors",
-          "_action": "none"
-        },
-        {
-          "_id": "6692307844c260af67c330f2",
-          "oldName": "multiplication of two determinant",
-          "newName": "multiplication of two determinant",
-          "_action": "none"
-        },
-        {
-          "_id": "6692307744c260af67c330ef",
-          "oldName": "properties of determinant",
-          "newName": "properties of determinant",
-          "_action": "none"
-        },
-        {
-          "_id": "6692307844c260af67c330f5",
-          "oldName": "some special determinants",
-          "newName": "some special determinants",
-          "_action": "none"
-        },
-        {
-          "_id": "6692307844c260af67c330f8",
-          "oldName": "system of linear equations (cramer’s rule )",
-          "newName": "system of linear equations (cramer’s rule )",
-          "_action": "none"
-        },
-        {
-          "_id": "6692307744c260af67c330e9",
-          "oldName": "value of determinant",
-          "newName": "value of determinant",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690f7321446399509e6b378",
-      "oldName": "differentiability*",
-      "newName": "differentiability*",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "6691edeb04f5cb9576f50ddc",
-          "oldName": "definition of differentiability*",
-          "newName": "definition of differentiability*",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "6691ee12ff4373f80ddcf661",
-              "oldName": "lhl",
-              "newName": "lhl",
-              "_action": "none"
-            },
-            {
-              "_id": "6691ee12ff4373f80ddcf665",
-              "oldName": "rhl",
-              "newName": "rhl",
-              "_action": "none"
-            },
-            {
-              "_id": "670dfa3910fbf337929f6de6",
-              "oldName": "mathematical definition",
-              "newName": "mathematical definition",
-              "_action": "none"
-            },
-            {
-              "_id": "670dfa3a10fbf337929f6dea",
-              "oldName": "graphical definition",
-              "newName": "graphical definition",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "6691edec04f5cb9576f50de8",
-          "oldName": "determination of function*",
-          "newName": "determination of function*",
-          "_action": "none"
-        },
-        {
-          "_id": "6691edeb04f5cb9576f50de5",
-          "oldName": "differentiability over an interval*",
-          "newName": "differentiability over an interval*",
-          "_action": "none"
-        },
-        {
-          "_id": "6691edeb04f5cb9576f50de2",
-          "oldName": "geometrical interpretation",
-          "newName": "geometrical interpretation",
-          "_action": "none"
-        },
-        {
-          "_id": "6691edeb04f5cb9576f50ddf",
-          "oldName": "relation between differentiability and continuity*",
-          "newName": "relation between differentiability and continuity*",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5d030bd50c81cffe71",
-      "oldName": "differential equation",
-      "newName": "differential equation",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "6698b3b39eabe8ef25a5347f",
-          "oldName": "application of diffential equation",
-          "newName": "application of diffential equation",
-          "_action": "none"
-        },
-        {
-          "_id": "669bd151142e1a179362088b",
-          "oldName": "exact differential equation",
-          "newName": "exact differential equation",
-          "_action": "none"
-        },
-        {
-          "_id": "6698b3b29eabe8ef25a53476",
-          "oldName": "formation of d.e",
-          "newName": "formation of d.e",
-          "_action": "none"
-        },
-        {
-          "_id": "669bd150142e1a1793620882",
-          "oldName": "homogeneous equation",
-          "newName": "homogeneous equation",
-          "_action": "none"
-        },
-        {
-          "_id": "669bd150142e1a1793620885",
-          "oldName": "linear differential equation",
-          "newName": "linear differential equation",
-          "_action": "none"
-        },
-        {
-          "_id": "6698b3b29eabe8ef25a53473",
-          "oldName": "order and degree",
-          "newName": "order and degree",
-          "_action": "none"
-        },
-        {
-          "_id": "669bd151142e1a1793620888",
-          "oldName": "reducible to l.d.e ( bernauli's equation )",
-          "newName": "reducible to l.d.e ( bernauli's equation )",
-          "_action": "none"
-        },
-        {
-          "_id": "6698b3b39eabe8ef25a53479",
-          "oldName": "solution of d.e",
-          "newName": "solution of d.e",
-          "_action": "none"
-        },
-        {
-          "_id": "669bd150142e1a179362087f",
-          "oldName": "variable seperable",
-          "newName": "variable seperable",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5c030bd50c81cffe68",
-      "oldName": "indefinite integration",
-      "newName": "indefinite integration",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "6694c8efcc33a5d92a372743",
-          "oldName": "integration by parts",
-          "newName": "integration by parts",
-          "_action": "none"
-        },
-        {
-          "_id": "6694c8f0cc33a5d92a37274c",
-          "oldName": "integration of irrational function",
-          "newName": "integration of irrational function",
-          "_action": "none"
-        },
-        {
-          "_id": "6694c8f0cc33a5d92a372749",
-          "oldName": "integration of rational function & concept of algebraic twins)",
-          "newName": "integration of rational function & concept of algebraic twins)",
-          "_action": "none"
-        },
-        {
-          "_id": "6694c8f0cc33a5d92a372746",
-          "oldName": "integration of trigonometric functions",
-          "newName": "integration of trigonometric functions",
-          "_action": "none"
-        },
-        {
-          "_id": "6694c8efcc33a5d92a372740",
-          "oldName": "integration techniques",
-          "newName": "integration techniques",
-          "_action": "none"
-        },
-        {
-          "_id": "6694c8f0cc33a5d92a372752",
-          "oldName": "manipulating integration",
-          "newName": "manipulating integration",
-          "_action": "none"
-        },
-        {
-          "_id": "6694c8f0cc33a5d92a37274f",
-          "oldName": "miscellaneous",
-          "newName": "miscellaneous",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "668d585c1c39f9f7e7ccbbf4",
-      "oldName": "inverse trigonometric function",
-      "newName": "inverse trigonometric function",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "668d59d2470cc08e8572279f",
-          "oldName": "converting one t function to other t function",
-          "newName": "converting one t function to other t function",
-          "_action": "none"
-        },
-        {
-          "_id": "668d59d1470cc08e85722799",
-          "oldName": "domain & range *",
-          "newName": "domain & range *",
-          "_action": "none"
-        },
-        {
-          "_id": "66978b651b4fe1623c6e3e51",
-          "oldName": "itf equations*",
-          "newName": "itf equations*",
-          "_action": "none"
-        },
-        {
-          "_id": "668d59d2470cc08e857227a8",
-          "oldName": "multiple angles",
-          "newName": "multiple angles",
-          "_action": "none"
-        },
-        {
-          "_id": "670df5fd86a1c8fff29f596c",
-          "oldName": "properties of itf*",
-          "newName": "properties of itf*",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "670df66654c62ec6a09d835c",
-              "oldName": "sum of complementry angles",
-              "newName": "sum of complementry angles",
-              "_action": "none"
-            },
-            {
-              "_id": "670df66654c62ec6a09d8360",
-              "oldName": "sum and difference of angles",
-              "newName": "sum and difference of angles",
-              "_action": "none"
-            },
-            {
-              "_id": "670df66754c62ec6a09d8364",
-              "oldName": "multiple angles",
-              "newName": "multiple angles",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "668d59d2470cc08e857227a5",
-          "oldName": "sum and difference of angles",
-          "newName": "sum and difference of angles",
-          "_action": "none"
-        },
-        {
-          "_id": "668d59d2470cc08e857227a2",
-          "oldName": "sum of complementry angles",
-          "newName": "sum of complementry angles",
-          "_action": "none"
-        },
-        {
-          "_id": "668d59d3470cc08e857227ab",
-          "oldName": "summation of series",
-          "newName": "summation of series",
-          "_action": "none"
-        },
-        {
-          "_id": "668d59d2470cc08e8572279c",
-          "oldName": "t inverse t property",
-          "newName": "t inverse t property",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "670df7d586a1c8fff29f597d",
-      "oldName": "limits*",
-      "newName": "limits*",
+      "_id": "6828b9a830fa892ccb3a4d79",
+      "oldName": "maths - doubtful",
+      "newName": "maths - doubtful",
+      "chapterNumber": null,
       "_action": "none",
       "exam": [],
       "topics": [
         {
-          "_id": "670df88a10fbf337929f6dab",
-          "oldName": "concept of limits*",
-          "newName": "concept of limits*",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "670df8d510fbf337929f6dc5",
-              "oldName": "lhl, rhl, and existence of limit",
-              "newName": "lhl, rhl, and existence of limit",
-              "_action": "none"
-            },
-            {
-              "_id": "670df8d510fbf337929f6dc9",
-              "oldName": "indeterminate forms",
-              "newName": "indeterminate forms",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "670df88b10fbf337929f6dae",
-          "oldName": "evaluation of limit*",
-          "newName": "evaluation of limit*",
-          "_action": "none",
-          "subtopics": [
-            {
-              "_id": "670df90010fbf337929f6dd1",
-              "oldName": "by factorisation",
-              "newName": "by factorisation",
-              "_action": "none"
-            },
-            {
-              "_id": "670df90010fbf337929f6dd5",
-              "oldName": "by rationalisation",
-              "newName": "by rationalisation",
-              "_action": "none"
-            },
-            {
-              "_id": "670df90110fbf337929f6dd9",
-              "oldName": "by substitution",
-              "newName": "by substitution",
-              "_action": "none"
-            }
-          ]
-        },
-        {
-          "_id": "670df88b10fbf337929f6dba",
-          "oldName": "limits of composite function*",
-          "newName": "limits of composite function*",
+          "_id": "6828c0d2ef59a7539083491d",
+          "oldName": "distribution of alike objects or beggars methods",
+          "newName": "distribution of alike objects or beggars methods",
           "_action": "none"
         },
         {
-          "_id": "670df88b10fbf337929f6db7",
-          "oldName": "sandwich theorem*",
-          "newName": "sandwich theorem*",
+          "_id": "6828c0d2ef59a75390834914",
+          "oldName": "exponent of prime p in n factorial",
+          "newName": "exponent of prime p in n factorial",
           "_action": "none"
         },
         {
-          "_id": "670df88b10fbf337929f6db1",
-          "oldName": "standard expansions*",
-          "newName": "standard expansions*",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6699f0f447e0a484804750fe",
-      "oldName": "linear programming",
-      "newName": "linear programming",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "669aa0a9e195762ac5b19c70",
-          "oldName": "feasible and infeasible regions (bounded or unbounded)",
-          "newName": "feasible and infeasible regions (bounded or unbounded)",
+          "_id": "6828c0d1ef59a7539083490e",
+          "oldName": "geometry of complex number",
+          "newName": "geometry of complex number",
           "_action": "none"
         },
         {
-          "_id": "669aa0a9e195762ac5b19c6d",
-          "oldName": "graphical method of solution for problems in two variables",
-          "newName": "graphical method of solution for problems in two variables",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5c030bd50c81cffe62",
-      "oldName": "matrix",
-      "newName": "matrix",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "6691f0b18e9c5e9a16c912b4",
-          "oldName": "adjoint of a matrix",
-          "newName": "adjoint of a matrix",
+          "_id": "6828c0d2ef59a75390834920",
+          "oldName": "grid problems",
+          "newName": "grid problems",
           "_action": "none"
         },
         {
-          "_id": "6691f0b18e9c5e9a16c912ab",
-          "oldName": "algebra of matrices",
-          "newName": "algebra of matrices",
+          "_id": "6828c0d2ef59a7539083491a",
+          "oldName": "maximising binomial coefficient in permutation and combination",
+          "newName": "maximising binomial coefficient in permutation and combination",
           "_action": "none"
         },
         {
-          "_id": "6691f0b28e9c5e9a16c912bd",
-          "oldName": "cayley - hamilton theorem",
-          "newName": "cayley - hamilton theorem",
+          "_id": "6828c0d1ef59a75390834911",
+          "oldName": "numerically greatest term",
+          "newName": "numerically greatest term",
           "_action": "none"
         },
         {
-          "_id": "6691f0b08e9c5e9a16c912a8",
-          "oldName": "equality of matrices",
-          "newName": "equality of matrices",
+          "_id": "6828c0d2ef59a75390834917",
+          "oldName": "permutation of alike objects",
+          "newName": "permutation of alike objects",
           "_action": "none"
         },
         {
-          "_id": "6691f0b18e9c5e9a16c912b7",
-          "oldName": "inverse of a matrix and properties",
-          "newName": "inverse of a matrix and properties",
+          "_id": "6828c0d3ef59a75390834923",
+          "oldName": "quadratic in two unknowns",
+          "newName": "quadratic in two unknowns",
           "_action": "none"
         },
         {
-          "_id": "6691f0b18e9c5e9a16c912ae",
-          "oldName": "multiplication of a matrix",
-          "newName": "multiplication of a matrix",
-          "_action": "none"
-        },
-        {
-          "_id": "6691f0b28e9c5e9a16c912c0",
-          "oldName": "system of equation & criteria of consistency",
-          "newName": "system of equation & criteria of consistency",
-          "_action": "none"
-        },
-        {
-          "_id": "6691f0b28e9c5e9a16c912ba",
-          "oldName": "system of linear equationa and rank of matrix",
-          "newName": "system of linear equationa and rank of matrix",
-          "_action": "none"
-        },
-        {
-          "_id": "6691f0b08e9c5e9a16c912a5",
-          "oldName": "trace of matrix and their properties",
-          "newName": "trace of matrix and their properties",
-          "_action": "none"
-        },
-        {
-          "_id": "6691f0b18e9c5e9a16c912b1",
-          "oldName": "transpose of a matrix and properties",
-          "newName": "transpose of a matrix and properties",
-          "_action": "none"
-        },
-        {
-          "_id": "6691f0b08e9c5e9a16c912a2",
-          "oldName": "types of matrices",
-          "newName": "types of matrices",
-          "_action": "none"
-        }
-      ]
-    },
-    {
-      "_id": "6690ef5c030bd50c81cffe5f",
-      "oldName": "method of differentiation",
-      "newName": "method of differentiation",
-      "_action": "none",
-      "exam": [
-        "jeemains",
-        "jeeadvance",
-        "boards"
-      ],
-      "topics": [
-        {
-          "_id": "669281b8e77f90ba760f7464",
-          "oldName": "derivative of a function and its inverse function",
-          "newName": "derivative of a function and its inverse function",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b8e77f90ba760f745b",
-          "oldName": "derivative of a function w.r.t another function",
-          "newName": "derivative of a function w.r.t another function",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b8e77f90ba760f7461",
-          "oldName": "differentiation by trigonometric transformation",
-          "newName": "differentiation by trigonometric transformation",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b7e77f90ba760f7458",
-          "oldName": "differentiation of composite function",
-          "newName": "differentiation of composite function",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b9e77f90ba760f746a",
-          "oldName": "differentiation of determinant",
-          "newName": "differentiation of determinant",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b8e77f90ba760f745e",
-          "oldName": "differentiation of implicit function",
-          "newName": "differentiation of implicit function",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b8e77f90ba760f7467",
-          "oldName": "higher order derivative",
-          "newName": "higher order derivative",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b7e77f90ba760f7452",
-          "oldName": "logarithmic differentiation",
-          "newName": "logarithmic differentiation",
-          "_action": "none"
-        },
-        {
-          "_id": "669281b7e77f90ba760f7455",
-          "oldName": "parametric differentiation",
-          "newName": "parametric differentiation",
+          "_id": "6828c0d1ef59a7539083490b",
+          "oldName": "rotation of complex number",
+          "newName": "rotation of complex number",
           "_action": "none"
         }
       ]
@@ -952,6 +89,7 @@
       "_id": "667fabe4fd429a6e25284f7a",
       "oldName": "relation and functions",
       "newName": "relation and functions",
+      "chapterNumber": 11,
       "_action": "none",
       "exam": [
         "jeemains",
@@ -967,14 +105,14 @@
         },
         {
           "_id": "667fae043f48c354ce43ccef",
-          "oldName": "domain, co-domain and range of the functions*",
-          "newName": "domain, co-domain and range of the functions*",
+          "oldName": "domain, co-domain and range",
+          "newName": "domain, co-domain and range",
           "_action": "none"
         },
         {
           "_id": "670df4f854c62ec6a09d834d",
-          "oldName": "functional equations*",
-          "newName": "functional equations*",
+          "oldName": "functional equations",
+          "newName": "functional equations",
           "_action": "none"
         },
         {
@@ -984,15 +122,9 @@
           "_action": "none"
         },
         {
-          "_id": "667fae053f48c354ce43cd01",
-          "oldName": "miscellaneous functions",
-          "newName": "miscellaneous functions",
-          "_action": "none"
-        },
-        {
           "_id": "667fae033f48c354ce43ccdd",
-          "oldName": "relations*",
-          "newName": "relations*",
+          "oldName": "relations",
+          "newName": "relations",
           "_action": "none",
           "subtopics": [
             {
@@ -1016,15 +148,9 @@
           ]
         },
         {
-          "_id": "667fae033f48c354ce43cce0",
-          "oldName": "types of relations",
-          "newName": "types of relations",
-          "_action": "none"
-        },
-        {
           "_id": "667fae043f48c354ce43ccf2",
-          "oldName": "types of standard functions*",
-          "newName": "types of standard functions*",
+          "oldName": "types of standard functions",
+          "newName": "types of standard functions",
           "_action": "none",
           "subtopics": [
             {
@@ -1074,33 +200,46 @@
               "oldName": "periodic functions",
               "newName": "periodic functions",
               "_action": "none"
+            },
+            {
+              "_id": "682787f55ba264dd3e2cdd93",
+              "oldName": "even and odd functions",
+              "newName": "even and odd functions",
+              "_action": "none"
+            },
+            {
+              "_id": "682787f55ba264dd3e2cdd97",
+              "oldName": "polynomial functions",
+              "newName": "polynomial functions",
+              "_action": "none"
+            },
+            {
+              "_id": "682787f65ba264dd3e2cdd9b",
+              "oldName": "modulus function",
+              "newName": "modulus function",
+              "_action": "none"
+            },
+            {
+              "_id": "682787f65ba264dd3e2cdd9f",
+              "oldName": "piecewise defined functions",
+              "newName": "piecewise defined functions",
+              "_action": "none"
             }
           ]
-        },
-        {
-          "_id": "667fae043f48c354ce43ccec",
-          "oldName": "⁠composition of relations",
-          "newName": "⁠composition of relations",
-          "_action": "none"
         },
         {
           "_id": "667fae053f48c354ce43ccfb",
           "oldName": "⁠inverse of a function",
           "newName": "⁠inverse of a function",
           "_action": "none"
-        },
-        {
-          "_id": "667fae043f48c354ce43cce6",
-          "oldName": "⁠properties of relations",
-          "newName": "⁠properties of relations",
-          "_action": "none"
         }
       ]
     },
     {
-      "_id": "6690ef5d030bd50c81cffe74",
-      "oldName": "vectors",
-      "newName": "vectors",
+      "_id": "668d585c1c39f9f7e7ccbbf4",
+      "oldName": "inverse trigonometric function",
+      "newName": "inverse trigonometric function",
+      "chapterNumber": 12,
       "_action": "none",
       "exam": [
         "jeemains",
@@ -1109,21 +248,105 @@
       ],
       "topics": [
         {
-          "_id": "669902dd5411ff7c7c989ea5",
-          "oldName": "Geometrical interpretation",
-          "newName": "Geometrical interpretation",
+          "_id": "668d59d1470cc08e85722799",
+          "oldName": "domain & range",
+          "newName": "domain & range",
           "_action": "none"
         },
         {
-          "_id": "669902dd5411ff7c7c989eab",
-          "oldName": "Linear dependency & application of vectors",
-          "newName": "Linear dependency & application of vectors",
+          "_id": "66978b651b4fe1623c6e3e51",
+          "oldName": "itf equations",
+          "newName": "itf equations",
           "_action": "none"
         },
+        {
+          "_id": "668d59d2470cc08e857227a8",
+          "oldName": "multiple angles",
+          "newName": "multiple angles",
+          "_action": "none"
+        },
+        {
+          "_id": "670df5fd86a1c8fff29f596c",
+          "oldName": "properties of itf",
+          "newName": "properties of itf",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "670df66654c62ec6a09d835c",
+              "oldName": "sum of complementry angles",
+              "newName": "sum of complementry angles",
+              "_action": "none"
+            },
+            {
+              "_id": "670df66654c62ec6a09d8360",
+              "oldName": "sum and difference of angles",
+              "newName": "sum and difference of angles",
+              "_action": "none"
+            },
+            {
+              "_id": "670df66754c62ec6a09d8364",
+              "oldName": "multiple angles",
+              "newName": "multiple angles",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "668d59d2470cc08e857227a5",
+          "oldName": "sum and difference of angles",
+          "newName": "sum and difference of angles",
+          "_action": "none"
+        },
+        {
+          "_id": "668d59d3470cc08e857227ab",
+          "oldName": "summation of series",
+          "newName": "summation of series",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5d030bd50c81cffe74",
+      "oldName": "vectors",
+      "newName": "vectors",
+      "chapterNumber": 13,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
         {
           "_id": "669902db5411ff7c7c989e8d",
           "oldName": "algebra of vectors",
           "newName": "algebra of vectors",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672458e0910d5cb3cff94aff",
+              "oldName": "angle b/w vectors",
+              "newName": "angle b/w vectors",
+              "_action": "none"
+            },
+            {
+              "_id": "672458e1910d5cb3cff94b03",
+              "oldName": "distance formula",
+              "newName": "distance formula",
+              "_action": "none"
+            },
+            {
+              "_id": "672458e1910d5cb3cff94b07",
+              "oldName": "section formula",
+              "newName": "section formula",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669902db5411ff7c7c989e87",
+          "oldName": "basic vectors and properties",
+          "newName": "basic vectors and properties",
           "_action": "none"
         },
         {
@@ -1133,27 +356,27 @@
           "_action": "none"
         },
         {
-          "_id": "669902dc5411ff7c7c989e90",
-          "oldName": "distance formula & section formula",
-          "newName": "distance formula & section formula",
-          "_action": "none"
-        },
-        {
           "_id": "669902dc5411ff7c7c989e96",
           "oldName": "dot product",
           "newName": "dot product",
           "_action": "none"
         },
         {
-          "_id": "669902db5411ff7c7c989e87",
-          "oldName": "equality of two vectors",
-          "newName": "equality of two vectors",
+          "_id": "669902dd5411ff7c7c989eab",
+          "oldName": "linear dependency & application of vectors",
+          "newName": "linear dependency & application of vectors",
           "_action": "none"
         },
         {
           "_id": "669902dd5411ff7c7c989e9f",
-          "oldName": "scalar triple product / box product / mixed product",
-          "newName": "scalar triple product / box product / mixed product",
+          "oldName": "scalar triple product",
+          "newName": "scalar triple product",
+          "_action": "none"
+        },
+        {
+          "_id": "67245a16b222f8d6c4332519",
+          "oldName": "shortest distance b/w two lines",
+          "newName": "shortest distance b/w two lines",
           "_action": "none"
         },
         {
@@ -1172,7 +395,1070 @@
           "_id": "669902dd5411ff7c7c989ea2",
           "oldName": "vector triple product",
           "newName": "vector triple product",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672459b280684cc8cae5aea3",
+              "oldName": "identities and formula",
+              "newName": "identities and formula",
+              "_action": "none"
+            },
+            {
+              "_id": "672459b280684cc8cae5aea7",
+              "oldName": "area of triangles",
+              "newName": "area of triangles",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5d030bd50c81cffe77",
+      "oldName": "3d coordinate geometry",
+      "newName": "3d coordinate geometry",
+      "chapterNumber": 14,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "67245d4a910d5cb3cff94b15",
+          "oldName": "basic geometry and formulas",
+          "newName": "basic geometry and formulas",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "67252717d91e453f24bc7bf3",
+              "oldName": "section formula",
+              "newName": "section formula",
+              "_action": "none"
+            },
+            {
+              "_id": "67252717d91e453f24bc7bf7",
+              "oldName": "distance formula",
+              "newName": "distance formula",
+              "_action": "none"
+            },
+            {
+              "_id": "67252717d91e453f24bc7bfb",
+              "oldName": "centroid",
+              "newName": "centroid",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669b90151ccc96c40e071fd8",
+          "oldName": "coplanar lines & concurrent lines",
+          "newName": "coplanar lines & concurrent lines",
           "_action": "none"
+        },
+        {
+          "_id": "67245d4a910d5cb3cff94b18",
+          "oldName": "direction cosines and ratios",
+          "newName": "direction cosines and ratios",
+          "_action": "none"
+        },
+        {
+          "_id": "6725260bd91e453f24bc7bc8",
+          "oldName": "line of greatest slope",
+          "newName": "line of greatest slope",
+          "_action": "none"
+        },
+        {
+          "_id": "6725260bd91e453f24bc7bc5",
+          "oldName": "plane",
+          "newName": "plane",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672526e8d91e453f24bc7bd3",
+              "oldName": "equation of plane",
+              "newName": "equation of plane",
+              "_action": "none"
+            },
+            {
+              "_id": "672526e9d91e453f24bc7bd7",
+              "oldName": "distance of point from plane",
+              "newName": "distance of point from plane",
+              "_action": "none"
+            },
+            {
+              "_id": "672526e9d91e453f24bc7bdb",
+              "oldName": "angle b/w two lines",
+              "newName": "angle b/w two lines",
+              "_action": "none"
+            },
+            {
+              "_id": "672526e9d91e453f24bc7bdf",
+              "oldName": "family of planes",
+              "newName": "family of planes",
+              "_action": "none"
+            },
+            {
+              "_id": "672526ead91e453f24bc7be3",
+              "oldName": "angle b/w line and plane",
+              "newName": "angle b/w line and plane",
+              "_action": "none"
+            },
+            {
+              "_id": "672526ead91e453f24bc7be7",
+              "oldName": "foot and image of point w.r.t line",
+              "newName": "foot and image of point w.r.t line",
+              "_action": "none"
+            },
+            {
+              "_id": "672526ebd91e453f24bc7beb",
+              "oldName": "coplanarity of two lines",
+              "newName": "coplanarity of two lines",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669acda6b3fb8ccfd74ea00c",
+          "oldName": "skew lines & shortest distance between two lines",
+          "newName": "skew lines & shortest distance between two lines",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6725279345a7ad38fa68074f",
+      "oldName": "probability",
+      "newName": "probability",
+      "chapterNumber": 15,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6725297f857d67cf1500dde2",
+          "oldName": "baye's theorem",
+          "newName": "baye's theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "67252980857d67cf1500dde8",
+          "oldName": "binomial probability distribution",
+          "newName": "binomial probability distribution",
+          "_action": "none"
+        },
+        {
+          "_id": "6725297f857d67cf1500ddd9",
+          "oldName": "conditional probability",
+          "newName": "conditional probability",
+          "_action": "none"
+        },
+        {
+          "_id": "67252980857d67cf1500ddee",
+          "oldName": "geometrical probability",
+          "newName": "geometrical probability",
+          "_action": "none"
+        },
+        {
+          "_id": "67252980857d67cf1500ddeb",
+          "oldName": "infinite gp based probability",
+          "newName": "infinite gp based probability",
+          "_action": "none"
+        },
+        {
+          "_id": "6725297f857d67cf1500dddf",
+          "oldName": "law of total probability theorem",
+          "newName": "law of total probability theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "6725297f857d67cf1500dddc",
+          "oldName": "multiple theorem in probability",
+          "newName": "multiple theorem in probability",
+          "_action": "none"
+        },
+        {
+          "_id": "6725297e857d67cf1500ddd3",
+          "oldName": "odds in favour and against favour",
+          "newName": "odds in favour and against favour",
+          "_action": "none"
+        },
+        {
+          "_id": "6725297e857d67cf1500ddd0",
+          "oldName": "probability based on pnc",
+          "newName": "probability based on pnc",
+          "_action": "none"
+        },
+        {
+          "_id": "6725297f857d67cf1500ddd6",
+          "oldName": "probability based on venn diagrams",
+          "newName": "probability based on venn diagrams",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "67252a07857d67cf1500de05",
+              "oldName": "two event based",
+              "newName": "two event based",
+              "_action": "none"
+            },
+            {
+              "_id": "67252a08857d67cf1500de09",
+              "oldName": "three event based",
+              "newName": "three event based",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6725297f857d67cf1500dde5",
+          "oldName": "probability distribution",
+          "newName": "probability distribution",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672529df857d67cf1500ddf9",
+              "oldName": "mean of random variables",
+              "newName": "mean of random variables",
+              "_action": "none"
+            },
+            {
+              "_id": "672529df857d67cf1500ddfd",
+              "oldName": "standard deviation and variance of random variable",
+              "newName": "standard deviation and variance of random variable",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6725297e857d67cf1500ddcd",
+          "oldName": "random experiment, sample and event",
+          "newName": "random experiment, sample and event",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5c030bd50c81cffe62",
+      "oldName": "matrix",
+      "newName": "matrix",
+      "chapterNumber": 16,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6691f0b18e9c5e9a16c912b4",
+          "oldName": "adjoint of a matrix and their properties",
+          "newName": "adjoint of a matrix and their properties",
+          "_action": "none"
+        },
+        {
+          "_id": "6691f0b18e9c5e9a16c912ab",
+          "oldName": "algebra of matrices",
+          "newName": "algebra of matrices",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672532e09d2ee848ad946fa9",
+              "oldName": "addition and subtraction",
+              "newName": "addition and subtraction",
+              "_action": "none"
+            },
+            {
+              "_id": "672532e09d2ee848ad946fad",
+              "oldName": "multiplication",
+              "newName": "multiplication",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "67253338805df72874cacd62",
+          "oldName": "binomial expansion in matrix",
+          "newName": "binomial expansion in matrix",
+          "_action": "none"
+        },
+        {
+          "_id": "6725342fe53436ac0869c2cc",
+          "oldName": "characteristic equation",
+          "newName": "characteristic equation",
+          "_action": "none"
+        },
+        {
+          "_id": "6691f0b08e9c5e9a16c912a8",
+          "oldName": "equality of matrices",
+          "newName": "equality of matrices",
+          "_action": "none"
+        },
+        {
+          "_id": "6691f0b18e9c5e9a16c912b7",
+          "oldName": "inverse of a matrix",
+          "newName": "inverse of a matrix",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6725336de53436ac0869c2b6",
+              "oldName": "properties of inverse",
+              "newName": "properties of inverse",
+              "_action": "none"
+            },
+            {
+              "_id": "6725336ee53436ac0869c2ba",
+              "oldName": "equation of inverse",
+              "newName": "equation of inverse",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6691f0b08e9c5e9a16c912a2",
+          "oldName": "order and types of matrices",
+          "newName": "order and types of matrices",
+          "_action": "none"
+        },
+        {
+          "_id": "6691f0b28e9c5e9a16c912c0",
+          "oldName": "system of equation",
+          "newName": "system of equation",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672533c9e53436ac0869c2c2",
+              "oldName": "gauss jordan method",
+              "newName": "gauss jordan method",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6691f0b08e9c5e9a16c912a5",
+          "oldName": "trace of matrix and their properties",
+          "newName": "trace of matrix and their properties",
+          "_action": "none"
+        },
+        {
+          "_id": "6691f0b18e9c5e9a16c912b1",
+          "oldName": "transpose of a matrix and their properties",
+          "newName": "transpose of a matrix and their properties",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5c030bd50c81cffe65",
+      "oldName": "determinant",
+      "newName": "determinant",
+      "chapterNumber": 17,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6692307844c260af67c330f8",
+          "oldName": "cramer’s rule",
+          "newName": "cramer’s rule",
+          "_action": "none"
+        },
+        {
+          "_id": "6692307744c260af67c330ec",
+          "oldName": "minors & cofactors",
+          "newName": "minors & cofactors",
+          "_action": "none"
+        },
+        {
+          "_id": "6692307844c260af67c330f2",
+          "oldName": "multiplication of two determinant",
+          "newName": "multiplication of two determinant",
+          "_action": "none"
+        },
+        {
+          "_id": "6692307744c260af67c330ef",
+          "oldName": "properties of determinant",
+          "newName": "properties of determinant",
+          "_action": "none"
+        },
+        {
+          "_id": "67253c815f70b4d1ceb57c98",
+          "oldName": "row and column transformation",
+          "newName": "row and column transformation",
+          "_action": "none"
+        },
+        {
+          "_id": "6692307844c260af67c330f5",
+          "oldName": "some special determinants",
+          "newName": "some special determinants",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "67253cee5f70b4d1ceb57caf",
+              "oldName": "multiplication of determinants",
+              "newName": "multiplication of determinants",
+              "_action": "none"
+            },
+            {
+              "_id": "67253cee5f70b4d1ceb57cb3",
+              "oldName": "splitting determinants",
+              "newName": "splitting determinants",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6692307744c260af67c330e9",
+          "oldName": "value of determinant",
+          "newName": "value of determinant",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "670df7d586a1c8fff29f597d",
+      "oldName": "limits",
+      "newName": "limits",
+      "chapterNumber": 18,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance"
+      ],
+      "topics": [
+        {
+          "_id": "670df88a10fbf337929f6dab",
+          "oldName": "concept of limits",
+          "newName": "concept of limits",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "670df8d510fbf337929f6dc5",
+              "oldName": "lhl, rhl, and existence of limit",
+              "newName": "lhl, rhl, and existence of limit",
+              "_action": "none"
+            },
+            {
+              "_id": "670df8d510fbf337929f6dc9",
+              "oldName": "indeterminate forms",
+              "newName": "indeterminate forms",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "670df88b10fbf337929f6dae",
+          "oldName": "evaluation of limit",
+          "newName": "evaluation of limit",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "670df90010fbf337929f6dd1",
+              "oldName": "by factorisation",
+              "newName": "by factorisation",
+              "_action": "none"
+            },
+            {
+              "_id": "670df90010fbf337929f6dd5",
+              "oldName": "by rationalisation",
+              "newName": "by rationalisation",
+              "_action": "none"
+            },
+            {
+              "_id": "670df90110fbf337929f6dd9",
+              "oldName": "by substitution",
+              "newName": "by substitution",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "670df88b10fbf337929f6dba",
+          "oldName": "limits of composite function",
+          "newName": "limits of composite function",
+          "_action": "none"
+        },
+        {
+          "_id": "670df88b10fbf337929f6db7",
+          "oldName": "sandwich theorem",
+          "newName": "sandwich theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "670df88b10fbf337929f6db1",
+          "oldName": "standard expansions",
+          "newName": "standard expansions",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690f7321446399509e6b375",
+      "oldName": "continuity",
+      "newName": "continuity",
+      "chapterNumber": 19,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "66915d6d1da6706f88e00226",
+          "oldName": "continuity in an interval",
+          "newName": "continuity in an interval",
+          "_action": "none"
+        },
+        {
+          "_id": "66915d6d1da6706f88e00232",
+          "oldName": "continuity of composite functions",
+          "newName": "continuity of composite functions",
+          "_action": "none"
+        },
+        {
+          "_id": "66915d6c1da6706f88e00223",
+          "oldName": "definition of continuity",
+          "newName": "definition of continuity",
+          "_action": "none"
+        },
+        {
+          "_id": "66915d6d1da6706f88e00229",
+          "oldName": "geometrical meaning of continuity",
+          "newName": "geometrical meaning of continuity",
+          "_action": "none"
+        },
+        {
+          "_id": "66915d6d1da6706f88e0022f",
+          "oldName": "intermediate value theorem",
+          "newName": "intermediate value theorem",
+          "_action": "none"
+        },
+        {
+          "_id": "66915d6d1da6706f88e0022c",
+          "oldName": "types of discontinuity",
+          "newName": "types of discontinuity",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690f7321446399509e6b378",
+      "oldName": "differentiability",
+      "newName": "differentiability",
+      "chapterNumber": 20,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6691edeb04f5cb9576f50ddc",
+          "oldName": "definition of differentiability",
+          "newName": "definition of differentiability",
+          "_action": "none"
+        },
+        {
+          "_id": "6691edec04f5cb9576f50de8",
+          "oldName": "determination of function",
+          "newName": "determination of function",
+          "_action": "none"
+        },
+        {
+          "_id": "6691edeb04f5cb9576f50de5",
+          "oldName": "differentiability over an interval",
+          "newName": "differentiability over an interval",
+          "_action": "none"
+        },
+        {
+          "_id": "6691edeb04f5cb9576f50ddf",
+          "oldName": "relation between differentiability and continuity",
+          "newName": "relation between differentiability and continuity",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5c030bd50c81cffe5f",
+      "oldName": "method of differentiation",
+      "newName": "method of differentiation",
+      "chapterNumber": 21,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "669281b8e77f90ba760f7461",
+          "oldName": "by trigonometric transformation",
+          "newName": "by trigonometric transformation",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b7e77f90ba760f7458",
+          "oldName": "differentiation of composite function",
+          "newName": "differentiation of composite function",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b9e77f90ba760f746a",
+          "oldName": "differentiation of determinant",
+          "newName": "differentiation of determinant",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b8e77f90ba760f7464",
+          "oldName": "function and its inverse function",
+          "newName": "function and its inverse function",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b8e77f90ba760f7467",
+          "oldName": "higher order derivative",
+          "newName": "higher order derivative",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b8e77f90ba760f745e",
+          "oldName": "implicit function",
+          "newName": "implicit function",
+          "_action": "none"
+        },
+        {
+          "_id": "68279ae94a76d311f97c3dcd",
+          "oldName": "l hospital rule",
+          "newName": "l hospital rule",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b7e77f90ba760f7452",
+          "oldName": "logarithmic differentiation",
+          "newName": "logarithmic differentiation",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b7e77f90ba760f7455",
+          "oldName": "parametric differentiation",
+          "newName": "parametric differentiation",
+          "_action": "none"
+        },
+        {
+          "_id": "669281b8e77f90ba760f745b",
+          "oldName": "w.r.t another function",
+          "newName": "w.r.t another function",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5d030bd50c81cffe6e",
+      "oldName": "application of derivatives",
+      "newName": "application of derivatives",
+      "chapterNumber": 22,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "66989648d6ba4fda087e32be",
+          "oldName": "maxima and minima",
+          "newName": "maxima and minima",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "66989788d476bf804cdb704a",
+              "oldName": "local / relative extrema and globle / absolute extrema",
+              "newName": "local / relative extrema and globle / absolute extrema",
+              "_action": "none"
+            },
+            {
+              "_id": "66989789d476bf804cdb704e",
+              "oldName": "first derivative test",
+              "newName": "first derivative test",
+              "_action": "none"
+            },
+            {
+              "_id": "6698978ad476bf804cdb7052",
+              "oldName": "second derivative test",
+              "newName": "second derivative test",
+              "_action": "none"
+            },
+            {
+              "_id": "6698978bd476bf804cdb7056",
+              "oldName": "real life optimization",
+              "newName": "real life optimization",
+              "_action": "none"
+            },
+            {
+              "_id": "6698978cd476bf804cdb705a",
+              "oldName": "geometrical problems",
+              "newName": "geometrical problems",
+              "_action": "none"
+            },
+            {
+              "_id": "6698a21f82d547499758b156",
+              "oldName": "maximum and minimum values",
+              "newName": "maximum and minimum values",
+              "_action": "none"
+            },
+            {
+              "_id": "6724537ebe2a55d65234c888",
+              "oldName": "point of inflection analysis of cubic function",
+              "newName": "point of inflection analysis of cubic function",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "66989647d6ba4fda087e32bb",
+          "oldName": "monotonicity",
+          "newName": "monotonicity",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "66989751d476bf804cdb7029",
+              "oldName": "monotonicity nature of a function at a point",
+              "newName": "monotonicity nature of a function at a point",
+              "_action": "none"
+            },
+            {
+              "_id": "66989751d476bf804cdb702d",
+              "oldName": "monotonicity nature of a function over an interval",
+              "newName": "monotonicity nature of a function over an interval",
+              "_action": "none"
+            },
+            {
+              "_id": "66989752d476bf804cdb7031",
+              "oldName": "greatest and least value of a function",
+              "newName": "greatest and least value of a function",
+              "_action": "none"
+            },
+            {
+              "_id": "66989752d476bf804cdb7035",
+              "oldName": "rolle’s theorem",
+              "newName": "rolle’s theorem",
+              "_action": "none"
+            },
+            {
+              "_id": "66989752d476bf804cdb7039",
+              "oldName": "lagrange’s mean value theorem",
+              "newName": "lagrange’s mean value theorem",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "66989647d6ba4fda087e32b8",
+          "oldName": "tangent and normal",
+          "newName": "tangent and normal",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "669896abd476bf804cdb6ee4",
+              "oldName": "basic concept and parametric coordinates",
+              "newName": "basic concept and parametric coordinates",
+              "_action": "none"
+            },
+            {
+              "_id": "669896abd476bf804cdb6ee8",
+              "oldName": "angle of intersection between two curves",
+              "newName": "angle of intersection between two curves",
+              "_action": "none"
+            },
+            {
+              "_id": "669896acd476bf804cdb6eec",
+              "oldName": "length of tangent ,sub tangent, normal & sub - normal",
+              "newName": "length of tangent ,sub tangent, normal & sub - normal",
+              "_action": "none"
+            },
+            {
+              "_id": "6724515004e4e750349dfd21",
+              "oldName": "rate measures",
+              "newName": "rate measures",
+              "_action": "none"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5c030bd50c81cffe68",
+      "oldName": "indefinite integration",
+      "newName": "indefinite integration",
+      "chapterNumber": 23,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6694c8efcc33a5d92a372743",
+          "oldName": "integration by parts",
+          "newName": "integration by parts",
+          "_action": "none"
+        },
+        {
+          "_id": "67244d2204e4e750349dfd08",
+          "oldName": "integration by substitution",
+          "newName": "integration by substitution",
+          "_action": "none"
+        },
+        {
+          "_id": "6694c8f0cc33a5d92a372746",
+          "oldName": "integration of trigonometric functions",
+          "newName": "integration of trigonometric functions",
+          "_action": "none"
+        },
+        {
+          "_id": "6694c8efcc33a5d92a372740",
+          "oldName": "introduction and standard integrals",
+          "newName": "introduction and standard integrals",
+          "_action": "none"
+        },
+        {
+          "_id": "6694c8f0cc33a5d92a372752",
+          "oldName": "manipulating integration",
+          "newName": "manipulating integration",
+          "_action": "none"
+        },
+        {
+          "_id": "6694c8f0cc33a5d92a372749",
+          "oldName": "rational function and algebraic twins",
+          "newName": "rational function and algebraic twins",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5c030bd50c81cffe6b",
+      "oldName": "definite integration",
+      "newName": "definite integration",
+      "chapterNumber": 24,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "67244e191da1ce37bd92512b",
+          "oldName": "by indefinite integration",
+          "newName": "by indefinite integration",
+          "_action": "none"
+        },
+        {
+          "_id": "6698865a7524e32946603f59",
+          "oldName": "definite integrals as limit of a sum",
+          "newName": "definite integrals as limit of a sum",
+          "_action": "none"
+        },
+        {
+          "_id": "669887d5dc36de29fc953422",
+          "oldName": "estimation of definite integral",
+          "newName": "estimation of definite integral",
+          "_action": "none"
+        },
+        {
+          "_id": "67244f804bf26efc115e1b18",
+          "oldName": "integration by reduction",
+          "newName": "integration by reduction",
+          "_action": "none"
+        },
+        {
+          "_id": "6698865a7524e32946603f56",
+          "oldName": "newton lebnitz rule",
+          "newName": "newton lebnitz rule",
+          "_action": "none"
+        },
+        {
+          "_id": "6698865a7524e32946603f53",
+          "oldName": "properties with illustrations",
+          "newName": "properties with illustrations",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "67244ed44bf26efc115e1aef",
+              "oldName": "king rule",
+              "newName": "king rule",
+              "_action": "none"
+            },
+            {
+              "_id": "67244ed54bf26efc115e1af3",
+              "oldName": "queen rule",
+              "newName": "queen rule",
+              "_action": "none"
+            },
+            {
+              "_id": "67244ed54bf26efc115e1af7",
+              "oldName": "periodic function properties",
+              "newName": "periodic function properties",
+              "_action": "none"
+            },
+            {
+              "_id": "67244ed64bf26efc115e1afb",
+              "oldName": "odd and even function",
+              "newName": "odd and even function",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "669887d5dc36de29fc953425",
+          "oldName": "walli's formula",
+          "newName": "walli's formula",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6699f0f547e0a48480475101",
+      "oldName": "area under the curves",
+      "newName": "area under the curves",
+      "chapterNumber": 25,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6724560c45dc45407e972c4c",
+          "oldName": "area bounded",
+          "newName": "area bounded",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6724566945dc45407e972c60",
+              "oldName": "between curve and x-axis",
+              "newName": "between curve and x-axis",
+              "_action": "none"
+            },
+            {
+              "_id": "6724566945dc45407e972c64",
+              "oldName": "between curve and y-axis",
+              "newName": "between curve and y-axis",
+              "_action": "none"
+            },
+            {
+              "_id": "6724566945dc45407e972c68",
+              "oldName": "between two curves",
+              "newName": "between two curves",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "67b9f9e238df74b8a15d7c08",
+          "oldName": "area represented by inequality and determination of parameter",
+          "newName": "area represented by inequality and determination of parameter",
+          "_action": "none"
+        },
+        {
+          "_id": "6724560c45dc45407e972c52",
+          "oldName": "inequalities and determination of parameter",
+          "newName": "inequalities and determination of parameter",
+          "_action": "none"
+        },
+        {
+          "_id": "6724560c45dc45407e972c55",
+          "oldName": "variable area",
+          "newName": "variable area",
+          "_action": "none"
+        }
+      ]
+    },
+    {
+      "_id": "6690ef5d030bd50c81cffe71",
+      "oldName": "differential equation",
+      "newName": "differential equation",
+      "chapterNumber": 26,
+      "_action": "none",
+      "exam": [
+        "jeemains",
+        "jeeadvance",
+        "boards"
+      ],
+      "topics": [
+        {
+          "_id": "6698b3b39eabe8ef25a5347f",
+          "oldName": "application of diffential equation",
+          "newName": "application of diffential equation",
+          "_action": "none"
+        },
+        {
+          "_id": "669bd151142e1a179362088b",
+          "oldName": "exact differential equation",
+          "newName": "exact differential equation",
+          "_action": "none"
+        },
+        {
+          "_id": "6698b3b29eabe8ef25a53476",
+          "oldName": "formation of d.e",
+          "newName": "formation of d.e",
+          "_action": "none"
+        },
+        {
+          "_id": "669bd150142e1a1793620882",
+          "oldName": "homogeneous equation",
+          "newName": "homogeneous equation",
+          "_action": "none"
+        },
+        {
+          "_id": "669bd150142e1a1793620885",
+          "oldName": "linear differential equation",
+          "newName": "linear differential equation",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "6724547b0fd0a85230532990",
+              "oldName": "reducible to l.d.e ( bernauli's equation )",
+              "newName": "reducible to l.d.e ( bernauli's equation )",
+              "_action": "none"
+            }
+          ]
+        },
+        {
+          "_id": "6698b3b29eabe8ef25a53473",
+          "oldName": "order and degree",
+          "newName": "order and degree",
+          "_action": "none"
+        },
+        {
+          "_id": "669bd150142e1a179362087f",
+          "oldName": "variable seperable",
+          "newName": "variable seperable",
+          "_action": "none",
+          "subtopics": [
+            {
+              "_id": "672454e8be2a55d65234c8a5",
+              "oldName": "linear by liner",
+              "newName": "linear by liner",
+              "_action": "none"
+            },
+            {
+              "_id": "672454e8be2a55d65234c8a9",
+              "oldName": "polar substitution",
+              "newName": "polar substitution",
+              "_action": "none"
+            }
+          ]
         }
       ]
     }

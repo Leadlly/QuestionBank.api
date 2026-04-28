@@ -722,6 +722,45 @@ export const updateQuestionDetails = async (req, res) => {
   }
 };
 
+export const relocateQuestions = async (req, res) => {
+  try {
+    const { questionIds, destination } = req.body;
+
+    if (!Array.isArray(questionIds) || questionIds.length === 0) {
+      return res.status(400).json({ success: false, message: "questionIds array is required" });
+    }
+
+    const { chapter, chaptersId, topics, topicsId, subtopics, subtopicsId } = destination || {};
+
+    if (!chaptersId || !Array.isArray(chaptersId) || chaptersId.length === 0) {
+      return res.status(400).json({ success: false, message: "destination.chaptersId is required" });
+    }
+
+    const updatePayload = {
+      chapter: chapter || [],
+      chaptersId: chaptersId.map((id) => new mongoose.Types.ObjectId(id)),
+      topics: topics || [],
+      topicsId: (topicsId || []).map((id) => new mongoose.Types.ObjectId(id)),
+      subtopics: subtopics || [],
+      subtopicsId: (subtopicsId || []).map((id) => new mongoose.Types.ObjectId(id)),
+    };
+
+    const objectIds = questionIds.map((id) => new mongoose.Types.ObjectId(id));
+    const result = await Ques.updateMany({ _id: { $in: objectIds } }, { $set: updatePayload });
+
+    return res.status(200).json({
+      success: true,
+      message: `${result.modifiedCount} question(s) relocated successfully`,
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Internal Server Error",
+    });
+  }
+};
+
 export const checkIfTagged = async (req, res) => {
   try {
     const { id } = req.params; // Get question ID from request parameters

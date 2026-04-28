@@ -96,14 +96,14 @@ async function resolveSubtopics(subtopicIds) {
 // ── Main Export ───────────────────────────────────────────────────────────────
 
 async function exportSegregation() {
-  const MONGO_URI = process.env.MONGO_URI;
-  if (!MONGO_URI) {
-    console.error("❌  MONGO_URI is not set in .env");
+  const MAIN_DATABASE_URL = process.env.MAIN_DATABASE_URL;
+  if (!MAIN_DATABASE_URL) {
+    console.error("❌  MAIN_DATABASE_URL is not set in .env");
     process.exit(1);
   }
 
   console.log("🔌  Connecting to MongoDB…");
-  await mongoose.connect(MONGO_URI, { dbName: "leadllyQuestions" });
+  await mongoose.connect(MAIN_DATABASE_URL, { dbName: "leadllyQuestions" });
   console.log("✅  Connected");
 
   // 1. Find the Maths subject for standard 12

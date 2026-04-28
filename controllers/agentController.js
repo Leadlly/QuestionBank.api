@@ -1,6 +1,7 @@
 import { runSupervisor } from "../ai/agents/supervisorAgent.js";
 import { runSegregationAgent } from "../ai/agents/segregationAgent.js";
 import { runQuestionAgent, streamQuestionAgent } from "../ai/agents/questionAgent.js";
+import { runRelocationAgent } from "../ai/agents/relocationAgent.js";
 import { getLevelPrompt, solutionPrompt } from "../ai/prompts/index.js";
 
 const VALID_AGENT_TYPES = ["supervisor", "segregation", "question"];
@@ -270,5 +271,39 @@ export const streamAgent = async (req, res) => {
       res.write(`event: error\ndata: ${JSON.stringify({ message: error.message })}\n\n`);
       res.end();
     }
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  filterForRelocation  →  POST /api/agent/filter-relocate
+//
+//  Body:
+//    questions*   Array of { _id, question } objects (current page, up to 50)
+//    source*      { chapter, topic?, subtopic? }
+//    destination* { chapter, topic?, subtopic? }
+//
+//  Response:
+//    { success: true, questionIds: [...] }
+// ─────────────────────────────────────────────────────────────────────────────
+export const filterForRelocation = async (req, res) => {
+  try {
+    const { questions, source, destination } = req.body;
+
+    if (!Array.isArray(questions) || questions.length === 0) {
+      return res.status(400).json({ success: false, message: "questions array is required" });
+    }
+    if (!source?.chapter) {
+      return res.status(400).json({ success: false, message: "source.chapter is required" });
+    }
+    if (!destination?.chapter) {
+      return res.status(400).json({ success: false, message: "destination.chapter is required" });
+    }
+
+    const questionIds = await runRelocationAgent({ questions, source, destination });
+
+    return res.status(200).json({ success: true, questionIds });
+  } catch (error) {
+    console.error("[AgentController] filterForRelocation error:", error);
+    return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
   }
 };
