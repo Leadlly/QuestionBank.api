@@ -8,6 +8,17 @@ import processImages from "../helper/processImages.js";
 import { User } from "../model/userModel.js";
 import deleteImages from "../helper/deleteImages.js";
 import mongoose from 'mongoose';
+
+const buildArrayIdFilter = (value) => {
+  if (!value) return undefined;
+  const values = [];
+  if (mongoose.Types.ObjectId.isValid(value)) {
+    values.push(new mongoose.Types.ObjectId(value));
+  }
+  values.push(value);
+  return { $in: values };
+};
+
 const validateAndSanitizeData = [
   body("question").notEmpty().trim().escape(),
   body("options.all.*").notEmpty().trim().escape(),
@@ -167,14 +178,12 @@ export const getAllQuestion = async (req, res) => {
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapterId) {
-      queryObject.chaptersId = {
-        $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())],
-      };
+      const chapterId = req.query.chapterId.trim();
+      queryObject.chaptersId = buildArrayIdFilter(chapterId);
     }
     if (req.query.topicId) {
-      queryObject.topicsId = {
-        $in: [new mongoose.Types.ObjectId(req.query.topicId)],
-      };
+      const topicId = req.query.topicId.trim();
+      queryObject.topicsId = buildArrayIdFilter(topicId);
     }
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
@@ -215,9 +224,9 @@ export const getAllQuestion = async (req, res) => {
     }
     
     // Handle new (live) separately
-    // if (req.query.isNew === "true") {
+    if (req.query.isNew === "true") {
       queryObject.mode = "live";
-    // }
+    }
 
     // Filter by whether a solution exists for each question
     if (req.query.hasSolution === "true") {
@@ -324,9 +333,13 @@ export const getTotalQuestions = async (req, res) => {
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapterId) {
-      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+      const chapterId = req.query.chapterId.trim();
+      queryObject.chaptersId = buildArrayIdFilter(chapterId);
     }
-    if (req.query.topicId) queryObject.topicsId = { $in: [new mongoose.Types.ObjectId(req.query.topicId)] };
+    if (req.query.topicId) {
+      const topicId = req.query.topicId.trim();
+      queryObject.topicsId = buildArrayIdFilter(topicId);
+    }
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
     if (req.query.createdBy) queryObject.createdBy = req.query.createdBy;
 
@@ -442,9 +455,13 @@ export const getMyQuestions = async (req, res) => {
     if (req.query.standard) queryObject.standard = req.query.standard;
     if (req.query.subject) queryObject.subject = req.query.subject;
     if (req.query.chapterId) {
-      queryObject.chaptersId = { $in: [new mongoose.Types.ObjectId(req.query.chapterId.trim())] };
+      const chapterId = req.query.chapterId.trim();
+      queryObject.chaptersId = buildArrayIdFilter(chapterId);
     }
-    if (req.query.topicId) queryObject.topicsId = { '$in': [new mongoose.Types.ObjectId(req.query.topicId)] };
+    if (req.query.topicId) {
+      const topicId = req.query.topicId.trim();
+      queryObject.topicsId = buildArrayIdFilter(topicId);
+    }
     if (req.query.subtopics) queryObject.subtopics = req.query.subtopics;
 
     if (req.query.search) {
