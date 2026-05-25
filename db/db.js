@@ -10,7 +10,7 @@ const LIVE_URI = process.env.MAIN_DATABASE_URL;
 // ── In-memory mode (per Vercel function instance) ─────────────────────────────
 // The frontend sends an "x-db-mode" header with every request.
 // The dbModeMiddleware calls switchDb() so this stays in sync.
-let currentMode = "test";
+let currentMode = "live";
 
 export function getDbMode() {
   return currentMode;
@@ -43,12 +43,12 @@ export async function switchDb(mode) {
   console.log(`[DB] ✅ Connected to ${mode} database`);
 }
 
-// ── Initial connection (always test on cold start) ────────────────────────────
+// ── Initial connection (defaults to live on cold start) ──────────────────────
 const connectedToDb = async () => {
   try {
-    await mongoose.connect(TEST_URI, { dbName: "leadllyQuestions" });
-    currentMode = "test";
-    console.log("[DB] Connected to test database");
+    await mongoose.connect(LIVE_URI, { dbName: "leadllyQuestions" });
+    currentMode = "live";
+    console.log("[DB] Connected to live database");
   } catch (error) {
     console.error("[DB] mongo error =========>", error);
   }
