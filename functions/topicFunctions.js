@@ -34,8 +34,11 @@ export async function createTopic({ name, chapterName, chapterId, subjectName, s
     resolvedChapterId = chapter._id;
   }
 
-  // Duplicate check
-  const existing = await Topic.findOne({ name, chapterId: resolvedChapterId });
+  // Duplicate check — scoped to chapter, case-insensitive
+  const existing = await Topic.findOne({
+    chapterId: resolvedChapterId,
+    name: { $regex: new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+  });
   if (existing) {
     return { success: false, error: `Topic "${name}" already exists in this chapter.`, data: existing };
   }

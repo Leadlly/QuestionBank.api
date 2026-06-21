@@ -11,54 +11,49 @@ export const createSubtopic = async (req, res) => {
       const { subjectName, standard, chapterName, topicName, chapterId, topicId, subtopics } = req.body;
   
       // Validate required fields
-      if (!subjectName || !standard || !chapterName || !topicName || !subtopics || !subtopics[0].name) {
+      if (!subjectName || !standard || !chapterName || !topicName || !chapterId || !topicId || !subtopics || !subtopics[0].name) {
         return res.status(400).json({
           success: false,
-          message: 'All input fields must be provided, including a valid subtopic name.'
+          message: 'All input fields must be provided, including chapterId, topicId, and a valid subtopic name.'
         });
       }
   
-      // Find the existing subject, chapter, and topic
-      const existingSubject = await Subject.findOne({ name: subjectName, standard })
-        .populate({
-          path: 'chapters',
-          match: { name: chapterName },
-          populate: {
-            path: 'topics',
-            match: { name: topicName },
-            populate: {
-              path: 'subtopics'
-            }
-          }
-        });
-  
-      if (!existingSubject) {
-        console.log(`Subject not found: subjectName=${subjectName}, standard=${standard}`);
-        return res.status(400).json({ success: false, message: 'Subject not found' });
-      }
-  
-      const existingChapter = existingSubject.chapters.find(chapter => chapter.name === chapterName);
-      if (!existingChapter) {
-        console.log(`Chapter not found: chapterName=${chapterName}`);
-        return res.status(400).json({ success: false, message: 'Chapter not found' });
-      }
-  
-      const existingTopic = existingChapter.topics.find(topic => topic.name === topicName);
+      const existingTopic = await Topic.findById(topicId);
       if (!existingTopic) {
-        console.log(`Topic not found: topicName=${topicName}`);
-        return res.status(400).json({ success: false, message: 'Topic not found' });
+        return res.status(404).json({ success: false, message: 'Topic not found' });
+      }
+
+      if (existingTopic.chapterId.toString() !== chapterId.toString()) {
+        return res.status(400).json({ success: false, message: 'Topic does not belong to the selected chapter' });
       }
   
       // Recursive function to add subtopics
-      const addSubtopicsRecursively = async (parentSubtopic, subtopicData) => {
-        // Check if subtopic already exists under this topic
-        if (parentSubtopic.subtopics.some(sub => sub.name === subtopicData.name)) {
-          throw new Error(`Subtopic "${subtopicData.name}" already exists`);
+      const addSubtopicsRecursively = async (parentSubtopic, subtopicData, isRoot = false) => {
+        const subtopicName = subtopicData.name.trim();
+
+        if (isRoot) {
+          // Root subtopics: check Subtopic collection by topicId (not topic.subtopics array — can be stale)
+          const existing = await Subtopic.findOne({
+            topicId,
+            name: { $regex: new RegExp(`^${subtopicName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+          });
+          if (existing) {
+            throw new Error(`Subtopic "${subtopicName}" already exists`);
+          }
+        } else {
+          // Nested subtopics: check direct children on the parent subtopic document
+          const childIds = (parentSubtopic.subtopics || []).filter(Boolean);
+          if (childIds.length > 0) {
+            const siblings = await Subtopic.find({ _id: { $in: childIds } });
+            if (siblings.some((sub) => sub.name.toLowerCase() === subtopicName.toLowerCase())) {
+              throw new Error(`Subtopic "${subtopicName}" already exists`);
+            }
+          }
         }
   
         // Create new subtopic
         const newSubtopic = new Subtopic({
-          name: subtopicData.name,
+          name: subtopicName,
           topicName,
           chapterName,
           subjectName,
@@ -70,21 +65,23 @@ export const createSubtopic = async (req, res) => {
   
         await newSubtopic.save();
   
-        // Add subtopic ID to parent topic's subtopics array
-        parentSubtopic.subtopics.push(newSubtopic._id);
-        await parentSubtopic.save();
+        if (isRoot) {
+          await Topic.findByIdAndUpdate(topicId, { $addToSet: { subtopics: newSubtopic._id } });
+        } else {
+          await Subtopic.findByIdAndUpdate(parentSubtopic._id, { $addToSet: { subtopics: newSubtopic._id } });
+        }
   
         // Recursively add nested subtopics (if any)
         if (subtopicData.subtopics && subtopicData.subtopics.length > 0) {
           for (const nestedSubtopic of subtopicData.subtopics) {
-            await addSubtopicsRecursively(newSubtopic, nestedSubtopic);
+            await addSubtopicsRecursively(newSubtopic, nestedSubtopic, false);
           }
         }
       };
   
       // Add all subtopics from the request body
       for (const subtopicData of subtopics) {
-        await addSubtopicsRecursively(existingTopic, subtopicData);
+        await addSubtopicsRecursively(existingTopic, subtopicData, true);
       }
   
       res.status(201).json({

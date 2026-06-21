@@ -35,9 +35,6 @@ export const createTopic = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Chapter not found' });
     }
 
-    // Set of existing topic names to prevent duplicates
-    const existingTopicNames = new Set(existingChapter.topics.map(topic => topic.name));
-
     // Validate and add new topics
     const newTopics = [];
     for (const topic of topics) {
@@ -47,8 +44,13 @@ export const createTopic = async (req, res) => {
 
       const topicName = topic.name.trim();
 
-      // Check for duplicate topic names in the same chapter
-      if (existingTopicNames.has(topicName)) {
+      // Check against Topic collection by chapterId (not chapter.topics array — can be stale)
+      const existingTopic = await Topic.findOne({
+        chapterId,
+        name: { $regex: new RegExp(`^${topicName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+      });
+
+      if (existingTopic) {
         return res.status(400).json({ success: false, message: `Topic "${topicName}" already exists in the chapter` });
       }
 
@@ -304,21 +306,13 @@ export const updateTopic = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Topic not found' });
     }
 
-    // Find the chapter associated with the topic by name and subjectName
-    const existingChapter = await Chapter.findOne({
-      name: topic.chapterName,
-      subjectName: topic.subjectName,
-    }).populate('topics');
+    const duplicateTopic = await Topic.findOne({
+      chapterId: topic.chapterId,
+      _id: { $ne: id },
+      name: { $regex: new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+    });
 
-    // Check if the chapter exists
-    if (!existingChapter) {
-      return res.status(404).json({ success: false, message: 'Chapter not found' });
-    }
-
-    // Check if the new name already exists in the same chapter
-    const topicExists = existingChapter.topics.some(t => t.name === name && t._id.toString() !== id);
-
-    if (topicExists) {
+    if (duplicateTopic) {
       return res.status(400).json({ success: false, message: `Topic name "${name}" already exists in the chapter` });
     }
 
@@ -407,7 +401,7 @@ export const updateTopicNumber = async (req, res) => {
     // Step 2: Check if the new topic number already exists in the same chapter (if not null)
     if (newTopicNumber !== null) {
       const existingTopic = await Topic.findOne({ chapterId, topicNumber: newTopicNumber });
-      if (existingTopic) {
+      if (existingTopic && existingTopic._id.toString() !== topicId) {
         return res.status(400).json({
           success: false,
           message: `Topic number ${newTopicNumber} already exists in this chapter.`,

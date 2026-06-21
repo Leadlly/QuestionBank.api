@@ -39,8 +39,11 @@ export async function createSubtopic({ name, topicName, chapterName, subjectName
     resolvedChapterId = resolvedChapterId ?? topic.chapterId;
   }
 
-  // Duplicate check at the topic level
-  const existing = await Subtopic.findOne({ name, topicId: resolvedTopicId });
+  // Duplicate check at the topic level — case-insensitive
+  const existing = await Subtopic.findOne({
+    topicId: resolvedTopicId,
+    name: { $regex: new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') },
+  });
   if (existing) {
     return { success: false, error: `Subtopic "${name}" already exists under topic '${topicName}'.`, data: existing };
   }

@@ -4,7 +4,6 @@ const topicSchema = new mongoose.Schema({
   name: {
       type: String,
       required: true,
-      unique: true
   },
   chapterName: {
     type: String,
@@ -35,6 +34,7 @@ topicNumber: {
   exam: [{ type: String }]
 }, { timestamps: true });
 
- 
+topicSchema.index({ name: 1, chapterId: 1 }, { unique: true });
+
 export const Topic = mongoose.model("Topic", topicSchema)  
 
