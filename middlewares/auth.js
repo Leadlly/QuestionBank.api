@@ -13,9 +13,13 @@ const isAuthenticated = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(decoded._id);
     next();
-  } catch (error) {
-    console.log(error);
-  }
+} catch (error) {
+console.error(error);
+return res.status(500).json({
+success: false,
+message: "Authentication failed",
+});
+}
 };
 
 export default isAuthenticated;
