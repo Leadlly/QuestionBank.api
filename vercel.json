@@ -1,11 +1,15 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index" }
+    { "source": "/api/agent/generate-async", "destination": "/api/agent/generate-async" },
+    { "source": "/api/agent/job/:jobId",      "destination": "/api/agent/job?jobId=:jobId" },
+    { "source": "/(.*)",                       "destination": "/api/index" }
   ],
   "functions": {
-    "api/index.js":        { "maxDuration": 60 },
-    "api/agent/run.js":    { "maxDuration": 60 },
-    "api/agent/stream.js": { "maxDuration": 60 }
+    "api/index.js":                   { "maxDuration": 60  },
+    "api/agent/run.js":               { "maxDuration": 60  },
+    "api/agent/stream.js":            { "maxDuration": 60  },
+    "api/agent/generate-async.js":    { "maxDuration": 300 },
+    "api/agent/job.js":               { "maxDuration": 30  }
   }
 }

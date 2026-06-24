@@ -1,9 +1,15 @@
 import { runSupervisor } from "../ai/agents/supervisorAgent.js";
 import { runSegregationAgent } from "../ai/agents/segregationAgent.js";
-import { runQuestionAgent, streamQuestionAgent } from "../ai/agents/questionAgent.js";
+import { runQuestionAgent, streamQuestionAgent, streamWithBedrock } from "../ai/agents/questionAgent.js";
 import { runRelocationAgent } from "../ai/agents/relocationAgent.js";
-import { getLevelPrompt, solutionPrompt } from "../ai/prompts/index.js";
+import { getLevelPrompt, solutionPrompt, questionPrompt } from "../ai/prompts/index.js";
+import { mergePrompts } from "../ai/lib/mergePrompts.js";
+import { assignQuestionsToSubtopics } from "../ai/lib/assignSubtopics.js";
 import { Ques } from "../model/quesModel.js";
+import { Solution } from "../model/solutionModel.js";
+import { User } from "../model/userModel.js";
+import { GenerationJob } from "../model/generationJobModel.js";
+import mongoose from "mongoose";
 
 const VALID_AGENT_TYPES = ["supervisor", "segregation", "question"];
 
@@ -311,6 +317,365 @@ export const filterForRelocation = async (req, res) => {
     return res.status(200).json({ success: true, questionIds });
   } catch (error) {
     console.error("[AgentController] filterForRelocation error:", error);
+    return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  generateAsync  →  POST /api/agent/generate-async
+//
+//  Fires-and-forgets the AI generation + DB insert pipeline.
+//  Returns immediately with { jobId } so the client can poll without hitting
+//  Vercel's 60-second serverless timeout.
+//
+//  Body: same as /api/agent/stream
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Extract complete JSON objects from a streaming LLM buffer.
+ * Identical logic to the one inside questionAgent.js — duplicated here so
+ * the background worker has no dependency on the SSE-specific agent module.
+ */
+function extractCompletedQuestionsFromBuffer(buffer) {
+  const emitted = [];
+  let i = 0;
+  const len = buffer.length;
+
+  while (i < len) {
+    if (" \n\r\t,[]\r".includes(buffer[i])) { i++; continue; }
+    if (buffer[i] !== "{") { i++; continue; }
+
+    let depth = 0, inString = false, escape = false, j = i;
+    while (j < len) {
+      const ch = buffer[j];
+      if (escape)             { escape = false; }
+      else if (ch === "\\" && inString) { escape = true; }
+      else if (ch === '"')    { inString = !inString; }
+      else if (!inString) {
+        if (ch === "{") depth++;
+        else if (ch === "}") { depth--; if (depth === 0) break; }
+      }
+      j++;
+    }
+
+    if (depth !== 0) break;
+
+    const objectStr = buffer.slice(i, j + 1);
+    try {
+      emitted.push(JSON.parse(objectStr));
+    } catch { i++; continue; }
+    i = j + 1;
+  }
+
+  return { emitted, remaining: buffer.slice(i) };
+}
+
+/**
+ * Background worker — runs OUTSIDE the HTTP request/response cycle.
+ *
+ * Phase 1: Stream all questions from Bedrock into memory.
+ * Phase 2: If autoAssignSubtopics is true, call the AI classifier to map
+ *           each question to its best-matching subtopic.
+ * Phase 3: Save each question (with proper subtopic) to MongoDB, update job.
+ *
+ * The job's insertedQuestionIds array is populated incrementally during
+ * Phase 3, so the polling endpoint can serve live results.
+ */
+async function runGenerationJob(job, systemPrompt, message, userId) {
+  try {
+    await GenerationJob.findByIdAndUpdate(job._id, { status: "generating" });
+
+    // ── Phase 1: collect all generated questions from the Bedrock stream ─────
+    let buffer = "";
+    const allQuestions = [];
+
+    await streamWithBedrock(message, systemPrompt, (delta) => {
+      buffer += delta;
+      const { emitted, remaining } = extractCompletedQuestionsFromBuffer(buffer);
+      buffer = remaining;
+      allQuestions.push(...emitted);
+    });
+
+    // Drain any remainder left in the buffer
+    if (buffer.trim()) {
+      const { emitted } = extractCompletedQuestionsFromBuffer(buffer + "]");
+      allQuestions.push(...emitted);
+    }
+
+    console.log(`[GenerationJob] ${job._id} — ${allQuestions.length} questions parsed from stream.`);
+
+    // ── Phase 2: AI subtopic assignment (only when topics selected, no explicit subtopics) ──
+    // subtopicAssignmentMap: Map<questionIndex → { subtopicId, subtopicName }>
+    let subtopicAssignmentMap = new Map();
+
+    if (job.autoAssignSubtopics && job.topicsId && job.topicsId.length > 0) {
+      console.log(`[GenerationJob] ${job._id} — auto-assigning subtopics for ${allQuestions.length} questions…`);
+      subtopicAssignmentMap = await assignQuestionsToSubtopics(allQuestions, job.topicsId.map(String));
+    }
+
+    // ── Phase 3: save each question to MongoDB ────────────────────────────────
+    const chaptersIdObjs  = (job.chaptersId  || []).map((id) => new mongoose.Types.ObjectId(id));
+    const topicsIdObjs    = (job.topicsId    || []).map((id) => new mongoose.Types.ObjectId(id));
+    // base subtopicsId from job (used when user explicitly selected a subtopic)
+    const baseSubtopicsId = (job.subtopicsId || []).map((id) => new mongoose.Types.ObjectId(id));
+    const baseSubtopicNames = job.subtopicNames || [];
+
+    for (let qi = 0; qi < allQuestions.length; qi++) {
+      const q = allQuestions[qi];
+      try {
+        if (!q.question || !Array.isArray(q.options) || q.options.length === 0) continue;
+        const hasCorrect = q.options.some((o) => o.isCorrect === true);
+        if (!hasCorrect) continue;
+
+        const existing = await Ques.findOne({
+          question: q.question,
+          subject: job.subject,
+          standard: job.standard,
+        });
+        if (existing) continue;
+
+        // Determine final subtopic assignment for this question
+        let finalSubtopicsId   = baseSubtopicsId;
+        let finalSubtopicNames = baseSubtopicNames;
+
+        if (job.autoAssignSubtopics && subtopicAssignmentMap.has(qi)) {
+          const assigned = subtopicAssignmentMap.get(qi);
+          finalSubtopicsId   = [new mongoose.Types.ObjectId(assigned.subtopicId)];
+          finalSubtopicNames = [assigned.subtopicName];
+        }
+
+        const newQuestion = new Ques({
+          question: q.question,
+          options: q.options.map((opt) => ({
+            name: opt.name,
+            tag: opt.isCorrect ? "Correct" : "Incorrect",
+            images: [],
+          })),
+          standard: job.standard,
+          subject:  job.subject,
+          chapter:  job.chapterNames  || [],
+          topics:   job.topicNames    || [],
+          subtopics: finalSubtopicNames,
+          chaptersId: chaptersIdObjs,
+          topicsId:   topicsIdObjs,
+          subtopicsId: finalSubtopicsId,
+          level: q.level || job.level || "",
+          images: [],
+          createdBy: userId,
+        });
+
+        await newQuestion.save();
+        await User.findByIdAndUpdate(userId, { $push: { questions: newQuestion._id } });
+
+        if (q.solution && q.solution.content) {
+          await new Solution({
+            questionId: newQuestion._id,
+            content: q.solution.content,
+            createdBy: userId,
+          }).save();
+        }
+
+        await GenerationJob.findByIdAndUpdate(job._id, {
+          $push: { insertedQuestionIds: newQuestion._id },
+          $inc:  { insertedCount: 1 },
+        });
+      } catch (saveErr) {
+        console.error(`[GenerationJob] Failed to save question[${qi}]:`, saveErr.message);
+      }
+    }
+
+    await GenerationJob.findByIdAndUpdate(job._id, {
+      status: "done",
+      completedAt: new Date(),
+    });
+
+    console.log(`[GenerationJob] ${job._id} done.`);
+  } catch (err) {
+    console.error("[GenerationJob] Fatal error:", err.message);
+    await GenerationJob.findByIdAndUpdate(job._id, {
+      status: "failed",
+      error: err.message,
+      completedAt: new Date(),
+    });
+  }
+}
+
+export const generateAsync = async (req, res) => {
+  try {
+    const {
+      message,
+      standard,
+      subject,
+      chapter,         // comma-separated chapter names string
+      topic,
+      subtopic,
+      level,
+      includeSolutions = false,
+      customSystemPrompt: callerPrompt = "",
+      // Optional: pass IDs so the background worker can populate chaptersId etc.
+      chaptersId   = [],
+      topicsId     = [],
+      subtopicsId  = [],
+      chapterNames = [],
+      topicNames   = [],
+      subtopicNames = [],
+    } = req.body;
+
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({ success: false, message: "message (string) is required." });
+    }
+
+    const missing = [];
+    if (!standard) missing.push("standard");
+    if (!subject)  missing.push("subject");
+    if (!chapter)  missing.push("chapter");
+    if (missing.length > 0) {
+      return res.status(400).json({ success: false, message: `Fields required: ${missing.join(", ")}.` });
+    }
+
+    // On Vercel Hobby the hard limit is 60 s — cap at 5 questions to stay safe.
+    // On Pro (maxDuration=300) up to 20 is fine; remove/raise this cap after upgrading.
+    const VERCEL_HOBBY = !process.env.VERCEL_PRO; // set VERCEL_PRO=true in env on Pro plan
+    if (VERCEL_HOBBY) {
+      const countMatch = message.match(/generate\s+(\d+)/i);
+      const requested  = countMatch ? parseInt(countMatch[1], 10) : 0;
+      if (requested > 5) {
+        return res.status(400).json({
+          success: false,
+          message: "Maximum 5 questions per request on the current plan. Upgrade to Vercel Pro to generate up to 20.",
+        });
+      }
+    }
+
+    // Build the merged system prompt (identical to what streamAgent + streamQuestionAgent produce)
+    const sessionPrompt = buildQuestionSystemPrompt({
+      standard, subject, chapter, topic, subtopic, level,
+      includeSolutions, callerPrompt,
+    });
+    // Merge with the base questionPrompt exactly as streamQuestionAgent does
+    const systemPrompt = mergePrompts(questionPrompt, sessionPrompt);
+
+    // Persist a job document first
+    // autoAssignSubtopics = true when the user selected topic(s) but NO explicit subtopic.
+    // In that case the background worker will fetch all subtopics under those topics and
+    // use AI to assign each question to its best-matching subtopic.
+    const autoAssignSubtopics = (
+      Array.isArray(topicsId) && topicsId.length > 0 &&
+      (!Array.isArray(subtopicsId) || subtopicsId.length === 0)
+    );
+
+    const job = await GenerationJob.create({
+      status: "pending",
+      standard,
+      subject,
+      chapter,
+      topic:    topic    || null,
+      subtopic: subtopic || null,
+      level:    level    || null,
+      includeSolutions,
+      requestedCount: 0,
+      autoAssignSubtopics,
+      // Store supplementary data needed by the background worker
+      chaptersId,
+      topicsId,
+      subtopicsId,
+      chapterNames: Array.isArray(chapterNames) ? chapterNames : [chapter],
+      topicNames:   Array.isArray(topicNames)   ? topicNames   : (topic ? [topic] : []),
+      subtopicNames:Array.isArray(subtopicNames)? subtopicNames: (subtopic ? [subtopic] : []),
+      createdBy: req.user._id,
+    });
+
+    // ── Start the background job ──────────────────────────────────────────────
+    // On Vercel: the dedicated api/agent/generate-async.js function wrapper
+    //   calls req._registerBackgroundJob(promise) and passes it to waitUntil(),
+    //   which keeps the serverless execution context alive until the job finishes.
+    //
+    // On local dev / non-Vercel: falls back to plain fire-and-forget (Node.js
+    //   process stays alive so the background work completes normally).
+    const jobPromise = runGenerationJob(job.toObject(), systemPrompt, message, req.user._id)
+      .catch((err) => console.error("[generateAsync] Unhandled background error:", err.message));
+
+    if (typeof req._registerBackgroundJob === "function") {
+      req._registerBackgroundJob(jobPromise);
+    }
+
+    console.log(`[AgentController:Async] Job created: ${job._id}`);
+
+    return res.status(200).json({
+      success: true,
+      jobId: job._id,
+      autoAssignSubtopics,
+      message: autoAssignSubtopics
+        ? "Question generation started. Questions will be auto-assigned to subtopics."
+        : "Question generation started. Poll /api/agent/job/:jobId for progress.",
+    });
+  } catch (error) {
+    console.error("[AgentController] generateAsync error:", error);
+    return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  getJobStatus  →  GET /api/agent/job/:jobId
+//
+//  Returns current job progress including inserted question documents so the
+//  frontend can render them as they arrive.
+// ─────────────────────────────────────────────────────────────────────────────
+export const getJobStatus = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+      return res.status(400).json({ success: false, message: "Invalid jobId." });
+    }
+
+    const job = await GenerationJob.findById(jobId).lean();
+
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found." });
+    }
+
+    // Only the owner can poll their own job
+    if (job.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: "Forbidden." });
+    }
+
+    // Fetch the actual question documents that have been inserted so far
+    let questions = [];
+    if (job.insertedQuestionIds && job.insertedQuestionIds.length > 0) {
+      questions = await Ques.find({ _id: { $in: job.insertedQuestionIds } })
+        .sort({ createdAt: 1 })
+        .lean();
+
+      // Attach solutions if any
+      const solutions = await Solution.find({
+        questionId: { $in: job.insertedQuestionIds },
+      }).lean();
+
+      const solutionMap = {};
+      for (const sol of solutions) {
+        solutionMap[sol.questionId.toString()] = sol.content;
+      }
+
+      questions = questions.map((q) => ({
+        ...q,
+        solution: solutionMap[q._id.toString()]
+          ? { content: solutionMap[q._id.toString()] }
+          : null,
+      }));
+    }
+
+    return res.status(200).json({
+      success: true,
+      jobId,
+      status: job.status,
+      insertedCount: job.insertedCount,
+      requestedCount: job.requestedCount,
+      error: job.error || null,
+      questions,
+    });
+  } catch (error) {
+    console.error("[AgentController] getJobStatus error:", error);
     return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
   }
 };
