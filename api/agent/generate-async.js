@@ -13,9 +13,7 @@
  *   1. Use `waitUntil()` from @vercel/functions — this tells Vercel to keep
  *      the function execution context alive until the supplied Promise settles,
  *      even though the HTTP response has already been sent.
- *   2. Set maxDuration=300 (5 minutes on Vercel Pro) so the function is
- *      allowed to run long enough for generation + subtopic assignment + DB
- *      inserts to complete.
+ *   2. maxDuration=60 (Hobby plan limit). Raise to 300 on Vercel Pro if needed.
  */
 
 import { config as dotenvConfig } from "dotenv";
@@ -86,5 +84,4 @@ export const config = {
   },
 };
 
-// maxDuration is set in vercel.json (300s) — declared here as documentation
-// export const maxDuration = 300;
+// maxDuration is set in vercel.json (60s on Hobby, 300s on Pro)
