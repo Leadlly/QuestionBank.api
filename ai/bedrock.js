@@ -2,13 +2,25 @@ import { BedrockRuntimeClient } from "@aws-sdk/client-bedrock-runtime";
 
 /**
  * Shared Bedrock client – initialised once, reused by all agents.
- * Reads credentials from env vars loaded by dotenv in app.js.
+ *
+ * Credentials are read LAZILY via a provider function so that the client
+ * works correctly whether this module is imported by the Express server
+ * (which calls dotenv.config() in app.js before any code runs) or by a
+ * standalone CLI script (where ESM static imports are hoisted and would
+ * otherwise read process.env before dotenv has had a chance to populate it).
  */
 export const bedrockClient = new BedrockRuntimeClient({
   region: "us-east-1",
-  credentials: {
-    accessKeyId: process.env.AWS_BEDROCK_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_BEDROCK_SECRET_KEY,
+  credentials: async () => {
+    const accessKeyId     = process.env.AWS_BEDROCK_ACCESS_KEY;
+    const secretAccessKey = process.env.AWS_BEDROCK_SECRET_KEY;
+    if (!accessKeyId || !secretAccessKey) {
+      throw new Error(
+        "AWS Bedrock credentials missing. " +
+        "Make sure AWS_BEDROCK_ACCESS_KEY and AWS_BEDROCK_SECRET_KEY are set in .env"
+      );
+    }
+    return { accessKeyId, secretAccessKey };
   },
 });
 

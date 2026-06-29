@@ -10,3 +10,4 @@ export { segregationPrompt } from "./segregationPrompt.js";
 export { questionPrompt } from "./questionPrompt.js";
 export { getLevelPrompt } from "./levelPrompts.js";
 export { solutionPrompt } from "./solutionPrompt.js";
+export { reviewerPrompt } from "./reviewerPrompt.js";

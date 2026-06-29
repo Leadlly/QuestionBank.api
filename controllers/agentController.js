@@ -2,6 +2,7 @@ import { runSupervisor } from "../ai/agents/supervisorAgent.js";
 import { runSegregationAgent } from "../ai/agents/segregationAgent.js";
 import { runQuestionAgent, streamQuestionAgent, streamWithBedrock } from "../ai/agents/questionAgent.js";
 import { runRelocationAgent } from "../ai/agents/relocationAgent.js";
+import { runReviewerAgent } from "../ai/agents/reviewerAgent.js";
 import { getLevelPrompt, solutionPrompt, questionPrompt } from "../ai/prompts/index.js";
 import { mergePrompts } from "../ai/lib/mergePrompts.js";
 import { assignQuestionsToSubtopics } from "../ai/lib/assignSubtopics.js";
@@ -677,5 +678,58 @@ export const getJobStatus = async (req, res) => {
   } catch (error) {
     console.error("[AgentController] getJobStatus error:", error);
     return res.status(500).json({ success: false, message: error.message || "Internal Server Error" });
+  }
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  reviewQuestions  →  POST /api/agent/review
+//
+//  Runs the Question Reviewer Agent over the question bank.
+//  The job is long-running — responses are streamed as Server-Sent Events so
+//  the caller can watch progress in real time.
+//
+//  Body:
+//    subject   string  (optional) — restrict review to one subject
+//    standard  number  (optional) — further restrict by class/grade
+//
+//  SSE events emitted:
+//    progress  { reviewed, total, correct, reassigned, idled, errors }
+//    done      { success, stats }
+//    error     { message }
+// ─────────────────────────────────────────────────────────────────────────────
+export const reviewQuestions = async (req, res) => {
+  const { subject, standard, chapterId } = req.body;
+
+  // Set up SSE
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+
+  const emit = (event, data) => {
+    res.write(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+  };
+
+  console.log(
+    `[AgentController] reviewQuestions` +
+    ` | subject=${subject || "ALL"}` +
+    ` | chapterId=${chapterId || "ALL"}` +
+    ` | standard=${standard || "ALL"}`
+  );
+
+  try {
+    const stats = await runReviewerAgent({
+      subject:   subject   || undefined,
+      standard:  standard !== undefined ? Number(standard) : undefined,
+      chapterId: chapterId || undefined,
+      onProgress: (progress) => emit("progress", progress),
+    });
+
+    emit("done", { success: true, stats });
+  } catch (error) {
+    console.error("[AgentController] reviewQuestions error:", error);
+    emit("error", { message: error.message || "Internal Server Error" });
+  } finally {
+    res.end();
   }
 };

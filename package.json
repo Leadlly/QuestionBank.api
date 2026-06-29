@@ -24,7 +24,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "review": "node scripts/review.js"
   },
   "author": "",
   "license": "ISC",

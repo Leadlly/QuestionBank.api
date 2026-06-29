@@ -1,5 +1,5 @@
 import express from "express";
-import { runAgent, streamAgent, chat, segregate, generateQuestions, filterForRelocation, generateAsync, getJobStatus } from "../controllers/agentController.js";
+import { runAgent, streamAgent, chat, segregate, generateQuestions, filterForRelocation, generateAsync, getJobStatus, reviewQuestions } from "../controllers/agentController.js";
 import isAuthenticated from "../middlewares/auth.js";
 import checkAiAccess from "../middlewares/checkAiAccess.js";
 
@@ -11,6 +11,7 @@ AgentRouter.post("/agent/chat",             isAuthenticated, checkAiAccess, chat
 AgentRouter.post("/agent/segregate",        isAuthenticated, checkAiAccess, segregate);
 AgentRouter.post("/agent/questions",        isAuthenticated, checkAiAccess, generateQuestions);
 AgentRouter.post("/agent/filter-relocate",  isAuthenticated, checkAiAccess, filterForRelocation);
+AgentRouter.post("/agent/review",           isAuthenticated, checkAiAccess, reviewQuestions);
 
 // Async background generation — returns immediately with jobId, auto-inserts to DB
 AgentRouter.post("/agent/generate-async",   isAuthenticated, checkAiAccess, generateAsync);
