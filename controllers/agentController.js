@@ -534,18 +534,14 @@ export const generateAsync = async (req, res) => {
       return res.status(400).json({ success: false, message: `Fields required: ${missing.join(", ")}.` });
     }
 
-    // On Vercel Hobby the hard limit is 60 s — cap at 5 questions to stay safe.
-    // On Pro (maxDuration=300) up to 20 is fine; remove/raise this cap after upgrading.
-    const VERCEL_HOBBY = !process.env.VERCEL_PRO; // set VERCEL_PRO=true in env on Pro plan
-    if (VERCEL_HOBBY) {
-      const countMatch = message.match(/generate\s+(\d+)/i);
-      const requested  = countMatch ? parseInt(countMatch[1], 10) : 0;
-      if (requested > 5) {
-        return res.status(400).json({
-          success: false,
-          message: "Maximum 5 questions per request on the current plan. Upgrade to Vercel Pro to generate up to 20.",
-        });
-      }
+    // Cap at 20 questions per request.
+    const countMatch = message.match(/generate\s+(\d+)/i);
+    const requested  = countMatch ? parseInt(countMatch[1], 10) : 0;
+    if (requested > 20) {
+      return res.status(400).json({
+        success: false,
+        message: "Maximum 20 questions per request.",
+      });
     }
 
     // Build the merged system prompt (identical to what streamAgent + streamQuestionAgent produce)
