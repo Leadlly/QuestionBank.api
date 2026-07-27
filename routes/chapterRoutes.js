@@ -19,7 +19,7 @@ router.post("/get/chapters", getChaptersByIds);
 router.put("/chapter/:id/examtag", convertToLowercase, updateChapterExamTags);
 router.put("/update/chapter/:id", convertToLowercase, updateChapter);
 router.delete("/delete/chapter/:id", deleteChapter);
-router.post("/update/chapternumber", chapterNumberUpdate)
+router.put("/update/chapternumber", chapterNumberUpdate)
 
 
 export default router;
