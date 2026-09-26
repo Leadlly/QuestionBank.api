@@ -112,6 +112,7 @@ export const getChapter = async (req, res) => {
         chapterNumber: chapter.chapterNumber,
         topics: chapter.topics,
         exam: chapter.exam,
+        examWeights: chapter.examWeights || [],
         questionCount: questionCount // Add the question count
       };
     }));
@@ -163,7 +164,8 @@ export const getChapterById = async (req, res) => {
         standard: chapter.standard,
         subject: chapter.subjectName,
         topics: chapter.topics,
-        exam: chapter.exam
+        exam: chapter.exam,
+        examWeights: chapter.examWeights || [],
       },
     });
   } catch (error) {

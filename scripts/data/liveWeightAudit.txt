@@ -1,0 +1,154 @@
+11	biology	anatomy of flowering plants	4	neet:0.2712	plant tissues | the tissue system | internal structure of plants | secondary growth
+11	biology	animal kingdom	3	neet:0.4915	basis of classification | phylum - chordata | non-chordate phyla
+11	biology	biological classification	6	neet:0.4576	introduction to classification | kingdom monera | kingdom protista | kingdom fungi | viruses, viroids and lichens | kingdom plantae and animalia
+11	biology	biomolecules	6	neet:0.5932	chemical composition of living organisms | carbohydrates | proteins | lipids | nucleic acids | enzymes
+11	biology	body fluids and circulation	4	neet:0.4068	blood | lymph | human circulatory system | regulation and disorders
+11	biology	breathing and exchange of gases	4	neet:0.322	respiratory organs | mechanism of breathing | exchange of gases | regulation and disorder
+11	biology	cell cycle and cell division	3	neet:0.5424	cell cycle | mitosis | meiosis
+11	biology	cell: the unit of life	5	neet:0.678	what is cell? | prokaryotic cell | eukaryotic cell - organelles | eukaryotic cell - membrane and wall | nucleus
+11	biology	chemical coordination and integration	3	neet:0.5593	endocrine glands and hormones | human endocrine system | other hormones
+11	biology	excretory products and their elimination	4	neet:0.2881	human excretory system | urine formation | regulation and role of other organs | disorders of the excretory system
+11	biology	locomotion and movement	5	neet:0.3729	muscle | skeletal system | joints | disorders | types of movement
+11	biology	morphology of flowering plants	7	neet:0.5424	the root | the stem | the leaf | the inflorescence | the flower | the fruit and seed | description and important families
+11	biology	neural control and coordination	3	neet:0.1525	human neural system | neuron as structural and functional unit of neural system | central neural system
+11	biology	photosynthesis in higher plants	5	neet:0.4237	light reactions | the c4 pathway and photorespiration | factors affecting photosynthesis | overview of photosynthesis | dark reactions (calvin cycle)
+11	biology	plant growth and development	3	neet:0.3559	growth | differentiation and development | plant growth regulators
+11	biology	plant kingdom	7	neet:0.4237	introduction and classification | algae | bryophytes | pteridophytes | gymnosperms | angiosperms | plant life cycles and alternation of generations
+11	biology	respiration in plants	4	neet:0.2542	glycolysis | fermentation | aerobic respiration | energy accounting and pathway
+11	biology	structural organization in animals	5	neet:0.3051	animal tissues | organ and organ system | earthworm | cockroach | frogs
+11	biology	the living world	5	neet:0.1525	what is living? | diversity in living world | classification and nomenclature | taxonomic categories | taxonomic aids
+12	biology	biodiversity and conservation	2	neet:0.3898	biodiversity | biodiversity conservation
+12	biology	biotechnology and its applications	3	neet:0.339	biotechnological applications in agriculture | biotechnological applications in medicine | transgenic animals and ethical issues
+12	biology	biotechnology: principles and processes	3	neet:0.661	principles of biotechnology | tools of recombinant dna technology | processes of recombinant dna technology
+12	biology	ecosystem	5	neet:0.2881	ecosystem – structure and function | productivity and energy flow | ecological pyramids | ecological succession | nutrient cycling and ecosystem services
+12	biology	evolution	5	neet:0.4576	origin of life | theories of evolution | evidence for evolution | mechanism of evolution | evolution of man
+12	biology	human health and disease	5	neet:0.5593	common diseases in humans | immunity | aids | cancer | drugs and alcohol abuse
+12	biology	human reproduction	4	neet:0.5085	male reproductive system | female reproductive system | gametogenesis | fertilisation , pregnancy , and parturition
+12	biology	microbes in human welfare	3	neet:0.3051	microbes in household products | microbes in industrial products | microbes in environment and agriculture
+12	biology	molecular basis of inheritance	7	neet:1	dna structure | search of genetic material | rna world | dna replication | transcription | genetic code | gene regulation and genomics
+12	biology	organisms and populations	3	neet:0.4407	organism and its environment | populations | population interactions
+12	biology	principles of inheritance and variation	4	neet:0.7627	mendel’s laws of inheritance | extensions of mendelian genetics | sex determination | genetic disorders
+12	biology	reproduction in organisms	3	NONE	overview of reproduction | asexual reproduction | sexual reproduction
+12	biology	reproductive health	4	neet:0.3898	reproductive health: problems and strategies | population explosion and birth control | sexually transmitted diseases (stds) | infertility
+12	biology	sexual reproduction in flowering plants	4	neet:0.661	flower structure | pre-fertilisation: structures and events | fertilisation and post-fertilisation | apomixis and polyembryony
+11	chemistry	atomic structure	5	jee_main:0.618, jee_advanced:0.5179, neet:0.5167	bohr's atomic model | early atomic models | wave nature of radiation | wave mechanics | periodic similarities
+11	chemistry	basic principles of organic chemistry	3	jee_main:0.9735, jee_advanced:1, neet:1	organic reaction mechanism | electron displacement effects | purification of organic compounds
+11	chemistry	chemical bonding	8	jee_main:0.8143, jee_advanced:0.625, neet:0.9	ionic bond | hybridization | molecular orbital theory (mot) | weak forces | valence bond theory (vbt) | covalent bond | vsepr and structure | bond parameters
+11	chemistry	chemical equilibrium	4	jee_main:0.3501, jee_advanced:0.1071	concept and law of mass action | types of chemical equilibrium | le-chatliers' principle | problems on equilibrium
+11	chemistry	environmental chemistry	2	jee_main:0.2997	pollution and its types | control and green chemistry
+11	chemistry	gaseous state	5	jee_main:0.2095, jee_advanced:0.375	gas laws & ideal gas equation | dalton's law and vapour pressure | graham's law | kinetic theory of gases | real gas
+11	chemistry	hydrocarbon	9	NONE	preparation of alkanes | preparation of alkenes | reactions of alkenes | preparation of alkynes | reactions of alkynes | alkanes | alkenes | alkynes | aromatic compounds
+11	chemistry	hydrocarbons*	0	NONE	
+11	chemistry	hydrogen	4	jee_main:0.2493, jee_advanced:0.0714	preparation & properties of hydrogen | water and heavy water | hydrogen peroxide | hydrides
+11	chemistry	ionic equilibrium	5	jee_main:0.4218, jee_advanced:0.3571, neet:0.4	acid-base concepts | ph calculations | hydrolysis and common ion effect | buffer solution | solubility equilibrium
+11	chemistry	isomerism	4	NONE	structural isomerism | geometrical isomerism | optical isomerism | conformational isomerism
+11	chemistry	iupac nomenclature	5	NONE	iupac of hydrocarbons | important common names | basics | iupac of oxygen-containing compounds | iupac of nitrogen-containing compounds
+11	chemistry	mole concept	5	jee_main:0.557, neet:0.3667	concept of mole | concentration terms | dilution and mixing of non-reactive solution | stoichiometry | volume strength and eudiometry
+11	chemistry	p-block elements (part 1)	2	jee_main:0.2546, jee_advanced:0.3036	boron family (group 13) | carbon family (group 14)
+11	chemistry	periodic table and periodicity	3	jee_main:0.5093, neet:0.5	introduction to periodic table | born-haber cycle | periodic trends
+11	chemistry	quantum numbers	3	NONE	quantum numbers | energy of orbitals | electronic configuration of elements
+11	chemistry	redox reaction	5	jee_main:0.1883, neet:0.4	concept of oxidation and reduction | balancing of redox reaction | equivalent concept and law of equivalence | titration | hardness of water
+11	chemistry	s-block elements	2	jee_main:0.3528, jee_advanced:0.0714	alkali metals (group 1) | alkaline earth metals (group 2)
+11	chemistry	thermodynamics	5	jee_main:0.6366, jee_advanced:0.8571, neet:0.5167	first law of thermodynamics | second and third law of thermodynamics | basic concepts | work and heat | thermochemistry
+12	chemistry	alcohol, phenol & ether	6	jee_main:0.5013, jee_advanced:0.8571, neet:0.55	preparation of alcohols | preparation of phenols | reactions of alcohols | reactions of phenols | preparation and reactions of ether | physical properties of alcohol, phenol, & ether
+12	chemistry	aldehydes, ketones, & carboxylic acids	4	jee_main:0.6764, jee_advanced:0.875, neet:0.8167	preparation of aldehydes & ketones | reactions of aldehydes & ketones | preparation of carboxylic acids | reactions of carboxylic acids
+12	chemistry	amines	4	jee_main:0.5836, jee_advanced:0.6071, neet:0.3833	preparation of amines | reaction of amines | diazonium salts | physical properties of amines
+12	chemistry	biomolecules	4	jee_main:0.5729, jee_advanced:0.4643, neet:0.4333	carbohydrates | proteins | enzymes, vitamins & hormones | nucleic acids
+12	chemistry	chemical kinetics	8	jee_main:0.6233, jee_advanced:0.625, neet:0.5	rate of reaction | rate law and order | radioactivity | nth order kinetics | factors affecting kinetics | integrated rate equations | temperature dependence of rate | theories of reaction rates
+12	chemistry	chemistry - doubtful.  ----  not in pdf	13	NONE	carbene aromatic compounds | reactions of organometallic compound grignard reagents | nitrene | carbene carboxylic acid | crystallisation | distillation | chromatography | qualitative analysis of organic compounds | sublimation | classification of matter | hydrolysis | nomenclature of inorganic compounds | quantative analysis of organic compounds
+12	chemistry	chemistry in everyday life	2	jee_main:0.2308, jee_advanced:0.0179	drugs and medicines | chemicals in food and cleansing agents
+12	chemistry	coordination compound	7	jee_main:1, jee_advanced:0.9643, neet:0.7167	nomenclature | isomerism | valence bond theory (vbt) | crystal field theory (cft) | applications | basic concepts | theories of bonding
+12	chemistry	d and f block elements	2	jee_main:0.7056, jee_advanced:0.3393, neet:0.55	d block elements (transition elements) | f block elements
+12	chemistry	electrochemistry	7	jee_main:0.6393, jee_advanced:0.625, neet:0.5167	galvanic cell & electrode potential | nernst equation | thermodynamic analysis of cell | electrolytic cell | battery & corrosion | electrolytic conductance | faraday's laws
+12	chemistry	haloalkanes and haloarenes	5	jee_main:0.5119, jee_advanced:0.3571, neet:0.6667	preparation of haloalkanes | preparation of haloarenes | physical properties & application of haloalkanes & haloarenes | reactions of haloalkanes | reactions of haloarenes
+12	chemistry	metallurgy	3	jee_main:0.3369, jee_advanced:0.4286	occurrence of ores and minerals | occurrence and concentration | extraction and refining
+12	chemistry	mixed questions - oc	0	NONE	
+12	chemistry	new questions*	0	NONE	
+12	chemistry	p block element	4	jee_main:0.5252, jee_advanced:0.9643	nitrogen family | oxygen family (group 16) | halogen family | noble gases
+12	chemistry	polymers	4	jee_main:0.2467, jee_advanced:0.1071	classification of polymers | types of polymerisation | biodegradable and non-biodegradable polymers | important synthetic polymers
+12	chemistry	practical organic chemistry	2	jee_main:0.4164, jee_advanced:0.375	quantitative test | qualitative tests
+12	chemistry	salt analysis - not in pdf	3	NONE	preliminary tests | dry tests | wet tests
+12	chemistry	solid state	4	jee_main:0.2281, jee_advanced:0.3571	crystalline solids | closed packing in crystals | structure of ionic crystals | defects in crystals
+12	chemistry	solutions	3	jee_main:0.6207, jee_advanced:0.4821, neet:0.45	ideal liquid solution | non-ideal solution | colligative properties
+12	chemistry	surface chemistry	3	jee_main:0.3316, jee_advanced:0.2857	adsorption | catalysis | colliods
+10	mathematics	areas related to circles	0	NONE	
+10	mathematics	automatic progressions (ap)	0	NONE	
+10	mathematics	circles	0	NONE	
+10	mathematics	constructions	0	NONE	
+10	mathematics	coordinate geometry	0	NONE	
+10	mathematics	introduction to trigonometry	0	NONE	
+10	mathematics	pair of linear equation in two variables	0	NONE	
+10	mathematics	polynomial	0	NONE	
+10	mathematics	probability	0	NONE	
+10	mathematics	quadratic equations	0	NONE	
+10	mathematics	real numbers	5	NONE	revision of number systems | euclid’s division lemma | fundamental theorem of arithmetic | irrational numbers | decimal expansion of rational numbers
+10	mathematics	some applications of trigonometry	0	NONE	
+10	mathematics	statistics	0	NONE	
+10	mathematics	surface areas and volumes	0	NONE	
+10	mathematics	triangles	0	NONE	
+11	maths	binomial theorem	6	jee_main:0.5422, jee_advanced:0.0971	binomial expansion | properties of binomial coefficients | binomial theorem for any index | multinomial theorem | summation series in binomial expansion | middle term and term independent of x
+11	maths	complex number	6	jee_main:0.5652, jee_advanced:0.3786	algebra of complex numbers | conjugate, modulus, and argument | complex plane(argand plane) | polar form and de moivre's theorem | quadratic equations in complex numbers | roots of unity
+11	maths	conic section	4	jee_main:1, jee_advanced:0.9709	circle | parabola | ellipse | hyperbola
+11	maths	linear programming	0	NONE	
+11	maths	logarithm	6	NONE	introduction to logarithm | properties of logarithm | characteristic and mantissa | logarithmic equation | logarithmic inequalities | base change theorem
+11	maths	mathematical induction	0	NONE	
+11	maths	mathematical reasoning	1	NONE	question of statment
+11	maths	permutation and combination	6	jee_main:0.5627, jee_advanced:0.301	fundamental principles of counting | permutations | combinations | relation between permutations and combinations | pnc for identical object | rearrangement and dearrangement
+11	maths	quadratic equation	8	jee_main:0.5013, jee_advanced:0.1845	nature of roots | methods of solving | relations between roots and its coefficients | common roots | graphical representation | range of quadratic function | location of roots | transformation of equations
+11	maths	sequence and series	7	jee_main:0.7801, jee_advanced:0.3107	arithmetic progressions | geometric progressions | special series | harmonic progressions | arithmetic-geometric progression | means | infinite summation series
+11	maths	sets	4	jee_main:0.3223, jee_advanced:0.068	types and representation of sets | operations on sets | cardinal numbers | venn diagram
+11	maths	statistics	3	jee_main:0.4092, jee_advanced:0.0388	measures of central tendency | measures of dispersion | frequency distribution
+11	maths	straight lines	9	jee_main:0.4527, jee_advanced:0.2233	basic formulae | collinearity, perpendicularity image & foot | slope and angle between lines | area of triangle and parallelogram | triangle centers and locus problem | angle bisector, concurrency, family of straight lines | pair of straight lines | homogenization | different forms of equation of a line
+11	maths	trigonometry	10	jee_main:0.4859, jee_advanced:1	multiple and sub-multiple angles | allied angles and graphs | conditional identities & trigonometric series | range of trigonometric expressions | trigonometric equations | trigonometric inequalities | heights & distances | solutions of triangle | trigonometric ratios and basic identities | compound angles and transformations
+12	maths	3d coordinate geometry	5	jee_main:0.5345, jee_advanced:0.3883	lines in 3d | basic geometry and formulas | direction cosines and ratios | plane in 3d | line of greatest slope
+12	maths	application of derivatives	3	jee_main:0.5396, jee_advanced:0.6602	tangent and normal | monotonicity | maxima and minima
+12	maths	area under the curves	4	jee_main:0.4604, jee_advanced:0.1942	area bounded by curves | inequalities and determination of parameter | variable area | area represented by inequalities
+12	maths	continuity	4	jee_main:0.399, jee_advanced:0.2136	definition and concept | continuity in an interval | types of discontinuity | important theorem
+12	maths	definite integration	4	jee_main:0.7698, jee_advanced:0.5049	properties of definite integrals | fundamental theorem of calculus | advanced techniques | by indefinite integration
+12	maths	determinant	6	jee_main:0.6189, jee_advanced:0.165	value of determinant | minors & cofactors | properties of determinant | multiplication of  determinants | special determinants | applications
+12	maths	differentiability	4	jee_main:0.399, jee_advanced:0.2136	definition of differentiability | relation between differentiability and continuity | differentiability over an interval | determination of function
+12	maths	differential equation	6	jee_main:0.6215, jee_advanced:0.2816	basics | application of differential equations | variable seperable | homogeneous equation | linear differential equation | exact differential equation
+12	maths	indefinite integration	7	jee_main:0.2711, jee_advanced:0.0485	standard integrals and introduction | integration by parts | integration of trigonometric functions | rational function and algebraic twins | manipulating integration | integration by substitution | partial fractions
+12	maths	inverse trigonometric function	6	jee_main:0.2379, jee_advanced:0.1359	domain & range | sum and difference of angles | multiple angles | summation of series | itf equations | properties of itf
+12	maths	limits	5	jee_main:0.3708, jee_advanced:0.301	concept of limits | evaluation of limit | standard limit formulas | limits at inifinty | limits of composite function
+12	maths	maths - doubtful	9	NONE	rotation of complex number | geometry of complex number | numerically greatest term | exponent of prime p in n factorial | permutation of alike objects | maximising binomial coefficient in permutation and combination | distribution of alike objects or beggars methods | grid problems | quadratic in two unknowns
+12	maths	matrix	6	NONE	algebra of matrices | transpose and special matrices | adjoint and inverse | system of equation | introduction to matrices | advanced topics
+12	maths	method of differentiation	10	jee_main:0.1816, jee_advanced:0.0971	logarithmic differentiation | implicit differentiation | differentiation of composite function | differentiation w.r.t. another function | by trigonometric transformation | standard derivatives and basic rules | higher order derivative | differentiation of determinant | l 'hospital's rule | differentiation of inverse functions
+12	maths	probability	9	jee_main:0.5575, jee_advanced:0.534	random experiment, sample and event | classical probability | odds and probability | venn diagram based probability | conditional probability | law of total probability and bayes' theorem | probability distribution | binomial probability distribution | special probability problems
+12	maths	relation and functions	9	jee_main:0.5524, jee_advanced:0.2136	relations | domain, co-domain and range | composition of functions | ⁠inverse of a function | graphical transformations | functional equations | types of functions | standard functions and their graphs | special properties of functions
+12	maths	vectors	8	jee_main:0.7033, jee_advanced:0.4466	basic concepts | cross product | dot product | distance and section formula | scalar triple product | vector triple product | linear dependency | shortest distance b/w two lines
+11	physics	center of mass	7	jee_main:0.3632, jee_advanced:0.3478	basic concepts | center of mass of continuous bodies | center of mass of composite bodies | motion of center of mass | conservation of linear momentum | collision | impulse and variable mass
+11	physics	circular motion	6	jee_main:0.2289, jee_advanced:0.087	types of circular motion | angular variables | dynamics of circular motion | work, energy, and power in circular motion | motion in vertical circle | applications of circular motion
+11	physics	fluid mechanics	7	jee_main:0.5026, jee_advanced:0.5942, neet:0.449	pressure and thrust | pascal's law and applications | archimedes' principle and buoyancy | hydrodynamics | efflux of a liquid | surface tension | viscosity
+11	physics	gravitation	6	jee_main:0.5921, jee_advanced:0.3188, neet:0.5918	law of gravitation | gravitational field | gravitational potential and potential energy | escape velocity and orbital velocity | kepler’s law and orbital mechanics | variation of g
+11	physics	kinetic theory of gases	3	jee_main:0.4105, jee_advanced:0.087, neet:0.4082	postulates and gas laws | kinetic theory results | applications
+11	physics	laws of motion	9	jee_main:0.4921, jee_advanced:0.2174, neet:0.6939	forces and their types | newton's laws of motion | equilibrium | pulley-block systems | constraint motion | variable force | impulse and momentum | friction | application of newton's laws
+11	physics	mechanical properties of solids	3	jee_main:0.2947, jee_advanced:0.087, neet:0.2245	elasticity | moduli of elasticity | energy and work in elasticity
+11	physics	motion in a plane and relative motion	4	jee_main:0.2737, jee_advanced:0.2464, neet:0.4898	motion in a plane | projectile motion | projectile from different surfaces | relative motion
+11	physics	motion in a straight line	6	jee_main:0.4132, jee_advanced:0.029, neet:0.3878	basic concepts of kinematics | acceleration | kinematic equations | graphical representation of motion | calculus based kinematics | motion under gravity
+11	physics	physical world	2	NONE	measurement | dimensional analysis
+11	physics	rotational motion	7	jee_main:0.7158, jee_advanced:0.8261, neet:0.6939	fixed axis rotation | angular momentum | combined rotational and translational motion | toppling | moment of inertia | standard moi values | torque and equilibrium
+11	physics	simple harmonic motion	6	jee_main:0.5, jee_advanced:0.4203, neet:0.4898	equation and kinematics of shm | energy of shm | finding time period | shm in various situations | pendulums | superposition and damping
+11	physics	thermal properties of matter	6	jee_main:0.3158, jee_advanced:0.4203, neet:0.3469	thermometry | thermal expansion | conduction | radiation | convection | calorimetry
+11	physics	thermodynamics	5	jee_main:0.5158, jee_advanced:0.6957, neet:0.4082	second law of thermodynamics | cyclic processes and heat engines | basic concepts | first law of thermodynamics | graphical analysis
+11	physics	units and dimensions and errors	5	jee_main:0.4079, jee_advanced:0.2609, neet:0.6531	dimensions | errors | measuring instruments | significant figures | mathematical tools
+11	physics	vectors	5	NONE	fundamentals of vectors | addition and subtraction of vectors | multiplication of vectors | relative velocity | applications
+11	physics	waves	8	jee_main:0.3684, jee_advanced:0.6377, neet:0.3061	wave equation(string waves) | wave speed | energy and power in waves | nature and types of waves | superposition and reflection | standing waves | sound waves | organ pipes and resonance
+11	physics	work energy and power	6	jee_main:0.3763, jee_advanced:0.2899, neet:0.5714	work | energy | work energy theorem | types of forces | conservation of mechanical energy | power
+12	physics	alternating current	5	jee_main:0.4447, jee_advanced:0.3188, neet:0.5714	basic ac concepts | ac circuits with single elements | combined ac circuits | power in ac circuits | transformer
+12	physics	atomic physics	3	jee_main:0.3816, jee_advanced:0.3623, neet:0.4286	bohr's model of hydrogen atom | x-rays | atomic spectra
+12	physics	communication systems	3	jee_main:0.2868	basics of communication | modulation | propagation and applications
+12	physics	current electricity	6	jee_main:1, jee_advanced:0.4928, neet:1	basic concepts | combination of resistances | kirchoff's law | electric power and heating effect | measuring instrument | rc circuit
+12	physics	dual nature of radiation and matter	3	jee_main:0.5447, jee_advanced:0.3478, neet:0.6327	wave particle duality | photoelectric effect | photon theory
+12	physics	electric charge and field	6	jee_advanced:0.942, neet:0.4082	electric charge and its properties | coulomb’s law | electric field | electric dipole | electric field due to various shape | electric flux and gauss law
+12	physics	electromagnetic induction	5	jee_main:0.4553, jee_advanced:0.4493, neet:0.3878	faraday's law and lenz's law | motional emf | induced electric field | self and mutual induction | lc oscillations and force
+12	physics	electromagnetic waves	4	jee_main:0.4526, jee_advanced:0.058, neet:0.449	displacement current | properties of em waves | energy and intensity | electromagnetic spectrum
+12	physics	electrostatic potential and capacitance	5	jee_main:0.4632, jee_advanced:0.2899, neet:0.7347	electrostatic potential energy | electrostatic potential | conductors in electrostatics | capacitance | combination and energy of capacitors
+12	physics	magnetic effect of electric current	5	jee_main:0.6921, jee_advanced:0.5942, neet:0.6531	magnetic force | biot-savart law | ampere’s circuital law | force oncurrent-carrying conductors | magnetic dipole and torque
+12	physics	magnetism and matter	5	jee_main:0.1526, neet:0.2245	magnetism and properties of matter | magnetic material and their properties | magnetism basics | earth's magnetism | magnetic properties of matter
+12	physics	nuclear physics	4	jee_main:0.2316, jee_advanced:0.5217	nuclear structure | nuclear binding energy | nuclear reactions | radioactivity
+12	physics	physics - doubtful	2	NONE	superposition of current in ac circuit | ac circuit analysis
+12	physics	physics (in doubt)	0	NONE	
+12	physics	ray optics and optical instruments	6	jee_main:0.7579, jee_advanced:1, neet:0.7755	lenses | reflection | refraction | refraction at spherical surfaces and lenses | prism and dispersion | optical instruments
+12	physics	semiconductor	6	jee_main:0.55, neet:0.7347	diodes | application of semiconductors | logic gates | communication | transistor | energy bands and semiconductor basics
+12	physics	wave optics	5	jee_main:0.5026, jee_advanced:0.2899, neet:0.449	nature of light and wavefronts | polarisation | diffraction | thin film interference | interference

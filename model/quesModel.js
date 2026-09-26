@@ -64,6 +64,12 @@ const quesSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  pyq: {
+    exam: { type: String },
+    year: { type: Number },
+    shift: { type: String },
+    marks: { type: Number },
+  },
 });
 
 export const Ques = mongoose.model("QuestionBank", quesSchema);

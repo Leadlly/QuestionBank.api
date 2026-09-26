@@ -183,6 +183,7 @@ export const getTopic = async (req, res) => {
         subtopics: topic.subtopics,
         chapterId: topic.chapterId,
         exam: topic.exam,
+        examWeights: topic.examWeights || [],
         questionCount: questionCount 
       };
     }));

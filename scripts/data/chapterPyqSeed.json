@@ -1,0 +1,2259 @@
+[
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "The Living World",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "0.9",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Mole Concept",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "210",
+        "weightagePercent": "3.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "-"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": "Mapped to NCERT/JEE chapter Some Basic Concepts of Chemistry"
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Sets",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "126",
+        "weightagePercent": "2.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "7"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Biological Classification",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.7",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Plant Kingdom",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.5",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Animal Kingdom",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.9",
+        "priority": "Medium"
+      }
+    },
+    "notes": "Trending up in recent papers"
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Morphology of Flowering Plants",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.2",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Anatomy of Flowering Plants",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.6",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Structural Organisation in Animals",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.8",
+        "priority": "Low"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Cell: The Unit of Life",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "4",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Biomolecules",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.5",
+        "priority": "High"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Cell Cycle and Cell Division",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.2",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Photosynthesis in Higher Plants",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.5",
+        "priority": "Medium"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Respiration in Plants",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.5",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Plant Growth and Development",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.1",
+        "priority": "Medium"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Breathing and Exchange of Gases",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.9",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Body Fluids and Circulation",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.4",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Excretory Products and Their Elimination",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.7",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Locomotion and Movement",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.2",
+        "priority": "Medium"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Neural Control and Coordination",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "0.9",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 11,
+    "chapterName": "Chemical Coordination and Integration",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.3",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Reproduction in Organisms",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "N/A",
+        "priority": "-"
+      }
+    },
+    "notes": "Not tracked as a separate chapter in current NEET syllabus/PYQ analysis; merged into Sexual Reproduction in Flowering Plants / Human Reproduction"
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Sexual Reproduction in Flowering Plants",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.9",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Human Reproduction",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Reproductive Health",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.3",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Principles of Inheritance and Variation",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "4.5",
+        "priority": "High"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Molecular Basis of Inheritance",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "5.9",
+        "priority": "High"
+      }
+    },
+    "notes": "Highest-weightage chapter in all of NEET Biology"
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Evolution",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.7",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Human Health and Disease",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.3",
+        "priority": "High"
+      }
+    },
+    "notes": "Trending up (Leadlly doc chapter name: 'Human Health and Disease' = NEET's 'Human Health and Diseases')"
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Microbes in Human Welfare",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.8",
+        "priority": "Low"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Biotechnology: Principles and Processes",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "3.9",
+        "priority": "High"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Biotechnology and Its Applications",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Organisms and Populations",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.6",
+        "priority": "Medium"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Ecosystem",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "1.7",
+        "priority": "Low"
+      }
+    },
+    "notes": "Trending up (NEET chapter name: 'Ecosystems')"
+  },
+  {
+    "subject": "biology",
+    "standard": 12,
+    "chapterName": "Biodiversity and Conservation",
+    "exams": {
+      "neet": {
+        "metric": "avg_questions_per_year",
+        "value": "2.3",
+        "priority": "Medium"
+      }
+    },
+    "notes": "Trending up"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Redox Reactions",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "71",
+        "weightagePercent": "1.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "-"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "24 (combined)"
+      }
+    },
+    "notes": "NEET's 'Redox Equilibrium' chapter (24 PYQs) merges Redox Reactions + Ionic Equilibrium in the current syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Atomic Structure",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "233",
+        "weightagePercent": "3.9%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "29"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "31"
+      }
+    },
+    "notes": "Mapped to 'Structure of Atom'"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Quantum Numbers and Electronic Configuration",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "(within Structure of Atom)",
+        "weightagePercent": "-"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "(within Structure of Atom)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "(within Structure of Atom)"
+      }
+    },
+    "notes": "Leadlly splits this into its own chapter; JEE/NEET PYQ trackers count it inside 'Structure of Atom' above"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Gaseous State",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "79",
+        "weightagePercent": "1.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "21"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Mapped to 'States of Matter'; not a separate NEET chemistry chapter in the current syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Thermodynamics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "240",
+        "weightagePercent": "4.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "48"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "31"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Chemical Equilibrium",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "132",
+        "weightagePercent": "2.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "6"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      }
+    },
+    "notes": "NEET's 'Redox Equilibrium' chapter does not include general chemical equilibrium; not separately tracked for NEET"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Ionic Equilibrium",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "159",
+        "weightagePercent": "2.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "24 (combined)"
+      }
+    },
+    "notes": "See Redox Reactions note - NEET merges Redox + Ionic Equilibrium into one chapter"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Periodic Table and Periodicity",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "192",
+        "weightagePercent": "3.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "30"
+      }
+    },
+    "notes": "Mapped to 'Classification of Elements and Periodicity in Properties'; JEE Advanced tracks a related but distinct 'Classification of Elements...' chapter at 6 PYQs"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Chemical Bonding",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "307",
+        "weightagePercent": "5.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "35"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "54"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Hydrogen",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "94",
+        "weightagePercent": "1.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "4"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from the current NEET chemistry syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "s-Block Elements",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "133",
+        "weightagePercent": "2.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "4"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from the current NEET chemistry syllabus (folded into general inorganic coverage)"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "p-Block Elements (Part 1)",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "96",
+        "weightagePercent": "1.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "17"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Mapped to JEE 'p-Block Elements (Group 13 & 14)'"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "IUPAC Nomenclature",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "(within General Organic Chemistry)",
+        "weightagePercent": "-"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "(within GOC)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "(within GOC)"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Basic Principles of Organic Chemistry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "367",
+        "weightagePercent": "6.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "56"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "60"
+      }
+    },
+    "notes": "Mapped to 'General Principles of Organic Chemistry' (GOC) - the single highest-weightage NEET Chemistry chapter"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Isomerism",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "(within General Organic Chemistry)",
+        "weightagePercent": "-"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "(within GOC)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "(within GOC)"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Hydrocarbons",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "241",
+        "weightagePercent": "4.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "25"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "42"
+      }
+    },
+    "notes": "Trending up in NEET"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 11,
+    "chapterName": "Environmental Chemistry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "113",
+        "weightagePercent": "1.9%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "- (not in JEE Adv syllabus)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from current NEET syllabus; not part of JEE Advanced syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Solutions",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "234",
+        "weightagePercent": "3.9%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "27"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "27"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Solid State",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "86",
+        "weightagePercent": "1.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from current NEET chemistry syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Electrochemistry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "241",
+        "weightagePercent": "4.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "35"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "31"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Chemical Kinetics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "235",
+        "weightagePercent": "3.9%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "35"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "30"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Surface Chemistry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "125",
+        "weightagePercent": "2.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "16"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from current NEET chemistry syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "p-Block Elements (Part 2)",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "198",
+        "weightagePercent": "3.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "54"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Mapped to JEE 'p-Block Elements (Group 15,16,17,18)'; dropped from current NEET syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "d and f Block Elements",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "266",
+        "weightagePercent": "4.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "19"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "33"
+      }
+    },
+    "notes": "NEET chapter name: 'D and F Block Elements'"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Coordination Compounds",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "377",
+        "weightagePercent": "6.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "54"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "43"
+      }
+    },
+    "notes": "Highest-weightage single chapter in JEE Main Chemistry; trending up in NEET"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Metallurgy",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "127",
+        "weightagePercent": "2.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "24"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Mapped to 'General Principles and Processes of Isolation of Metals'; dropped from current NEET syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Haloalkanes and Haloarenes",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "193",
+        "weightagePercent": "3.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "40"
+      }
+    },
+    "notes": "Trending up in NEET"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Alcohols, Phenols, and Ethers",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "189",
+        "weightagePercent": "3.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "48"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "33"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Aldehydes, Ketones, and Carboxylic Acids",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "255 (180+75, see note)",
+        "weightagePercent": "3.0%+1.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "49 (31+18, see note)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "49"
+      }
+    },
+    "notes": "JEE trackers split this into 'Aldehydes and Ketones' and 'Carboxylic Acid Derivatives'; NEET keeps it as one combined chapter (shown)"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Amines",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "220",
+        "weightagePercent": "3.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "34"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "23"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Biomolecules",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "216",
+        "weightagePercent": "3.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "26"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "26"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Polymers",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "93",
+        "weightagePercent": "1.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "6"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from current NEET chemistry syllabus"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Practical Organic Chemistry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "157",
+        "weightagePercent": "2.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "21"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Mapped to 'Practical Chemistry'; not separately tracked for NEET"
+  },
+  {
+    "subject": "chemistry",
+    "standard": 12,
+    "chapterName": "Chemistry in Everyday Life",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "87",
+        "weightagePercent": "1.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "1"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "-"
+      }
+    },
+    "notes": "Dropped from current NEET chemistry syllabus; rarely tested in JEE Advanced"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Units, Dimensions, and Errors",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "155",
+        "weightagePercent": "2.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "18"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "32"
+      }
+    },
+    "notes": "Mapped to 'Units and Dimensions'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Motion in a Straight Line",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "157",
+        "weightagePercent": "2.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "2"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "19"
+      }
+    },
+    "notes": "Mapped to 'Motion in One Dimension'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Motion in a Plane and Relative Motion",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "104",
+        "weightagePercent": "1.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "17"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "24"
+      }
+    },
+    "notes": "Mapped to 'Motion in Two Dimensions'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Laws of Motion",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "187",
+        "weightagePercent": "3.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "15"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "34"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Work, Energy, and Power",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "143",
+        "weightagePercent": "2.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "28"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Circular Motion",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "87",
+        "weightagePercent": "1.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "6"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      }
+    },
+    "notes": "NEET does not track Circular Motion as a standalone chapter - folded into Laws of Motion / Rotational Motion"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Centre of Mass",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "138",
+        "weightagePercent": "2.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "24"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      }
+    },
+    "notes": "NEET combines Centre of Mass with Rotational Motion - see 'Rotational Motion' below"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Rotational Motion",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "272",
+        "weightagePercent": "4.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "57"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "34"
+      }
+    },
+    "notes": "NEET's 'System of Particles and Rotational Motion' (34 PYQs) covers both Centre of Mass and Rotational Motion combined"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Fluid Mechanics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "191",
+        "weightagePercent": "3.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "41"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": "Mapped to 'Mechanical Properties of Fluids'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Simple Harmonic Motion",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "190",
+        "weightagePercent": "3.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "29"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "24"
+      }
+    },
+    "notes": "Mapped to 'Oscillations'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Waves",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "140",
+        "weightagePercent": "2.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "44"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "15"
+      }
+    },
+    "notes": "Mapped to 'Waves and Sound'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Mechanical Properties of Solids",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "112",
+        "weightagePercent": "2.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "6"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "11"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Thermal Properties of Matter",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "120",
+        "weightagePercent": "2.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "29"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "17"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Kinetic Theory of Gases",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "156",
+        "weightagePercent": "2.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "6"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "20"
+      }
+    },
+    "notes": "Mapped to 'Kinetic Theory'"
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Thermodynamics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "196",
+        "weightagePercent": "3.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "48"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "20"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 11,
+    "chapterName": "Gravitation",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "225",
+        "weightagePercent": "4.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "22"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "29"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Electric Charges and Fields",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "- (see note)",
+        "weightagePercent": "-"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "65 (combined)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "20"
+      }
+    },
+    "notes": "JEE Main/Advanced trackers combine Electric Charges & Fields with Electrostatic Potential under one 'Electrostatics' chapter (65 JEE Advanced PYQs, part of 299 JEE Main 'Electrostatics' PYQs)"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Electrostatic Potential and Capacitance",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "176",
+        "weightagePercent": "3.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "36"
+      }
+    },
+    "notes": "Mapped to 'Capacitance'; see note above on Electrostatics split"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Current Electricity",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "380",
+        "weightagePercent": "6.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "34"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "49"
+      }
+    },
+    "notes": "Highest-weightage single chapter in JEE Main Physics"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Magnetic Effect of Electric Current",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "263",
+        "weightagePercent": "4.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "41"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "32"
+      }
+    },
+    "notes": "Mapped to 'Magnetic Effects of Current'; NEET chapter name: 'Moving Charges and Magnetism'"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Magnetism and Matter",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "58",
+        "weightagePercent": "1.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "11"
+      }
+    },
+    "notes": "Mapped to 'Magnetic Properties of Matter'; not separately tracked in the JEE Advanced dataset (folded into Magnetic Effects of Current)"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Electromagnetic Induction",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "173",
+        "weightagePercent": "3.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "31"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "19"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Alternating Current",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "169",
+        "weightagePercent": "3.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "22"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "28"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Electromagnetic Waves",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "172",
+        "weightagePercent": "3.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "4"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Ray Optics and Optical Instruments",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "288",
+        "weightagePercent": "5.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "69"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "38"
+      }
+    },
+    "notes": "Mapped to 'Ray Optics' - highest-weightage single chapter in JEE Advanced Physics"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Wave Optics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "191",
+        "weightagePercent": "3.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Dual Nature of Radiation and Matter",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "207",
+        "weightagePercent": "3.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "24"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "31"
+      }
+    },
+    "notes": "Mapped to 'Dual Nature of Matter'"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Atomic Physics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "145",
+        "weightagePercent": "2.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "25"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "21"
+      }
+    },
+    "notes": "NEET chapter name: 'Atoms'"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Nuclear Physics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "88",
+        "weightagePercent": "1.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "36"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      }
+    },
+    "notes": "Current NEET syllabus does not track Nuclear Physics as separate from Atoms - folded into 'Atoms'"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Semiconductors",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "209",
+        "weightagePercent": "3.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "Not in JEE Advanced syllabus"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "36"
+      }
+    },
+    "notes": "JEE Advanced does not include semiconductor electronics; NEET chapter name: 'Semiconductor Electronics'"
+  },
+  {
+    "subject": "physics",
+    "standard": 12,
+    "chapterName": "Communication Systems",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "109",
+        "weightagePercent": "1.9%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "Not in JEE Advanced syllabus"
+      },
+      "neet": {
+        "metric": "pyq_count",
+        "value": "- (see note)"
+      }
+    },
+    "notes": "JEE Advanced does not include this chapter; dropped from current NEET syllabus"
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Quadratic Equations",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "196",
+        "weightagePercent": "3.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "19"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Trigonometry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "190 (combined, see note)",
+        "weightagePercent": "3.6%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "103 (combined, see note)"
+      }
+    },
+    "notes": "JEE trackers split Trigonometry into 4 chapters: Trig Ratios & Identities (JEE Main 66 / Adv 9), Trig Equations (54/25), Heights & Distances (45/-), Properties of Triangles (25/24). Figures shown are the sum of the first three plus Properties of Triangles for JEE Advanced"
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Sequence and Series",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "305",
+        "weightagePercent": "5.9%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "32"
+      }
+    },
+    "notes": "Highest-weightage single chapter in JEE Main Maths"
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Binomial Theorem",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "212",
+        "weightagePercent": "4.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "10"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Permutation and Combination",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "220",
+        "weightagePercent": "4.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "31"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Straight Lines",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "177",
+        "weightagePercent": "3.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "23"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Conic Sections",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "391 (combined, see note)",
+        "weightagePercent": "7.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "100 (combined, see note)"
+      }
+    },
+    "notes": "Sum of Circle (JEE Main 164/Adv 30), Parabola (68/35), Ellipse (95/22), Hyperbola (64/13)"
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Complex Numbers",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "221",
+        "weightagePercent": "4.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "39"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 11,
+    "chapterName": "Statistics",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "160",
+        "weightagePercent": "3.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "4"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Relations and Functions",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "216",
+        "weightagePercent": "4.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": "Mapped to 'Functions'; some overlap with 'Sets and Relations' above"
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Inverse Trigonometric Functions",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "93",
+        "weightagePercent": "1.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "14"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Matrices",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "176",
+        "weightagePercent": "3.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "44"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Determinants",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "242",
+        "weightagePercent": "4.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "17"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Limits",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "145",
+        "weightagePercent": "2.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "31"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Continuity",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "156",
+        "weightagePercent": "3.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": "JEE trackers combine Continuity and Differentiability into one 'Continuity and Differentiability' chapter (figure shown here and repeated below)"
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Differentiability",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "156",
+        "weightagePercent": "3.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "22"
+      }
+    },
+    "notes": "Same combined chapter as Continuity above"
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Methods of Differentiation",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "71",
+        "weightagePercent": "1.4%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "10"
+      }
+    },
+    "notes": "Mapped to 'Differentiation'"
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Application of Derivatives",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "211",
+        "weightagePercent": "4.1%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "68"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Indefinite Integration",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "106",
+        "weightagePercent": "2.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "5"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Definite Integration",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "301",
+        "weightagePercent": "5.8%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "52"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Area Under the Curves",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "180",
+        "weightagePercent": "3.5%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "20"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Differential Equations",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "243",
+        "weightagePercent": "4.7%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "29"
+      }
+    },
+    "notes": ""
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Vectors",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "275",
+        "weightagePercent": "5.3%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "46"
+      }
+    },
+    "notes": "Mapped to 'Vector Algebra'"
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "3D Coordinate Geometry",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "209",
+        "weightagePercent": "4.0%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "40"
+      }
+    },
+    "notes": "Mapped to 'Three Dimensional Geometry'"
+  },
+  {
+    "subject": "maths",
+    "standard": 12,
+    "chapterName": "Probability",
+    "exams": {
+      "jee_main": {
+        "metric": "pyq_count",
+        "value": "218",
+        "weightagePercent": "4.2%"
+      },
+      "jee_advanced": {
+        "metric": "pyq_count",
+        "value": "55"
+      }
+    },
+    "notes": "Second highest-weightage chapter in JEE Advanced Maths"
+  }
+]
