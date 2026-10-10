@@ -1,6 +1,6 @@
 import {
-  InvokeModelCommand,
-  InvokeModelWithResponseStreamCommand,
+  ConverseCommand,
+  ConverseStreamCommand,
 } from "@aws-sdk/client-bedrock-runtime";
 import { bedrockClient, MODELS as BEDROCK_MODELS } from "../bedrock.js";
 import { createVertexClient, GEMINI_MODELS } from "../gemini.js";
@@ -50,37 +50,30 @@ async function runWithGemini(userMessage, systemPrompt) {
   return String(response?.text ?? "[]").trim();
 }
 
-// ─── Bedrock / Claude runner (non-streaming) ──────────────────────────────────
+function textFromContent(content = []) {
+  return content.map((block) => block.text || "").join("").trim();
+}
+
+// ─── Bedrock runner (non-streaming) ───────────────────────────────────────────
 
 async function runWithBedrock(userMessage, systemPrompt) {
   console.log("[QuestionAgent:Bedrock] model:", BEDROCK_MODELS.DEFAULT);
 
-  const requestBody = {
-    anthropic_version: "bedrock-2023-05-31",
-    max_tokens: 8192,
-    system: systemPrompt,
-    messages: [{ role: "user", content: userMessage }],
-  };
-
-  const command = new InvokeModelCommand({
+  const response = await bedrockClient.send(new ConverseCommand({
     modelId: BEDROCK_MODELS.DEFAULT,
-    contentType: "application/json",
-    accept: "application/json",
-    body: JSON.stringify(requestBody),
-  });
+    system: [{ text: systemPrompt }],
+    messages: [{ role: "user", content: [{ text: userMessage }] }],
+    inferenceConfig: { maxTokens: 8192 },
+  }));
 
-  const response = await bedrockClient.send(command);
-  const rawBody = Buffer.from(response.body).toString("utf-8");
-  const parsed = JSON.parse(rawBody);
-
-  return parsed?.content?.[0]?.text?.trim() ?? "[]";
+  return textFromContent(response.output?.message?.content) || "[]";
 }
 
 // ─── Bedrock streaming runner ─────────────────────────────────────────────────
 
 /**
- * Stream tokens from Bedrock Claude via InvokeModelWithResponseStreamCommand.
- * Calls `onToken(delta)` for each text chunk, returns the full accumulated text.
+ * Stream tokens from Bedrock. Calls `onToken(delta)` for each text chunk
+ * and returns the full accumulated text.
  *
  * @param {string}   userMessage
  * @param {string}   systemPrompt
@@ -89,36 +82,20 @@ async function runWithBedrock(userMessage, systemPrompt) {
 export async function streamWithBedrock(userMessage, systemPrompt, onToken) {
   console.log("[QuestionAgent:BedrockStream] model:", BEDROCK_MODELS.DEFAULT);
 
-  const requestBody = {
-    anthropic_version: "bedrock-2023-05-31",
-    max_tokens: 8192,
-    system: systemPrompt,
-    messages: [{ role: "user", content: userMessage }],
-  };
-
-  const command = new InvokeModelWithResponseStreamCommand({
+  const response = await bedrockClient.send(new ConverseStreamCommand({
     modelId: BEDROCK_MODELS.DEFAULT,
-    contentType: "application/json",
-    accept: "application/json",
-    body: JSON.stringify(requestBody),
-  });
+    system: [{ text: systemPrompt }],
+    messages: [{ role: "user", content: [{ text: userMessage }] }],
+    inferenceConfig: { maxTokens: 8192 },
+  }));
 
-  const response = await bedrockClient.send(command);
   let fullText = "";
 
-  for await (const event of response.body) {
-    if (!event?.chunk?.bytes) continue;
-
-    const chunkJson = JSON.parse(
-      Buffer.from(event.chunk.bytes).toString("utf-8")
-    );
-
-    // Claude streaming event types: content_block_delta carries text deltas
-    if (chunkJson.type === "content_block_delta" && chunkJson.delta?.type === "text_delta") {
-      const delta = chunkJson.delta.text ?? "";
-      fullText += delta;
-      if (onToken) onToken(delta);
-    }
+  for await (const event of response.stream) {
+    const delta = event.contentBlockDelta?.delta?.text ?? "";
+    if (!delta) continue;
+    fullText += delta;
+    if (onToken) onToken(delta);
   }
 
   return fullText;

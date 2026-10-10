@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../leadlly.student.api"
+		},
+		{
+			"path": "../leadlly.student.mobileapp"
+		},
+		{
+			"path": "../leadlly.student.web"
+		},
+		{
+			"path": "../leadlly.metrics"
+		},
+		{
+			"path": "../QuestionBank.web"
+		},
+		{
+			"path": "."
+		}
+	]
+}

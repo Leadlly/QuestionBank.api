@@ -25,5 +25,5 @@ export const bedrockClient = new BedrockRuntimeClient({
 });
 
 export const MODELS = {
-  DEFAULT: "arn:aws:bedrock:us-east-1:471112741644:inference-profile/us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+  DEFAULT: "moonshotai.kimi-k2.5",
 };

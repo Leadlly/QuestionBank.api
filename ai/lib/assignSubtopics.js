@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 /**
  * Given a list of generated question objects and a set of topic IDs,
- * fetches all subtopics under those topics and uses Claude to assign each
+ * fetches all subtopics under those topics and uses the Bedrock model to assign each
  * question to its best-matching subtopic.
  *
  * Returns a Map<questionIndex → { subtopicId, subtopicName }>
